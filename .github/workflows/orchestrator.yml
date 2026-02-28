@@ -1,0 +1,64 @@
+name: CTO Orchestrator
+
+on:
+  # Manual trigger — main way to run this
+  workflow_dispatch:
+    inputs:
+      max_cycles:
+        description: "How many CTO→Task cycles to run"
+        required: false
+        default: "3"
+      cto_max_turns:
+        description: "Max turns per CTO session"
+        required: false
+        default: "40"
+      task_max_turns:
+        description: "Max turns per Task session"
+        required: false
+        default: "60"
+
+  # Uncomment to run on a schedule (e.g. every weekday at 9am UTC)
+  # schedule:
+  #   - cron: "0 9 * * 1-5"
+
+# Needed to push branches, open/merge/close PRs, and commit to main
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120  # hard ceiling — adjust if tasks are very long
+
+    steps:
+      - name: Checkout repo (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # GITHUB_TOKEN is used here automatically for push access
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Configure git identity
+        run: |
+          git config user.email "orchestrator@cto-repo.local"
+          git config user.name "CTO Orchestrator"
+
+      - name: Run orchestrator
+        run: ./orchestrator.sh
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # gh CLI picks up GH_TOKEN automatically for PR operations
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MAX_CYCLES: ${{ inputs.max_cycles || '3' }}
+          CTO_MAX_TURNS: ${{ inputs.cto_max_turns || '40' }}
+          TASK_MAX_TURNS: ${{ inputs.task_max_turns || '60' }}
+          # Tell git to push to the right remote
+          GITHUB_REPOSITORY: ${{ github.repository }}

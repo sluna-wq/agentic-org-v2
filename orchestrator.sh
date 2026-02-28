@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ─────────────────────────────────────────────
-# CTO-Repo Orchestrator — stateless, autonomous
-# All state lives in the repo. No human input
-# needed during a run.
-# ─────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────
+# CTO-Repo Orchestrator
+#
+# Commit strategy (explicit):
+#   Task agents   → commit code to their branch as they work
+#   Orchestrator  → pushes branch, opens PR when task completes
+#   Orchestrator  → squash-merges PR when CTO accepts
+#   Orchestrator  → closes + deletes branch when CTO discards
+#   Orchestrator  → commits cto/ changes directly to main
+#
+# Main branch only ever receives accepted, squash-merged PRs.
+# ─────────────────────────────────────────────────────────────────
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CTO_DIR="$REPO_ROOT/cto"
@@ -15,22 +22,32 @@ CTO_MAX_TURNS="${CTO_MAX_TURNS:-40}"
 TASK_MAX_TURNS="${TASK_MAX_TURNS:-60}"
 CYCLE=0
 
-# ── Pre-flight ────────────────────────────────
+# ── Pre-flight ────────────────────────────────────────────────────
 
 preflight() {
-  # Require claude CLI
-  if ! command -v claude &>/dev/null; then
-    echo "[orchestrator] ERROR: 'claude' CLI not found. Install it and ensure it's on PATH."
+  local missing=()
+  command -v claude &>/dev/null || missing+=("claude (npm install -g @anthropic-ai/claude-code)")
+  command -v gh     &>/dev/null || missing+=("gh (https://cli.github.com)")
+  command -v git    &>/dev/null || missing+=("git")
+
+  if [ ${#missing[@]} -gt 0 ]; then
+    echo "[orchestrator] ERROR: missing required tools:"
+    for t in "${missing[@]}"; do echo "  - $t"; done
     exit 1
   fi
 
-  # Ensure git user is set (needed for unattended commits)
-  if [ -z "$(git config user.email 2>/dev/null || true)" ]; then
-    git config user.email "orchestrator@cto-repo.local"
-    git config user.name "CTO Orchestrator"
+  if [ -z "${ANTHROPIC_API_KEY:-}" ]; then
+    echo "[orchestrator] ERROR: ANTHROPIC_API_KEY is not set."
+    exit 1
   fi
 
-  # Init repo if needed
+  # Set git identity if not configured (needed for unattended runs)
+  [ -n "$(git config user.email 2>/dev/null || true)" ] || \
+    git config user.email "orchestrator@cto-repo.local"
+  [ -n "$(git config user.name  2>/dev/null || true)" ] || \
+    git config user.name "CTO Orchestrator"
+
+  # Init git repo if needed
   cd "$REPO_ROOT"
   if ! git rev-parse --git-dir &>/dev/null; then
     git init
@@ -38,31 +55,42 @@ preflight() {
     git commit -m "chore: initial repo structure"
   fi
 
-  # Ensure we're on main
+  # Ensure we start on main
   if ! git show-ref --verify --quiet refs/heads/main; then
     git checkout -b main 2>/dev/null || true
   fi
   git checkout main
+
+  log "Pre-flight OK. Claude max-turns: CTO=$CTO_MAX_TURNS Task=$TASK_MAX_TURNS"
 }
 
-# ── Helpers ───────────────────────────────────
+# ── Helpers ───────────────────────────────────────────────────────
 
 log() { echo "[orchestrator] $*"; }
 
+# Commit anything pending in the repo to current branch
 commit_all() {
   local msg="$1"
   cd "$REPO_ROOT"
-  if ! git diff --quiet HEAD 2>/dev/null || \
-     [ -n "$(git ls-files --others --exclude-standard)" ]; then
-    git add -A
+  # Stage everything including deletions
+  git add -A
+  if ! git diff --cached --quiet; then
     git commit -m "$msg"
     log "Committed: $msg"
   else
-    log "Nothing to commit for: $msg"
+    log "Nothing to commit: $msg"
   fi
 }
 
-# Return task dirs matching a status (space-separated list)
+# Push current branch to origin
+push_branch() {
+  local branch="$1"
+  git push -u origin "$branch" 2>&1 || {
+    log "WARNING: push failed for $branch — continuing anyway (may be local-only run)"
+  }
+}
+
+# Return task dirs matching a given status, one per line
 tasks_with_status() {
   local target="$1"
   for f in "$TASKS_DIR"/*/status.md; do
@@ -73,40 +101,68 @@ tasks_with_status() {
   done
 }
 
+# Read a field from a task's status.md
 get_field() {
-  local dir="$1" field="$2"
-  grep -m1 "^${field}:" "$dir/status.md" \
+  local task_dir="$1" field="$2"
+  grep -m1 "^${field}:" "$task_dir/status.md" \
     | sed "s/^${field}:[[:space:]]*//" \
-    | tr -d '[:space:]'
+    | tr -d '[:space:]' \
+    || echo ""
 }
 
-# ── Phase 1: CTO ──────────────────────────────
+# Write or update a field in status.md
+set_field() {
+  local task_dir="$1" field="$2" value="$3"
+  local file="$task_dir/status.md"
+  if grep -q "^${field}:" "$file" 2>/dev/null; then
+    sed -i.bak "s|^${field}:.*|${field}: ${value}|" "$file" && rm -f "${file}.bak"
+  else
+    echo "${field}: ${value}" >> "$file"
+  fi
+}
+
+# ── Phase 1a: CTO reviews and assigns ─────────────────────────────
 
 run_cto_phase() {
   log "=== Phase 1: CTO (cycle $CYCLE) ==="
+  cd "$REPO_ROOT"
+  git checkout main
 
   local cto_prompt
   cto_prompt=$(cat <<'PROMPT'
 [MODE:CTO]
 
-Read cto/CLAUDE.md fully before doing anything else. That is your context.
+Read cto/CLAUDE.md fully before doing anything else.
 
-This cycle:
-1. Review all tasks with status "review":
-   - Read their package.md and diff the branch vs main in product/.
-   - Decide: accept, request changes, or discard.
-   - Log each decision to cto/decisions.md (prepend — newest first) with timestamp, what was decided, and why.
-   - Add a one-liner to "Recent Decisions" in cto/CLAUDE.md (keep only top 20 there).
-2. Update the backlog sections in cto/CLAUDE.md (Planned / Active / Done / Needs Human Input).
-3. Assign the next highest-priority unblocked Planned task(s):
-   - Write cto/tasks/task-XXX/package.md and cto/tasks/task-XXX/status.md (status: assigned).
-   - Move that task to the Active section of the backlog.
-4. If the backlog is empty and all work is done, write cto/NO_TASKS with one line explaining why.
+This cycle — do all that apply:
+
+1. REVIEW tasks in "review" status:
+   - Read package.md and status.md for each.
+   - Review the actual code: run `git diff main...BRANCH -- product/` (branch is in status.md).
+   - Decide for each:
+     * Accept  → set status: accepted in status.md
+     * Changes → set status: changes_requested, append "## CTO Feedback" to package.md
+     * Discard → set status: discarded in status.md
+   - Log every decision to cto/decisions.md (prepend, newest first):
+     Format: ## [TIMESTAMP] task-XXX ACTION\n**What:** ...\n**Why:** ...
+   - Add one-liner to "Recent Decisions" in cto/CLAUDE.md (keep top 20 only).
+
+2. UPDATE the backlog in cto/CLAUDE.md:
+   - Move accepted/discarded tasks to Done section.
+   - Move changes_requested tasks back to Active.
+   - Flag anything blocked on human input in "Needs Human Input" section.
+
+3. ASSIGN next tasks from Planned:
+   - Pick highest-priority unblocked tasks.
+   - Create cto/tasks/task-XXX/ with package.md and status.md (status: assigned).
+   - Move them to Active section in backlog.
+
+4. STOP signal: if backlog is fully done and nothing to assign, write cto/NO_TASKS.
 
 Rules:
-- Do not commit — orchestrator handles git.
+- Do not commit — orchestrator handles all git operations.
 - Do not write to product/.
-- If anything requires human input, add it to the "Needs Human Input" backlog section.
+- Be concise. The file is your working memory, keep it clean.
 PROMPT
 )
 
@@ -117,27 +173,72 @@ PROMPT
     --output-format text \
     2>&1 | tee "$transcript"
 
-  commit_all "cto: cycle $CYCLE — CTO pass"
+  # Commit all CTO changes (decisions, backlog, new task packages) to main
+  commit_all "cto: cycle $CYCLE — review + assign"
+  push_branch main
 }
 
-# ── Phase 2: Tasks ────────────────────────────
+# ── Phase 1b: Merge or close PRs based on CTO decisions ──────────
+
+process_cto_decisions() {
+  log "=== Phase 1b: Processing CTO decisions ==="
+  cd "$REPO_ROOT"
+  git checkout main
+
+  # Merge accepted PRs
+  while IFS= read -r task_dir; do
+    [ -d "$task_dir" ] || continue
+    local task_id branch pr_number
+    task_id=$(basename "$task_dir")
+    branch=$(get_field "$task_dir" "branch")
+    pr_number=$(get_field "$task_dir" "pr")
+
+    if [ -n "$pr_number" ] && [ "$pr_number" != "" ]; then
+      log "$task_id: merging PR #$pr_number (squash)"
+      gh pr merge "$pr_number" --squash --delete-branch \
+        --subject "$task_id: $(head -1 "$task_dir/package.md" | sed 's/^# //')" \
+        2>&1 || log "WARNING: could not merge PR #$pr_number (may already be merged)"
+    else
+      log "$task_id: accepted but no PR number — branch $branch will be left as-is"
+    fi
+  done < <(tasks_with_status "accepted")
+
+  # Close discarded PRs
+  while IFS= read -r task_dir; do
+    [ -d "$task_dir" ] || continue
+    local task_id branch pr_number
+    task_id=$(basename "$task_dir")
+    branch=$(get_field "$task_dir" "branch")
+    pr_number=$(get_field "$task_dir" "pr")
+
+    if [ -n "$pr_number" ] && [ "$pr_number" != "" ]; then
+      log "$task_id: closing PR #$pr_number (discarded)"
+      gh pr close "$pr_number" --comment "Discarded by CTO. See cto/tasks/$task_id/status.md." \
+        --delete-branch 2>&1 || log "WARNING: could not close PR #$pr_number"
+    fi
+  done < <(tasks_with_status "discarded")
+
+  # Pull main after merges
+  git pull --rebase origin main 2>/dev/null || true
+}
+
+# ── Phase 2: Run task agents ──────────────────────────────────────
 
 run_task_phase() {
   log "=== Phase 2: Tasks (cycle $CYCLE) ==="
 
-  # Collect assigned tasks AND changes_requested tasks (both need to run)
+  # Run both newly assigned tasks AND tasks needing changes
   local runnable=()
-  while IFS= read -r d; do runnable+=("$d"); done < <(tasks_with_status "assigned")
-  while IFS= read -r d; do runnable+=("$d"); done < <(tasks_with_status "changes_requested")
+  while IFS= read -r d; do [ -d "$d" ] && runnable+=("$d"); done < <(tasks_with_status "assigned")
+  while IFS= read -r d; do [ -d "$d" ] && runnable+=("$d"); done < <(tasks_with_status "changes_requested")
 
   if [ ${#runnable[@]} -eq 0 ]; then
-    log "No runnable tasks."
+    log "No runnable tasks this cycle."
     return 0
   fi
 
   for task_dir in "${runnable[@]}"; do
-    [ -d "$task_dir" ] || continue
-    local task_id branch package_file status_file transcript_file
+    local task_id branch package_file status_file transcript_file pr_number
     task_id=$(basename "$task_dir")
     branch=$(get_field "$task_dir" "branch")
     package_file="$task_dir/package.md"
@@ -145,64 +246,118 @@ run_task_phase() {
     transcript_file="$task_dir/transcript.md"
 
     log "--- Running $task_id (branch: $branch) ---"
-
     cd "$REPO_ROOT"
+
+    # Switch to or create the task branch
+    git checkout main
     if git show-ref --verify --quiet "refs/heads/$branch" 2>/dev/null; then
       git checkout "$branch"
     else
       git checkout -b "$branch"
     fi
 
-    # Mark in_progress
-    sed -i.bak "s/^status:.*/status: in_progress/" "$status_file" && rm -f "${status_file}.bak"
-    commit_all "$task_id: mark in_progress"
+    # Mark in_progress and commit to main bookkeeping
+    set_field "$task_dir" "status" "in_progress"
+    # We need to commit status change — but we're on the task branch.
+    # Keep cto/ status updates on the task branch too; orchestrator will
+    # commit them after merging or on cleanup.
+    git add -A
+    git diff --cached --quiet || git commit -m "$task_id: mark in_progress"
 
-    # Build prompt — if changes_requested, append prior transcript
-    local extra=""
+    # Build the task prompt
+    # If this is a revision, include prior transcript
+    local revision_context=""
     if [ -f "$transcript_file" ]; then
-      extra=$(printf '\n\n## Prior Transcript\n\n%s' "$(cat "$transcript_file")")
+      revision_context=$(printf '\n\n---\n\n## Prior Transcript (revision cycle)\n\n%s' "$(cat "$transcript_file")")
     fi
 
     local task_prompt
     task_prompt=$(cat <<PROMPT
 [MODE:TASK]
 
-Task ID: $task_id
-Branch: $branch
+Task ID  : $task_id
+Branch   : $branch
 
-$(cat "$package_file")${extra}
+$(cat "$package_file")${revision_context}
 
 ---
 
-When done:
-- All code changes must be in product/.
-- Set cto/tasks/$task_id/status.md status line to: status: review
-- Do not commit — orchestrator handles git.
+Instructions:
+- Read product/CLAUDE.md before writing any code.
+- Write all code changes to product/.
+- Commit your work to this branch as you go (git add + git commit with clear messages).
+  Do NOT push — the orchestrator handles push and PR creation.
+- When done, set the status field in cto/tasks/$task_id/status.md to: review
+  (just update that one field — the orchestrator will commit it with the rest)
 PROMPT
 )
 
-    # Run task agent, capture transcript
+    # Run the task agent — it commits its own code changes
     claude --dangerously-skip-permissions \
       --max-turns "$TASK_MAX_TURNS" \
       -p "$task_prompt" \
       --output-format text \
       2>&1 | tee "$transcript_file"
 
-    # Safety: ensure status was set to review
-    local current
-    current=$(get_field "$task_dir" "status")
-    if [ "$current" != "review" ]; then
-      log "WARNING: $task_id did not set status=review. Forcing it."
-      sed -i.bak "s/^status:.*/status: review/" "$status_file" && rm -f "${status_file}.bak"
+    # Safety: force status=review if agent forgot
+    local current_status
+    current_status=$(get_field "$task_dir" "status")
+    if [ "$current_status" != "review" ]; then
+      log "WARNING: $task_id did not set status=review. Forcing."
+      set_field "$task_dir" "status" "review"
     fi
 
-    commit_all "$task_id: complete, status=review"
+    # Commit transcript + status update on the task branch
+    git add -A
+    git diff --cached --quiet || git commit -m "$task_id: transcript + status=review"
+
+    # Push the task branch to origin
+    push_branch "$branch"
+
+    # Open or update the PR
+    pr_number=$(get_field "$task_dir" "pr")
+    if [ -z "$pr_number" ]; then
+      # New PR
+      local pr_title
+      pr_title=$(head -1 "$package_file" | sed 's/^# //')
+      local pr_url
+      pr_url=$(gh pr create \
+        --title "$pr_title" \
+        --body "$(cat "$package_file")" \
+        --base main \
+        --head "$branch" \
+        2>&1) || true
+
+      pr_number=$(gh pr view "$branch" --json number --jq '.number' 2>/dev/null || echo "")
+      if [ -n "$pr_number" ]; then
+        # Store PR number in status.md (on task branch, then we'll also update main)
+        set_field "$task_dir" "pr" "$pr_number"
+        git add -A
+        git diff --cached --quiet || git commit -m "$task_id: record PR #$pr_number"
+        push_branch "$branch"
+        log "$task_id: opened PR #$pr_number — $pr_url"
+      else
+        log "WARNING: could not determine PR number for $task_id"
+      fi
+    else
+      # Existing PR (revision) — just push; PR already open
+      log "$task_id: pushed revision to existing PR #$pr_number"
+    fi
+
+    # Return to main
     git checkout main
+
+    # Sync the status.md update back to main so the CTO sees it next cycle
+    git checkout "$branch" -- "cto/tasks/$task_id/status.md" 2>/dev/null || true
+    git add -A
+    git diff --cached --quiet || git commit -m "$task_id: sync status=review to main"
+    push_branch main
+
     log "--- $task_id done ---"
   done
 }
 
-# ── Stop condition ────────────────────────────
+# ── Stop condition ────────────────────────────────────────────────
 
 should_stop() {
   if [ -f "$CTO_DIR/NO_TASKS" ]; then
@@ -210,28 +365,30 @@ should_stop() {
     return 0
   fi
   if [ "$CYCLE" -ge "$MAX_CYCLES" ]; then
-    log "Max cycles ($MAX_CYCLES) reached."
+    log "Reached max cycles ($MAX_CYCLES)."
     return 0
   fi
   return 1
 }
 
-# ── Main ──────────────────────────────────────
+# ── Main loop ─────────────────────────────────────────────────────
 
 main() {
-  log "Starting. Repo: $REPO_ROOT"
-  log "claude max-turns: CTO=$CTO_MAX_TURNS  Task=$TASK_MAX_TURNS"
+  log "Starting orchestrator. Repo: $REPO_ROOT"
   preflight
 
   while true; do
     CYCLE=$((CYCLE + 1))
-    log "====== Cycle $CYCLE ======"
+    log "══════ Cycle $CYCLE ══════"
 
     run_cto_phase
-    should_stop && { log "Stopping after CTO phase."; break; }
+    should_stop && { log "Stopping."; break; }
+
+    process_cto_decisions   # merge/close PRs from this cycle's CTO decisions
+    should_stop && { log "Stopping."; break; }
 
     run_task_phase
-    should_stop && { log "Stopping after task phase."; break; }
+    should_stop && { log "Stopping."; break; }
 
     log "Cycle $CYCLE complete."
   done

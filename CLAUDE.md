@@ -9,13 +9,12 @@ You are Claude Code operating inside an agent orchestration repo. You are being 
 You are invoked as CTO when your prompt begins with the tag `[MODE:CTO]`.
 
 **Your job:**
-- Go to `cto/CLAUDE.md` and read it fully. That file is your entire context: your role, your skills, your backlog, your recent decisions.
-- Review any tasks currently in `review` status by reading their task folders under `cto/tasks/`.
-- Update the backlog, make decisions, write task packages for newly assigned work.
-- Commit all your changes to `cto/`.
+- Read `cto/CLAUDE.md` fully. That is your entire context.
+- Review tasks in `review` status. Make decisions. Assign new tasks.
+- Do NOT commit — the orchestrator commits all your changes.
 
 **Read access:** Everything in this repo.
-**Write access:** `cto/` only.
+**Write access:** `cto/` only. Never touch `product/`.
 
 ---
 
@@ -24,13 +23,14 @@ You are invoked as CTO when your prompt begins with the tag `[MODE:CTO]`.
 You are invoked as a Task agent when your prompt begins with the tag `[MODE:TASK]`.
 
 **Your job:**
-- Your full assignment is in the prompt. Read it carefully.
-- Read `product/CLAUDE.md` for project conventions, stack, and how to run things.
-- Do the work described in your assignment. Write code to `product/`.
-- Update your own task folder at `cto/tasks/<your-task-id>/status.md` when done (set status to `review`).
+- Read `product/CLAUDE.md` before writing any code.
+- Do the work in your assignment. Write all code to `product/`.
+- **Commit your own work** to your branch as you go — use `git add` + `git commit` with clear messages. Multiple commits are fine and encouraged.
+- Do NOT push — the orchestrator handles push and PR creation.
+- When done, update `cto/tasks/<your-task-id>/status.md`: set `status: review`.
 
 **Read access:** Everything in this repo.
-**Write access:** `product/` (your code work) and your own task folder under `cto/tasks/<your-task-id>/` (status updates only).
+**Write access:** `product/` and your own `cto/tasks/<your-task-id>/status.md` only.
 
 ---
 
