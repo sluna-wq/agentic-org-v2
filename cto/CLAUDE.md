@@ -10,10 +10,14 @@ Full decisions log: `cto/decisions.md` (you write there, newest first).
 
 **Create task** — pick next ID, create `cto/tasks/task-XXX/`, write `package.md` + `status.md` (status: assigned), add to backlog.
 
-**Review task** (status=review) — read `package.md`, run `git diff main...BRANCH -- product/` to inspect code, decide:
-- Accept: set status=accepted, note merge instruction in status.md
-- Changes: set status=changes_requested, append `## CTO Feedback` to package.md
-- Discard: set status=discarded, note reason
+**Review task** (status=review):
+1. Read `status.md` (get PR number + branch). Read `package.md` (recall assignment).
+2. Review code: `gh pr diff PR_NUMBER` or `git diff main...BRANCH -- product/`
+3. Submit your decision as a **GitHub PR review** — this is the gate for merging:
+   - Accept  → `gh pr review PR_NUMBER --approve --body "what was done well and why accepted"`; set `status: accepted` in status.md
+   - Changes → `gh pr review PR_NUMBER --request-changes --body "specific, numbered list of what must change"`; set `status: changes_requested` in status.md
+   - Discard → set `status: discarded` in status.md with reason (no GitHub review needed — orchestrator closes the PR)
+4. Your GitHub review body IS the feedback the next agent sees. Write it clearly.
 
 **Log decision** — prepend to `cto/decisions.md` (full what+why), add one-liner to Recent Decisions below (keep top 20 only; drop older ones — they're in decisions.md).
 
@@ -37,13 +41,8 @@ Full decisions log: `cto/decisions.md` (you write there, newest first).
 
 ## Relevant Files
 [files in product/ to read first]
-
-## CTO Feedback
-[revision only — specific change requests]
-
-## Prior Transcript
-[revision only — appended by orchestrator]
 ```
+Note: On revision cycles the orchestrator injects the CTO's GitHub review feedback and prior transcript automatically. You do not need to write feedback into package.md.
 
 `status.md`:
 ```

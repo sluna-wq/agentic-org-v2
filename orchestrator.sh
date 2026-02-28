@@ -137,12 +137,13 @@ Read cto/CLAUDE.md fully before doing anything else.
 This cycle — do all that apply:
 
 1. REVIEW tasks in "review" status:
-   - Read package.md and status.md for each.
-   - Review the actual code: run `git diff main...BRANCH -- product/` (branch is in status.md).
-   - Decide for each:
-     * Accept  → set status: accepted in status.md
-     * Changes → set status: changes_requested, append "## CTO Feedback" to package.md
-     * Discard → set status: discarded in status.md
+   - Read status.md (get PR number + branch). Read package.md (recall assignment).
+   - Review code: `gh pr diff PR_NUMBER` or `git diff main...BRANCH -- product/`
+   - Submit your decision as a GitHub PR review — this is the merge gate:
+     * Accept  → `gh pr review PR_NUMBER --approve --body "reason"`; set status: accepted in status.md
+     * Changes → `gh pr review PR_NUMBER --request-changes --body "numbered list of what must change"`; set status: changes_requested in status.md
+     * Discard → set status: discarded in status.md with reason (orchestrator closes the PR)
+   - Your GitHub review body is what the next agent sees. Write feedback clearly and specifically.
    - Log every decision to cto/decisions.md (prepend, newest first):
      Format: ## [TIMESTAMP] task-XXX ACTION\n**What:** ...\n**Why:** ...
    - Add one-liner to "Recent Decisions" in cto/CLAUDE.md (keep top 20 only).
@@ -185,21 +186,31 @@ process_cto_decisions() {
   cd "$REPO_ROOT"
   git checkout main
 
-  # Merge accepted PRs
+  # Merge accepted PRs — only if CTO has approved them on GitHub
   while IFS= read -r task_dir; do
     [ -d "$task_dir" ] || continue
-    local task_id branch pr_number
+    local task_id branch pr_number review_decision
     task_id=$(basename "$task_dir")
     branch=$(get_field "$task_dir" "branch")
     pr_number=$(get_field "$task_dir" "pr")
 
-    if [ -n "$pr_number" ] && [ "$pr_number" != "" ]; then
-      log "$task_id: merging PR #$pr_number (squash)"
+    if [ -z "$pr_number" ]; then
+      log "$task_id: accepted but no PR number recorded — skipping merge"
+      continue
+    fi
+
+    # Verify the CTO actually approved on GitHub (this is the real gate)
+    review_decision=$(gh pr view "$pr_number" \
+      --json reviewDecision --jq '.reviewDecision' 2>/dev/null || echo "")
+
+    if [ "$review_decision" = "APPROVED" ]; then
+      log "$task_id: PR #$pr_number is GitHub-approved — squash merging"
       gh pr merge "$pr_number" --squash --delete-branch \
         --subject "$task_id: $(head -1 "$task_dir/package.md" | sed 's/^# //')" \
         2>&1 || log "WARNING: could not merge PR #$pr_number (may already be merged)"
     else
-      log "$task_id: accepted but no PR number — branch $branch will be left as-is"
+      log "BLOCKED: $task_id PR #$pr_number status.md=accepted but GitHub reviewDecision=$review_decision"
+      log "  → CTO must run: gh pr review $pr_number --approve"
     fi
   done < <(tasks_with_status "accepted")
 
@@ -265,10 +276,26 @@ run_task_phase() {
     git diff --cached --quiet || git commit -m "$task_id: mark in_progress"
 
     # Build the task prompt
-    # If this is a revision, include prior transcript
+    # For revisions: pull CTO's feedback from the GitHub PR review (that's the source of truth)
     local revision_context=""
+    local current_task_status
+    current_task_status=$(get_field "$task_dir" "status")
+    pr_number=$(get_field "$task_dir" "pr")
+
+    if [ "$current_task_status" = "changes_requested" ] && [ -n "$pr_number" ]; then
+      local cto_feedback
+      cto_feedback=$(gh pr view "$pr_number" --json reviews \
+        --jq '[.reviews[] | select(.state=="CHANGES_REQUESTED")] | last | .body' \
+        2>/dev/null || echo "")
+      if [ -n "$cto_feedback" ]; then
+        revision_context=$(printf '\n\n---\n\n## CTO Review Feedback (from GitHub PR #%s)\n\n%s' \
+          "$pr_number" "$cto_feedback")
+      fi
+    fi
+
+    # Append prior transcript for full context on revisions
     if [ -f "$transcript_file" ]; then
-      revision_context=$(printf '\n\n---\n\n## Prior Transcript (revision cycle)\n\n%s' "$(cat "$transcript_file")")
+      revision_context="${revision_context}"$(printf '\n\n---\n\n## Prior Transcript\n\n%s' "$(cat "$transcript_file")")
     fi
 
     local task_prompt
