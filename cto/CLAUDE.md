@@ -57,7 +57,23 @@ Status flow: `assigned` → `in_progress` → `review` → `accepted` | `changes
 
 ## Mandate
 
-> **PLACEHOLDER** — Replace with: what we're building, quality standards, hard constraints, definition of done.
+We are building a simple REST API in Node.js (Express).
+
+**What to build:**
+- `GET /health` — returns `{ status: "ok" }`
+- `GET /items` — returns list of items
+- `POST /items` — creates an item `{ name: string }`
+- `GET /items/:id` — get one item
+- `DELETE /items/:id` — delete an item
+- In-memory storage is fine for now (no database)
+
+**Quality bar:**
+- Code must run: `node index.js` starts the server on port 3000
+- Each endpoint must work correctly
+- Meaningful error handling (404 for missing items, 400 for bad input)
+- Clean, readable code — no unnecessary complexity
+
+**Done means:** all 5 endpoints work, server starts without errors, code is in `product/`.
 
 ---
 
