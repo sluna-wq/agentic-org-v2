@@ -2,26 +2,58 @@
 set -euo pipefail
 
 # ─────────────────────────────────────────────
-# CTO-Repo Orchestrator
-# Stateless. All state lives in repo files.
+# CTO-Repo Orchestrator — stateless, autonomous
+# All state lives in the repo. No human input
+# needed during a run.
 # ─────────────────────────────────────────────
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CTO_DIR="$REPO_ROOT/cto"
 TASKS_DIR="$CTO_DIR/tasks"
-PRODUCT_DIR="$REPO_ROOT/product"
 MAX_CYCLES="${MAX_CYCLES:-999}"
+CTO_MAX_TURNS="${CTO_MAX_TURNS:-40}"
+TASK_MAX_TURNS="${TASK_MAX_TURNS:-60}"
 CYCLE=0
+
+# ── Pre-flight ────────────────────────────────
+
+preflight() {
+  # Require claude CLI
+  if ! command -v claude &>/dev/null; then
+    echo "[orchestrator] ERROR: 'claude' CLI not found. Install it and ensure it's on PATH."
+    exit 1
+  fi
+
+  # Ensure git user is set (needed for unattended commits)
+  if [ -z "$(git config user.email 2>/dev/null || true)" ]; then
+    git config user.email "orchestrator@cto-repo.local"
+    git config user.name "CTO Orchestrator"
+  fi
+
+  # Init repo if needed
+  cd "$REPO_ROOT"
+  if ! git rev-parse --git-dir &>/dev/null; then
+    git init
+    git add -A
+    git commit -m "chore: initial repo structure"
+  fi
+
+  # Ensure we're on main
+  if ! git show-ref --verify --quiet refs/heads/main; then
+    git checkout -b main 2>/dev/null || true
+  fi
+  git checkout main
+}
 
 # ── Helpers ───────────────────────────────────
 
 log() { echo "[orchestrator] $*"; }
 
-# Commit all changes in the repo with a message
 commit_all() {
   local msg="$1"
   cd "$REPO_ROOT"
-  if ! git diff --quiet || ! git diff --cached --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]; then
+  if ! git diff --quiet HEAD 2>/dev/null || \
+     [ -n "$(git ls-files --others --exclude-standard)" ]; then
     git add -A
     git commit -m "$msg"
     log "Committed: $msg"
@@ -30,24 +62,22 @@ commit_all() {
   fi
 }
 
-# Find all task folders with a given status
+# Return task dirs matching a status (space-separated list)
 tasks_with_status() {
-  local target_status="$1"
-  for status_file in "$TASKS_DIR"/*/status.md; do
-    [ -f "$status_file" ] || continue
-    local status
-    status=$(grep -m1 '^status:' "$status_file" | awk '{print $2}' | tr -d '[:space:]')
-    if [ "$status" = "$target_status" ]; then
-      dirname "$status_file"
-    fi
+  local target="$1"
+  for f in "$TASKS_DIR"/*/status.md; do
+    [ -f "$f" ] || continue
+    local s
+    s=$(grep -m1 '^status:' "$f" | awk '{print $2}' | tr -d '[:space:]')
+    [ "$s" = "$target" ] && dirname "$f"
   done
 }
 
-# Extract a field from status.md
-get_status_field() {
-  local status_file="$1/status.md"
-  local field="$2"
-  grep -m1 "^${field}:" "$status_file" | sed "s/^${field}:[[:space:]]*//" | tr -d '[:space:]'
+get_field() {
+  local dir="$1" field="$2"
+  grep -m1 "^${field}:" "$dir/status.md" \
+    | sed "s/^${field}:[[:space:]]*//" \
+    | tr -d '[:space:]'
 }
 
 # ── Phase 1: CTO ──────────────────────────────
@@ -59,26 +89,33 @@ run_cto_phase() {
   cto_prompt=$(cat <<'PROMPT'
 [MODE:CTO]
 
-You are the CTO. Read cto/CLAUDE.md fully before doing anything else.
+Read cto/CLAUDE.md fully before doing anything else. That is your context.
 
-Your tasks this cycle:
-1. Review any tasks with status "review" — read their transcripts and code changes, then decide (accept / request changes / discard).
-2. Update the backlog: prioritize, add new tasks if the mandate calls for it.
-3. Assign the next highest-priority unblocked task(s) by writing their task packages under cto/tasks/.
-4. Update cto/CLAUDE.md (backlog + recent decisions).
-5. If the backlog is empty and there is no more work to do, write a file cto/NO_TASKS with a one-line reason.
+This cycle:
+1. Review all tasks with status "review":
+   - Read their package.md and diff the branch vs main in product/.
+   - Decide: accept, request changes, or discard.
+   - Log each decision to cto/decisions.md (prepend — newest first) with timestamp, what was decided, and why.
+   - Add a one-liner to "Recent Decisions" in cto/CLAUDE.md (keep only top 20 there).
+2. Update the backlog sections in cto/CLAUDE.md (Planned / Active / Done / Needs Human Input).
+3. Assign the next highest-priority unblocked Planned task(s):
+   - Write cto/tasks/task-XXX/package.md and cto/tasks/task-XXX/status.md (status: assigned).
+   - Move that task to the Active section of the backlog.
+4. If the backlog is empty and all work is done, write cto/NO_TASKS with one line explaining why.
 
-Commit nothing — the orchestrator commits after you finish.
+Rules:
+- Do not commit — orchestrator handles git.
+- Do not write to product/.
+- If anything requires human input, add it to the "Needs Human Input" backlog section.
 PROMPT
 )
 
-  # Invoke Claude Code in CTO mode
-  # Transcript is printed to stdout; we capture it
-  local transcript_file="$TASKS_DIR/../cto_cycle_${CYCLE}.transcript.md"
+  local transcript="$CTO_DIR/cto_cycle_${CYCLE}.transcript.md"
   claude --dangerously-skip-permissions \
+    --max-turns "$CTO_MAX_TURNS" \
     -p "$cto_prompt" \
     --output-format text \
-    2>&1 | tee "$transcript_file"
+    2>&1 | tee "$transcript"
 
   commit_all "cto: cycle $CYCLE — CTO pass"
 }
@@ -88,29 +125,27 @@ PROMPT
 run_task_phase() {
   log "=== Phase 2: Tasks (cycle $CYCLE) ==="
 
-  local assigned_tasks
-  assigned_tasks=$(tasks_with_status "assigned")
+  # Collect assigned tasks AND changes_requested tasks (both need to run)
+  local runnable=()
+  while IFS= read -r d; do runnable+=("$d"); done < <(tasks_with_status "assigned")
+  while IFS= read -r d; do runnable+=("$d"); done < <(tasks_with_status "changes_requested")
 
-  if [ -z "$assigned_tasks" ]; then
-    log "No assigned tasks to run."
+  if [ ${#runnable[@]} -eq 0 ]; then
+    log "No runnable tasks."
     return 0
   fi
 
-  while IFS= read -r task_dir; do
+  for task_dir in "${runnable[@]}"; do
     [ -d "$task_dir" ] || continue
-    local task_id
+    local task_id branch package_file status_file transcript_file
     task_id=$(basename "$task_dir")
-    local package_file="$task_dir/package.md"
-    local status_file="$task_dir/status.md"
-    local transcript_file="$task_dir/transcript.md"
+    branch=$(get_field "$task_dir" "branch")
+    package_file="$task_dir/package.md"
+    status_file="$task_dir/status.md"
+    transcript_file="$task_dir/transcript.md"
 
-    log "--- Running $task_id ---"
+    log "--- Running $task_id (branch: $branch) ---"
 
-    # Read the branch name from status.md
-    local branch
-    branch=$(get_status_field "$task_dir" "branch")
-
-    # Create and checkout the task branch
     cd "$REPO_ROOT"
     if git show-ref --verify --quiet "refs/heads/$branch" 2>/dev/null; then
       git checkout "$branch"
@@ -118,63 +153,62 @@ run_task_phase() {
       git checkout -b "$branch"
     fi
 
-    # Mark task as in_progress
-    sed -i.bak 's/^status:.*/status: in_progress/' "$status_file" && rm -f "${status_file}.bak"
+    # Mark in_progress
+    sed -i.bak "s/^status:.*/status: in_progress/" "$status_file" && rm -f "${status_file}.bak"
     commit_all "$task_id: mark in_progress"
 
-    # Build the task prompt from the package
+    # Build prompt — if changes_requested, append prior transcript
+    local extra=""
+    if [ -f "$transcript_file" ]; then
+      extra=$(printf '\n\n## Prior Transcript\n\n%s' "$(cat "$transcript_file")")
+    fi
+
     local task_prompt
     task_prompt=$(cat <<PROMPT
 [MODE:TASK]
 
-Your task ID is: $task_id
-Your git branch is: $branch
+Task ID: $task_id
+Branch: $branch
 
-$(cat "$package_file")
+$(cat "$package_file")${extra}
 
 ---
 
-When you are done:
-- Make sure all your code is written to product/.
-- Update cto/tasks/$task_id/status.md: change the status line to "status: review".
-- Do not commit — the orchestrator handles git.
+When done:
+- All code changes must be in product/.
+- Set cto/tasks/$task_id/status.md status line to: status: review
+- Do not commit — orchestrator handles git.
 PROMPT
 )
 
-    # Run the task agent, capture full transcript
+    # Run task agent, capture transcript
     claude --dangerously-skip-permissions \
+      --max-turns "$TASK_MAX_TURNS" \
       -p "$task_prompt" \
       --output-format text \
       2>&1 | tee "$transcript_file"
 
-    # Ensure status was updated to review (task agent should do this, but verify)
-    local current_status
-    current_status=$(get_status_field "$task_dir" "status")
-    if [ "$current_status" != "review" ]; then
-      log "WARNING: $task_id did not set status to review. Setting it now."
-      sed -i.bak 's/^status:.*/status: review/' "$status_file" && rm -f "${status_file}.bak"
+    # Safety: ensure status was set to review
+    local current
+    current=$(get_field "$task_dir" "status")
+    if [ "$current" != "review" ]; then
+      log "WARNING: $task_id did not set status=review. Forcing it."
+      sed -i.bak "s/^status:.*/status: review/" "$status_file" && rm -f "${status_file}.bak"
     fi
 
-    # Commit everything on the task branch
-    commit_all "$task_id: task complete, status=review"
-
-    # Return to main branch
+    commit_all "$task_id: complete, status=review"
     git checkout main
-
     log "--- $task_id done ---"
-
-  done <<< "$assigned_tasks"
+  done
 }
 
 # ── Stop condition ────────────────────────────
 
 should_stop() {
-  # Stop if CTO wrote NO_TASKS
   if [ -f "$CTO_DIR/NO_TASKS" ]; then
-    log "CTO wrote NO_TASKS: $(cat "$CTO_DIR/NO_TASKS")"
+    log "CTO signaled done: $(cat "$CTO_DIR/NO_TASKS")"
     return 0
   fi
-  # Stop if cycle limit reached
   if [ "$CYCLE" -ge "$MAX_CYCLES" ]; then
     log "Max cycles ($MAX_CYCLES) reached."
     return 0
@@ -182,44 +216,24 @@ should_stop() {
   return 1
 }
 
-# ── Main loop ─────────────────────────────────
+# ── Main ──────────────────────────────────────
 
 main() {
-  log "Starting orchestrator. Repo: $REPO_ROOT"
-
-  # Ensure we're on main and repo is initialized
-  cd "$REPO_ROOT"
-  if ! git rev-parse --git-dir > /dev/null 2>&1; then
-    log "Initializing git repo..."
-    git init
-    git add -A
-    git commit -m "chore: initial repo structure"
-  fi
-
-  # Ensure main branch exists
-  if ! git show-ref --verify --quiet refs/heads/main; then
-    git checkout -b main 2>/dev/null || git checkout main
-  fi
+  log "Starting. Repo: $REPO_ROOT"
+  log "claude max-turns: CTO=$CTO_MAX_TURNS  Task=$TASK_MAX_TURNS"
+  preflight
 
   while true; do
     CYCLE=$((CYCLE + 1))
     log "====== Cycle $CYCLE ======"
 
     run_cto_phase
-
-    if should_stop; then
-      log "Stopping."
-      break
-    fi
+    should_stop && { log "Stopping after CTO phase."; break; }
 
     run_task_phase
+    should_stop && { log "Stopping after task phase."; break; }
 
-    if should_stop; then
-      log "Stopping."
-      break
-    fi
-
-    log "Cycle $CYCLE complete. Looping..."
+    log "Cycle $CYCLE complete."
   done
 
   log "Orchestrator finished after $CYCLE cycle(s)."
