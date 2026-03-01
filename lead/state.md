@@ -7,30 +7,18 @@ Full decisions log: `lead/decisions.md` (newest first).
 
 ## Mandate
 
-We are building an **Org Progress Dashboard** — a browser-based UI that lets the human see the real-time state of this agentic org: mandate, task board, decision log, and cycle history.
+**Current focus: Repo restructuring (infrastructure/housekeeping)**
 
-**Core requirements:**
-- Single self-contained HTML file: `product/dashboard/index.html`
-- No build step — open directly in browser or serve statically
-- Reads live data from the GitHub API (no backend)
-- Config: user enters `owner/repo` + optional GitHub PAT (saved to localStorage)
-- Data sources: `lead/state.md`, `lead/decisions.md`, `lead/tasks/*/status.md`, `lead/tasks/*/package.md`, GitHub Actions runs
+Restructuring the repo to a clean three-domain architecture, directed by Think via `outbox.md`:
+- `logs/lead/` — Lead invocation logs (moved from `logs/`)
+- `lead/outbox.md` — Lead→Think communication channel
+- `lead/logs/build/` — Build invocation logs
+- Updated root `CLAUDE.md` with explicit per-mode write boundaries
+- Cleared root `outbox.md` after Lead reads it
 
-**What it shows:**
-1. **Mandate panel** — current mandate parsed from `lead/state.md`
-2. **Task board** — columns: Planned / Active / Review / Done with task cards (title, status, branch)
-3. **Decisions feed** — parsed entries from `lead/decisions.md` (timestamp, action, what/why)
-4. **Cycle timeline** — last 10 GitHub Actions workflow runs (name, status, duration, link)
+**Prior product mandate (complete):** Org Progress Dashboard — single-file browser app (`product/dashboard/index.html`) reading live org state from the GitHub API. All 3 product tasks delivered (task-001 through task-003).
 
-**Quality bar:**
-1. Works on a public repo with no PAT (unauthenticated GitHub API, 60 req/hr)
-2. Works on a private repo when a PAT is supplied
-3. Clean dark UI — readable at a glance, no clutter
-4. Refresh button re-fetches all data without page reload
-5. Graceful error states (rate limit message, repo not found, etc.)
-6. `product/dashboard/README.md` with setup instructions
-
-**Done means:** all 4 sections render correctly against this repo, config persists across page loads, errors surface clearly.
+**Next:** Human to set next product mandate after restructuring completes.
 
 ---
 
@@ -46,7 +34,7 @@ We are building an **Org Progress Dashboard** — a browser-based UI that lets t
 
 ### Active
 <!-- Format: - [task-XXX] Description | status | branch -->
-*(none)*
+- [task-004] Restructure repo to three-domain architecture | assigned | task/004-repo-restructure
 
 ### Done (recent)
 <!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
@@ -59,6 +47,7 @@ We are building an **Org Progress Dashboard** — a browser-based UI that lets t
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in lead/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T21:00] task-004 ASSIGNED — repo restructure to three-domain architecture per Think outbox.md direction; NO_TASKS cleared
 - [2026-03-01T20:00] LEAD CYCLE PASS — mandate complete, all tasks accepted, backlog empty; NO_TASKS written
 - [2026-03-01T18:00] task-003 ACCEPTED — dashboard renders mandate, task board, decisions, cycle timeline; no PR (Think-mode session); accepted via direct diff
 - [2026-02-28T12:00] MANDATE CHANGED — new mandate: Org Progress Dashboard (single-file HTML, GitHub API reads)
