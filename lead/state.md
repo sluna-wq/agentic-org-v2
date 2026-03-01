@@ -25,16 +25,18 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 <!-- Tasks or decisions blocked on human — describe exactly what's needed -->
 *(none)*
 
-### Planned
-<!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
-*(none)*
-
 ### Active
 <!-- Format: - [task-XXX] Description | status | branch -->
-- [task-016] PIPELINE Agent C: tests/test_api.py (reads schema + api from task-014/015) | assigned | task/016-pipeline-c-tests
+- [task-017] ADVERSARIAL Agent A: schema.md | assigned | task/017-adversarial-a-schema
+
+### Planned
+<!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
+- [task-018] ADVERSARIAL Agent B: api.py | P1 | deps: task-017
+- [task-019] ADVERSARIAL Agent C: critique.md + tests/test_api.py | P1 | deps: task-017,task-018
 
 ### Done (recent)
 <!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
+- [task-016] PIPELINE Agent C: tests/test_api.py | accepted | 2026-03-01
 - [task-015] PIPELINE Agent B: api.py | accepted | 2026-03-01
 - [task-014] PIPELINE Agent A: schema.md | accepted | 2026-03-01
 - [task-013] BROADCAST Agent C: tests/test_api.py | accepted | 2026-03-01
@@ -45,14 +47,13 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 - [task-008] Architecture diagram | accepted | 2026-03-01
 - [task-007] Fix orchestrator env vars + deploy dashboard to GitHub Pages | accepted | 2026-03-01
 - [task-006] Restructure repo to three-domain architecture | accepted | 2026-03-01
-- [task-005] Fix orchestrator merge gate (remove reviewDecision check) | accepted | 2026-03-01
-- [task-004] Restructure repo to three-domain architecture | discarded (PR #1 closed, merge conflicts) | 2026-03-01
 
 ---
 
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in lead/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T31:00] task-016 ACCEPTED — PIPELINE tests: Agent C 5/5 (H2 fully supported across full pipeline); task-017/018/019 ASSIGNED — Phase 3 ADVERSARIAL
 - [2026-03-01T30:00] task-015 ACCEPTED — PIPELINE api.py: 5/5 score vs BROADCAST B 2/5 (H2 strongly supported); task-016 ASSIGNED
 - [2026-03-01T29:00] task-014 ACCEPTED — PIPELINE schema: all criteria met, field names explicit, Notes section for B+C; task-015 ASSIGNED
 - [2026-03-01T28:00] task-014/015/016 ASSIGNED — Phase 2 PIPELINE; task-014 active, 015/016 planned (sequential deps)
@@ -80,14 +81,21 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 
 ## Research Log
 
-### Phase 2: PIPELINE — 2026-03-01
+### Phase 3: ADVERSARIAL — 2026-03-01
+**Hypotheses:** H3 under test: when Agent C is explicitly framed as an adversary (red-team reviewer), does it produce a more rigorous critique and test suite than a neutral PIPELINE Agent C? Does adversarial framing cause Agent C to find deviations that a neutral tester would miss?
+**Design:** Agent A writes schema with Notes-for-B-and-C section (adversarial anchor). Agent B implements, trying to give Agent C no ammunition. Agent C reads both, writes critique.md (5-dimension schema-vs-implementation comparison + score), then writes tests designed to catch deviations.
+**Measurement:** Compare Agent C's critique score, test count, and test assertion depth to PIPELINE Agent C (5/5, 29 tests, UUID/ISO validation present). Key question: does adversarial framing change the output?
+**Observations:** In progress — task-017 active, task-018/019 planned.
+
+### Phase 2: PIPELINE — 2026-03-01 ✅ COMPLETE
 **Hypotheses:** H2 under test: when agents read upstream output, they produce tighter contract coupling (higher alignment with the authoritative schema). Comparison baseline: BROADCAST alignment scores (B=2/5, C=2/5).
 **Observations:**
-- task-014 (Agent A schema): highly explicit — dedicated Data Models section, 5-constraint Notes for B+C, 422 validation, ?side= filter, ordering spec. Ground truth: topic, description, side ("for"|"against"), content. Envelopes: {"debates":[...]}, {"arguments":[...]}.
-- task-015 (Agent B api.py): **score 5/5**. Perfect contract match — all field names, response shapes, status codes, ?side= filter, 422 envelope correct. Notes constraints fully honored. vs BROADCAST B: 2/5.
-- task-016 assigned (Agent C reads schema+api, writes tests).
-**Surprises:** PIPELINE Agent B score (5/5) vs BROADCAST B (2/5) is a stark difference. H2 strongly supported by the data so far. The Notes section in Agent A's schema appears to be the key mechanism — explicit enumeration of constraints leaves no room for Agent B to anchor on the wrong dimension.
-**Next phase adaptation:** After task-016 accepted, score Agent C's tests against the same 5 dimensions: (1) do tests use correct field names (topic, side not title/position)? (2) do tests check correct response envelopes? (3) do tests assert status codes 201/404/422? (4) do tests cover ?side= filter? (5) do tests use conftest importing the real app? Compare to BROADCAST C (2/5). If Agent C also scores 5/5, H2 is fully supported across the pipeline.
+- task-014 (Agent A schema): highly explicit — dedicated Data Models section, 5-constraint Notes for B+C, 422 validation, ?side= filter, ordering spec.
+- task-015 (Agent B api.py): **score 5/5**. Perfect contract match — all field names, response shapes, status codes, ?side= filter, 422 envelope correct. vs BROADCAST B: 2/5.
+- task-016 (Agent C tests): **score 5/5**. Contract comment block correct, all 6 coverage areas, explicit field-name + envelope + filter assertions, UUID/ISO format validation. 29 tests. vs BROADCAST C: 2/5.
+**Result: H2 FULLY SUPPORTED.** PIPELINE topology produced 5/5 across all 3 agents. BROADCAST produced 2/5 for B and C independently. Mechanism: explicit Notes section in Agent A's schema leaves no room for downstream agents to anchor on the wrong dimension.
+**Surprises:** B and C in PIPELINE both hit 5/5 with no prompting beyond reading Agent A's schema. The schema quality (explicit Notes) appears to be the decisive factor, not just the pipeline structure itself.
+**Next phase adaptation:** Phase 3 ADVERSARIAL will test whether adversarial framing of Agent C changes output quality. Measurement: same 5 dimensions + critique.md depth + test assertion rigor.
 
 ### Phase 1: BROADCAST — 2026-03-01
 **Hypotheses:** H1 under test: independent agents given identical context will converge on similar API contracts. RESULT: PARTIALLY REFUTED.

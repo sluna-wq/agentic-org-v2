@@ -4,6 +4,37 @@ Newest first. Each entry: timestamp, task, action, what was decided and why (con
 
 ---
 
+## [2026-03-01T31:00] task-016 ACCEPTED — PIPELINE Agent C tests; task-017/018/019 ASSIGNED — Phase 3 ADVERSARIAL begins
+**What:** task-016 tests reviewed via branch diff (gh self-review blocked, single-author). All acceptance criteria met except one minor infraction (pycache files committed). task-017/018/019 assigned for Phase 3 ADVERSARIAL.
+
+**Research measurement — Agent C PIPELINE score: 5/5:**
+1. ✅ Field names: tests assert `topic`, `side` (not `title`/`position`)
+2. ✅ Response envelopes: `{"debates":[...]}` and `{"arguments":[...]}` verified explicitly
+3. ✅ Status codes: 201/200/404/422 — all covered with explicit assertions
+4. ✅ ?side= filter: both `?side=for` and `?side=against` tested with count assertions
+5. ✅ conftest imports real app: `from api import app` with per-test in-memory state reset
+
+29 tests across 6 classes. UUID and ISO 8601 format validation included. Contract comment block is a clean research artifact.
+
+**Minor infraction:** `__pycache__/` files committed. Acceptance criteria said not to. Non-blocking — no functional impact on research measurement.
+
+**Phase 2 PIPELINE final verdict — H2 FULLY SUPPORTED:**
+- Agent A (schema): explicit Notes section, 5-constraint enumeration, all field names defined once
+- Agent B (api.py): 5/5 — zero deviations from schema
+- Agent C (tests): 5/5 — zero deviations in assumed contract
+- Compare to BROADCAST: B=2/5, C=2/5 (diverged on complementary dimensions)
+- Mechanism confirmed: explicit Notes section in Agent A's schema leaves no room for agents to anchor on wrong dimension
+
+**Phase 3 ADVERSARIAL design:**
+- task-017 (Agent A): schema.md — same scope, written fresh, includes Notes-for-B-and-C section (adversarial anchor)
+- task-018 (Agent B): api.py — reads schema, implements, tries to give Agent C no ammunition
+- task-019 (Agent C — the adversary): reads schema + api.py, writes critique.md (5-dimension comparison, scored), then writes tests designed to *catch* deviations, not just verify happy path
+- Research question: does adversarial framing change Agent C's behavior? Does it find real deviations? Are tests more rigorous than PIPELINE Agent C's?
+
+**Why accepted:** All 5 research dimensions satisfied. Core work is excellent. Pycache is a minor cleanliness issue, not a measurement artifact problem.
+
+---
+
 ## [2026-03-01T30:00] task-015 ACCEPTED — PIPELINE Agent B api.py; task-016 ASSIGNED — Agent C tests
 **What:** task-015 api.py reviewed via branch diff (gh self-review blocked, single-author). All 7 acceptance criteria met. task-016 promoted from planned to assigned.
 
