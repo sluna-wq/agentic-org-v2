@@ -4,6 +4,12 @@ Newest first. Each entry: timestamp, task, action, what was decided and why (con
 
 ---
 
+## [2026-02-28T12:00] MANDATE CHANGED + task-003 ASSIGNED
+**What:** Prior mandate (bookmark manager REST API) is complete. New mandate is the Org Progress Dashboard — a single-file browser app (`product/dashboard/index.html`) that reads live org state from the GitHub API and renders: mandate panel, task board (Planned/Active/Review/Done columns), decisions feed, and cycle timeline (GitHub Actions runs). No build step. Works unauthenticated on public repos; PAT stored in localStorage for private repos or higher rate limits. task-003 created and assigned to branch `task/003-dashboard`.
+**Why:** Human wants to see the org's progress on the product in real time. The source of truth is already in this repo (lead/state.md, lead/decisions.md, lead/tasks/, GitHub Actions). An in-house static dashboard reading the GitHub API is the right fit — no external service needed, no sync drift, zero infra, deployable to GitHub Pages.
+
+---
+
 ## [2026-03-01T15:00] task-002 ACCEPTED
 **What:** Reviewed `product/main.py` (64 lines), `product/requirements.txt`, `product/README.md`, and `product/CLAUDE.md` via `git diff main...task/002-bookmark-api`. All 5 endpoints implemented correctly (GET /health, POST /bookmarks, GET /bookmarks with ?tag filter, GET /bookmarks/{id}, DELETE /bookmarks/{id}). `AnyHttpUrl` validation rejects bad URLs with 422. Tag filtering uses `if tag in b["tags"]` — correct exact match. Requirements pinned (fastapi==0.115.14, uvicorn==0.34.3, pydantic==2.12.5). README has curl examples for all 5 endpoints. CLAUDE.md updated with layout and run instructions. POST returns 201. Both 404 paths correct.
 **Why:** All 5 acceptance criteria met. No PR was created by the task agent (gh pr list returned empty) so accepted via branch diff. Mandate is now fully complete — no remaining planned tasks.

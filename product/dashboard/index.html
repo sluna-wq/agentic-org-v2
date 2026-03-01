@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Org Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d1117;
+      --surface:  #161b22;
+      --border:   #30363d;
+      --text:     #e6edf3;
+      --muted:    #8b949e;
+      --accent:   #238636;
+      --link:     #58a6ff;
+
+      --green:    #238636;
+      --yellow:   #9e6a03;
+      --blue:     #1f6feb;
+      --red:      #da3633;
+      --orange:   #bd561d;
+      --gray:     #3d444d;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout ── */
+    #app { display: flex; flex-direction: column; min-height: 100vh; }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    header h1 { font-size: 16px; font-weight: 600; white-space: nowrap; }
+    header .repo-label { color: var(--muted); font-size: 13px; }
+
+    .header-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+
+    main { padding: 24px; flex: 1; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 900px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+      .full-width { grid-column: 1 / -1; }
+    }
+
+    /* ── Cards / Sections ── */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .section-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-header h2 { font-size: 14px; font-weight: 600; }
+    .section-header .count {
+      background: var(--border);
+      color: var(--muted);
+      border-radius: 10px;
+      padding: 1px 7px;
+      font-size: 11px;
+    }
+
+    .section-body { padding: 16px; }
+
+    /* ── Config panel ── */
+    #config-panel {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .field { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 180px; }
+    .field label { font-size: 12px; color: var(--muted); font-weight: 500; }
+    .field input {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 13px;
+      padding: 6px 10px;
+      outline: none;
+      transition: border-color 0.15s;
+      width: 100%;
+    }
+    .field input:focus { border-color: var(--link); }
+
+    /* ── Buttons ── */
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 14px;
+      transition: opacity 0.15s;
+    }
+    button:hover { opacity: 0.85; }
+    button:disabled { opacity: 0.5; cursor: default; }
+
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    /* ── Status badges ── */
+    .badge {
+      display: inline-block;
+      border-radius: 10px;
+      padding: 1px 8px;
+      font-size: 11px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .badge-assigned         { background: var(--gray);   color: #e6edf3; }
+    .badge-in_progress      { background: var(--yellow);  color: #e6edf3; }
+    .badge-review           { background: var(--blue);    color: #e6edf3; }
+    .badge-accepted         { background: var(--green);   color: #e6edf3; }
+    .badge-discarded        { background: var(--red);     color: #e6edf3; }
+    .badge-changes_requested { background: var(--orange); color: #e6edf3; }
+    .badge-success          { background: var(--green);   color: #e6edf3; }
+    .badge-failure          { background: var(--red);     color: #e6edf3; }
+    .badge-cancelled        { background: var(--gray);    color: #e6edf3; }
+    .badge-skipped          { background: var(--gray);    color: #e6edf3; }
+    .badge-timed_out        { background: var(--red);     color: #e6edf3; }
+
+    /* ── Task board ── */
+    .board {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 700px) {
+      .board { grid-template-columns: 1fr 1fr; }
+    }
+
+    .column { display: flex; flex-direction: column; gap: 8px; }
+
+    .column-header {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .task-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .task-id { font-size: 11px; color: var(--muted); font-family: monospace; }
+    .task-title { font-size: 13px; font-weight: 500; line-height: 1.3; }
+    .task-branch { font-size: 11px; color: var(--muted); font-family: monospace; }
+    .task-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+
+    .empty-col { color: var(--muted); font-size: 12px; font-style: italic; padding: 4px 0; }
+
+    /* ── Mandate ── */
+    .mandate-body { font-size: 13px; line-height: 1.6; }
+    .mandate-body h2, .mandate-body h3 { font-size: 13px; font-weight: 600; margin: 12px 0 4px; }
+    .mandate-body ul, .mandate-body ol { padding-left: 20px; margin: 6px 0; }
+    .mandate-body li { margin: 2px 0; }
+    .mandate-body p { margin: 6px 0; }
+    .mandate-body code {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-size: 12px;
+    }
+    .mandate-body strong { font-weight: 600; }
+
+    /* ── Decisions feed ── */
+    .decision-entry { margin-bottom: 14px; }
+    .decision-entry:last-child { margin-bottom: 0; }
+    .decision-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+    .decision-ts { font-size: 11px; color: var(--muted); font-family: monospace; }
+    .decision-action { font-size: 12px; font-weight: 600; }
+    .decision-body { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .decision-body strong { color: var(--text); }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 12px 0;
+    }
+
+    /* ── Cycle timeline ── */
+    .run-entry {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .run-entry:last-child { border-bottom: none; }
+    .run-name { flex: 1; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .run-num { font-size: 11px; color: var(--muted); font-family: monospace; white-space: nowrap; }
+    .run-duration { font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+    /* ── State overlays ── */
+    #loading, #error-msg {
+      display: none;
+      padding: 16px 24px;
+    }
+
+    #loading {
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    #error-msg {
+      background: #3d0000;
+      border: 1px solid var(--red);
+      border-radius: 6px;
+      margin: 0 24px 16px;
+      color: #ff9999;
+      font-size: 13px;
+    }
+
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid var(--border);
+      border-top-color: var(--link);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .last-updated {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* ── Scrollable decision feed ── */
+    .scroll-body { max-height: 420px; overflow-y: auto; padding-right: 4px; }
+    .scroll-body::-webkit-scrollbar { width: 6px; }
+    .scroll-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- Config -->
+  <div id="config-panel">
+    <div class="field">
+      <label for="inp-repo">GitHub repo</label>
+      <input id="inp-repo" type="text" placeholder="owner/repo" spellcheck="false" />
+    </div>
+    <div class="field">
+      <label for="inp-token">Personal access token <span style="color:var(--muted)">(optional — needed for private repos)</span></label>
+      <input id="inp-token" type="password" placeholder="ghp_..." spellcheck="false" />
+    </div>
+    <button class="btn-primary" id="btn-load">Load</button>
+    <button class="btn-ghost" id="btn-clear" title="Clear saved config">Clear</button>
+  </div>
+
+  <!-- Header -->
+  <header id="site-header" style="display:none">
+    <h1>Org Dashboard</h1>
+    <span class="repo-label" id="header-repo"></span>
+    <div class="header-right">
+      <span class="last-updated" id="last-updated"></span>
+      <button class="btn-ghost" id="btn-refresh">↻ Refresh</button>
+    </div>
+  </header>
+
+  <!-- Loading -->
+  <div id="loading" style="display:none">
+    <div class="spinner"></div>
+    <span>Loading from GitHub API…</span>
+  </div>
+
+  <!-- Error -->
+  <div id="error-msg"></div>
+
+  <!-- Main content -->
+  <main id="main-content" style="display:none">
+    <div class="grid">
+
+      <!-- Mandate -->
+      <div class="section full-width">
+        <div class="section-header"><h2>Mandate</h2></div>
+        <div class="section-body">
+          <div class="mandate-body" id="mandate-body">—</div>
+        </div>
+      </div>
+
+      <!-- Task board -->
+      <div class="section full-width">
+        <div class="section-header">
+          <h2>Task Board</h2>
+          <span class="count" id="task-count">0</span>
+        </div>
+        <div class="section-body">
+          <div class="board" id="task-board"></div>
+        </div>
+      </div>
+
+      <!-- Decisions feed -->
+      <div class="section">
+        <div class="section-header">
+          <h2>Decisions</h2>
+          <span class="count" id="decision-count">0</span>
+        </div>
+        <div class="section-body">
+          <div class="scroll-body" id="decisions-feed"></div>
+        </div>
+      </div>
+
+      <!-- Cycle timeline -->
+      <div class="section">
+        <div class="section-header">
+          <h2>Cycle Timeline</h2>
+          <span class="count" id="cycle-count">0</span>
+        </div>
+        <div class="section-body">
+          <div id="cycle-timeline"></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<script>
+// ── Config persistence ─────────────────────────────────────────────────────
+
+const LS_REPO  = 'org_dash_repo';
+const LS_TOKEN = 'org_dash_token';
+
+const $ = id => document.getElementById(id);
+
+function loadConfig() {
+  $('inp-repo').value  = localStorage.getItem(LS_REPO)  || '';
+  $('inp-token').value = localStorage.getItem(LS_TOKEN) || '';
+}
+
+function saveConfig() {
+  localStorage.setItem(LS_REPO,  $('inp-repo').value.trim());
+  localStorage.setItem(LS_TOKEN, $('inp-token').value.trim());
+}
+
+function clearConfig() {
+  localStorage.removeItem(LS_REPO);
+  localStorage.removeItem(LS_TOKEN);
+  $('inp-repo').value  = '';
+  $('inp-token').value = '';
+  $('site-header').style.display   = 'none';
+  $('main-content').style.display  = 'none';
+  showError('');
+}
+
+// ── GitHub API ────────────────────────────────────────────────────────────
+
+function apiHeaders(token) {
+  const h = { 'Accept': 'application/vnd.github.v3+json' };
+  if (token) h['Authorization'] = `Bearer ${token}`;
+  return h;
+}
+
+async function apiFetch(url, token) {
+  const res = await fetch(url, { headers: apiHeaders(token) });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    const msg = body.message || res.statusText;
+    if (res.status === 403 || res.status === 429) {
+      const reset = res.headers.get('x-ratelimit-reset');
+      const when  = reset ? ` Resets at ${new Date(reset * 1000).toLocaleTimeString()}.` : '';
+      throw new Error(`Rate limit exceeded.${when} Supply a GitHub PAT for 5000 req/hr.`);
+    }
+    if (res.status === 404) throw new Error(`Not found: ${url}. Check owner/repo.`);
+    throw new Error(`GitHub API error ${res.status}: ${msg}`);
+  }
+  return res.json();
+}
+
+function b64decode(str) {
+  // GitHub base64 may have newlines
+  return atob(str.replace(/\n/g, ''));
+}
+
+// ── Data fetching ─────────────────────────────────────────────────────────
+
+async function fetchOrgData(repo, token) {
+  const base = `https://api.github.com/repos/${repo}`;
+
+  // 1. Get the recursive git tree to enumerate lead/ files
+  const tree = await apiFetch(`${base}/git/trees/main?recursive=1`, token);
+  const items = tree.tree || [];
+
+  // Identify blobs we want
+  const wantPaths = new Set(['lead/state.md', 'lead/decisions.md']);
+  const taskFiles = {};  // { 'task-XXX': { statusSha, packageSha } }
+
+  for (const item of items) {
+    if (item.type !== 'blob') continue;
+    const p = item.path;
+    if (wantPaths.has(p)) {
+      wantPaths.delete(p);
+    }
+    // lead/tasks/task-XXX/status.md or package.md
+    const m = p.match(/^lead\/tasks\/(task-\d+)\/(status|package)\.md$/);
+    if (m) {
+      const [, taskId, kind] = m;
+      if (!taskFiles[taskId]) taskFiles[taskId] = {};
+      taskFiles[taskId][kind + 'Sha'] = item.sha;
+    }
+  }
+
+  // Helper to fetch a blob by SHA
+  async function fetchBlob(sha) {
+    if (!sha) return null;
+    const blob = await apiFetch(`${base}/git/blobs/${sha}`, token);
+    return b64decode(blob.content);
+  }
+
+  // 2. Fetch all needed blobs in parallel
+  const stateShaItem    = items.find(i => i.path === 'lead/state.md');
+  const decisionShaItem = items.find(i => i.path === 'lead/decisions.md');
+
+  const [stateRaw, decisionsRaw] = await Promise.all([
+    fetchBlob(stateShaItem?.sha),
+    fetchBlob(decisionShaItem?.sha),
+  ]);
+
+  // Fetch task files
+  const taskIds = Object.keys(taskFiles).sort();
+  const taskData = {};
+  await Promise.all(taskIds.map(async (id) => {
+    const [statusRaw, packageRaw] = await Promise.all([
+      fetchBlob(taskFiles[id].statusSha),
+      fetchBlob(taskFiles[id].packageSha),
+    ]);
+    taskData[id] = { statusRaw, packageRaw };
+  }));
+
+  // 3. Fetch Actions runs
+  let runs = [];
+  try {
+    const runsData = await apiFetch(`${base}/actions/runs?per_page=10`, token);
+    runs = runsData.workflow_runs || [];
+  } catch (e) {
+    // Actions may not be enabled — not fatal
+    console.warn('Actions runs fetch failed:', e.message);
+  }
+
+  return { stateRaw, decisionsRaw, taskData, runs };
+}
+
+// ── Parsers ───────────────────────────────────────────────────────────────
+
+function parseMandate(stateMd) {
+  if (!stateMd) return '_No state.md found._';
+  const lines = stateMd.split('\n');
+  let inside = false;
+  const out = [];
+  for (const line of lines) {
+    if (!inside && /^## Mandate/.test(line)) { inside = true; continue; }
+    if (inside) {
+      if (/^##/.test(line) || /^---/.test(line)) break;
+      out.push(line);
+    }
+  }
+  return out.join('\n').trim() || '_Mandate section not found in state.md._';
+}
+
+function parseStatus(raw) {
+  const fields = {};
+  if (!raw) return fields;
+  for (const line of raw.split('\n')) {
+    const m = line.match(/^(\w+):\s*(.*)$/);
+    if (m) fields[m[1]] = m[2].trim();
+  }
+  return fields;
+}
+
+function parsePackageTitle(raw) {
+  if (!raw) return '(untitled)';
+  const m = raw.match(/^#\s+(.+)$/m);
+  return m ? m[1].trim() : '(untitled)';
+}
+
+function parseDecisions(raw) {
+  if (!raw) return [];
+  // Split on ## [ boundaries
+  const chunks = raw.split(/(?=^## \[)/m).filter(c => /^## \[/.test(c));
+  return chunks.slice(0, 10).map(chunk => {
+    const firstLine = chunk.split('\n')[0];
+    // ## [TIMESTAMP] task-XXX ACTION  or  ## [TIMESTAMP] LABEL
+    const hm = firstLine.match(/^## \[([^\]]+)\]\s+(.+)$/);
+    const ts     = hm ? hm[1] : '';
+    const action = hm ? hm[2].trim() : firstLine.replace(/^## /, '');
+    const body   = chunk.split('\n').slice(1).join('\n').trim();
+    return { ts, action, body };
+  });
+}
+
+// ── Rendering ─────────────────────────────────────────────────────────────
+
+const COLUMNS = ['planned', 'active', 'review', 'done'];
+const COLUMN_LABELS = {
+  planned: 'Planned',
+  active:  'Active',
+  review:  'Review',
+  done:    'Done',
+};
+
+// Map status field values to board columns
+function statusToColumn(status) {
+  if (!status) return 'planned';
+  if (['assigned', 'in_progress', 'changes_requested'].includes(status)) return 'active';
+  if (status === 'review') return 'review';
+  if (['accepted', 'discarded'].includes(status)) return 'done';
+  return 'planned';
+}
+
+function renderBadge(status) {
+  const label = status || 'unknown';
+  return `<span class="badge badge-${label}">${label.replace(/_/g, ' ')}</span>`;
+}
+
+function renderTaskBoard(taskData) {
+  const cols = { planned: [], active: [], review: [], done: [] };
+  let total = 0;
+
+  for (const [id, { statusRaw, packageRaw }] of Object.entries(taskData)) {
+    const s = parseStatus(statusRaw);
+    const title = parsePackageTitle(packageRaw);
+    const col = statusToColumn(s.status);
+    cols[col].push({ id, title, status: s.status, branch: s.branch, pr: s.pr });
+    total++;
+  }
+
+  $('task-count').textContent = total;
+
+  const board = $('task-board');
+  board.innerHTML = '';
+
+  for (const col of COLUMNS) {
+    const tasks = cols[col];
+    const colEl = document.createElement('div');
+    colEl.className = 'column';
+    colEl.innerHTML = `
+      <div class="column-header">
+        ${COLUMN_LABELS[col]}
+        <span class="count">${tasks.length}</span>
+      </div>
+    `;
+
+    if (tasks.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'empty-col';
+      empty.textContent = 'none';
+      colEl.appendChild(empty);
+    } else {
+      for (const t of tasks) {
+        const card = document.createElement('div');
+        card.className = 'task-card';
+        card.innerHTML = `
+          <div class="task-meta">
+            <span class="task-id">${t.id}</span>
+            ${renderBadge(t.status)}
+            ${t.pr ? `<a href="https://github.com/${$('inp-repo').value.trim()}/pull/${t.pr}" target="_blank" style="font-size:11px">PR #${t.pr}</a>` : ''}
+          </div>
+          <div class="task-title">${escHtml(t.title)}</div>
+          ${t.branch ? `<div class="task-branch">${escHtml(t.branch)}</div>` : ''}
+        `;
+        colEl.appendChild(card);
+      }
+    }
+
+    board.appendChild(colEl);
+  }
+}
+
+function renderDecisions(decisions) {
+  $('decision-count').textContent = decisions.length;
+  const feed = $('decisions-feed');
+  feed.innerHTML = '';
+
+  if (!decisions.length) {
+    feed.innerHTML = '<span style="color:var(--muted);font-size:12px">No decisions found.</span>';
+    return;
+  }
+
+  decisions.forEach((d, i) => {
+    const entry = document.createElement('div');
+    entry.className = 'decision-entry';
+    const bodyHtml = d.body
+      ? marked.parse(d.body)
+      : '';
+    entry.innerHTML = `
+      <div class="decision-header">
+        <span class="decision-ts">${escHtml(d.ts)}</span>
+        <span class="decision-action">${escHtml(d.action)}</span>
+      </div>
+      ${bodyHtml ? `<div class="decision-body">${bodyHtml}</div>` : ''}
+      ${i < decisions.length - 1 ? '<hr class="divider" />' : ''}
+    `;
+    feed.appendChild(entry);
+  });
+}
+
+function fmtDuration(startedAt, updatedAt) {
+  if (!startedAt || !updatedAt) return '';
+  const secs = Math.round((new Date(updatedAt) - new Date(startedAt)) / 1000);
+  if (secs < 60) return `${secs}s`;
+  if (secs < 3600) return `${Math.floor(secs / 60)}m ${secs % 60}s`;
+  return `${Math.floor(secs / 3600)}h ${Math.floor((secs % 3600) / 60)}m`;
+}
+
+function renderCycles(runs) {
+  $('cycle-count').textContent = runs.length;
+  const timeline = $('cycle-timeline');
+  timeline.innerHTML = '';
+
+  if (!runs.length) {
+    timeline.innerHTML = '<span style="color:var(--muted);font-size:12px">No workflow runs found.</span>';
+    return;
+  }
+
+  for (const run of runs) {
+    const status  = run.conclusion || run.status || 'unknown';
+    const dur     = fmtDuration(run.run_started_at, run.updated_at);
+    const date    = run.run_started_at
+      ? new Date(run.run_started_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+      : '';
+
+    const entry = document.createElement('div');
+    entry.className = 'run-entry';
+    entry.innerHTML = `
+      <span class="run-num">#${run.run_number}</span>
+      <span class="run-name" title="${escHtml(run.name || '')}">
+        <a href="${escHtml(run.html_url)}" target="_blank">${escHtml(run.name || run.event || 'run')}</a>
+      </span>
+      ${renderBadge(status)}
+      <span class="run-duration" title="${date}">${dur || date}</span>
+    `;
+    timeline.appendChild(entry);
+  }
+}
+
+function renderMandate(stateRaw) {
+  const md = parseMandate(stateRaw);
+  $('mandate-body').innerHTML = marked.parse(md);
+}
+
+// ── Utilities ─────────────────────────────────────────────────────────────
+
+function escHtml(str) {
+  return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function showError(msg) {
+  const el = $('error-msg');
+  if (msg) {
+    el.style.display = 'block';
+    el.innerHTML = `<strong>Error:</strong> ${escHtml(msg)}`;
+  } else {
+    el.style.display = 'none';
+    el.innerHTML = '';
+  }
+}
+
+function setLoading(on) {
+  $('loading').style.display = on ? 'flex' : 'none';
+  $('btn-load').disabled    = on;
+  $('btn-refresh').disabled = on;
+}
+
+// ── Main load ─────────────────────────────────────────────────────────────
+
+async function loadDashboard() {
+  const repo  = $('inp-repo').value.trim();
+  const token = $('inp-token').value.trim();
+
+  if (!repo) {
+    showError('Please enter a GitHub repo (owner/repo).');
+    return;
+  }
+  if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) {
+    showError('Repo must be in the format owner/repo.');
+    return;
+  }
+
+  saveConfig();
+  showError('');
+  setLoading(true);
+  $('main-content').style.display = 'none';
+
+  try {
+    const data = await fetchOrgData(repo, token);
+
+    renderMandate(data.stateRaw);
+    renderTaskBoard(data.taskData);
+    renderDecisions(parseDecisions(data.decisionsRaw));
+    renderCycles(data.runs);
+
+    $('header-repo').textContent = repo;
+    $('site-header').style.display   = 'flex';
+    $('main-content').style.display  = 'block';
+    $('last-updated').textContent = `Updated ${new Date().toLocaleTimeString()}`;
+  } catch (err) {
+    showError(err.message);
+  } finally {
+    setLoading(false);
+  }
+}
+
+// ── Event wiring ──────────────────────────────────────────────────────────
+
+$('btn-load').addEventListener('click', loadDashboard);
+$('btn-refresh').addEventListener('click', loadDashboard);
+$('btn-clear').addEventListener('click', clearConfig);
+
+$('inp-repo').addEventListener('keydown', e => { if (e.key === 'Enter') loadDashboard(); });
+$('inp-token').addEventListener('keydown', e => { if (e.key === 'Enter') loadDashboard(); });
+
+// Auto-load if config is saved
+loadConfig();
+if ($('inp-repo').value) loadDashboard();
+</script>
+</body>
+</html>
