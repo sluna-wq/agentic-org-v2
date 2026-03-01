@@ -176,13 +176,13 @@ set_field() {
 # ── Phase 1a: CTO reviews and assigns ─────────────────────────────
 
 run_cto_phase() {
-  log "=== Phase 1: CTO (cycle $CYCLE) ==="
+  log "=== Phase 1: Lead (cycle $CYCLE) ==="
   cd "$REPO_ROOT"
   git checkout main
 
   local cto_prompt
   cto_prompt=$(cat <<'PROMPT'
-[MODE:CTO]
+[MODE:LEAD]
 
 Read cto/CLAUDE.md and cto/state.md fully before doing anything else.
 
@@ -198,9 +198,9 @@ This cycle — do all that apply:
    - Your GitHub review body is what the next agent sees. Write feedback clearly and specifically.
    - Log every decision to cto/decisions.md (prepend, newest first):
      Format: ## [TIMESTAMP] task-XXX ACTION\n**What:** ...\n**Why:** ...
-   - Add one-liner to "Recent Decisions" in cto/CLAUDE.md (keep top 20 only).
+   - Add one-liner to "Recent Decisions" in cto/state.md (keep top 20 only).
 
-2. UPDATE the backlog in cto/CLAUDE.md:
+2. UPDATE the backlog in cto/state.md:
    - Move accepted/discarded tasks to Done section.
    - Move changes_requested tasks back to Active.
    - Flag anything blocked on human input in "Needs Human Input" section.
@@ -215,15 +215,15 @@ This cycle — do all that apply:
 Rules:
 - Do not commit — orchestrator handles all git operations.
 - Do not write to product/.
-- Be concise. The file is your working memory, keep it clean.
+- Be concise. cto/state.md is your working memory, keep it clean.
 PROMPT
 )
 
-  local transcript="$CTO_DIR/logs/cycle-${CYCLE}.md"
-  run_claude "cto-cycle-${CYCLE}" "$cto_prompt" "$CTO_MAX_TURNS" "$transcript"
+  local transcript="$REPO_ROOT/logs/cycle-${CYCLE}.md"
+  run_claude "lead-cycle-${CYCLE}" "$cto_prompt" "$CTO_MAX_TURNS" "$transcript"
 
-  # Commit all CTO changes (decisions, backlog, new task packages) to main
-  commit_all "cto: cycle $CYCLE — review + assign"
+  # Commit all Lead changes (decisions, backlog, new task packages) to main
+  commit_all "lead: cycle $CYCLE — review + assign"
   push_branch main
 }
 
