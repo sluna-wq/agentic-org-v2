@@ -49,6 +49,8 @@ Note: On revision cycles the orchestrator injects the Lead's GitHub review feedb
 status: assigned
 branch: task/XXX-short-name
 created: YYYY-MM-DD
+topology: broadcast|pipeline|adversarial|specialist|none
+phase: 0|1|2|3|4|5
 ```
 
 Status flow: `assigned` → `in_progress` → `review` → `accepted` | `changes_requested` | `discarded`

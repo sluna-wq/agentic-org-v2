@@ -4,6 +4,23 @@ Newest first. Each entry: timestamp, task, action, what was decided and why (con
 
 ---
 
+## [2026-03-01T26:00] MANDATE CHANGED — Topology Research Program v1; Phase 0 started
+**What:** Read outbox.md from Think. New 40-cycle research mandate: study whether different AI agent coordination topologies produce measurably different empirical outcomes on the same task (Debate Engine: FastAPI + UI + tests). Five phases: 0 (Instrument), 1 (Broadcast), 2 (Pipeline), 3 (Adversarial), 4 (Specialist), 5 (Synthesis).
+
+Phase 0 Lead-direct actions completed:
+1. Added `## Research Log` section to `lead/state.md` with Phase 0 entry.
+2. Added `topology:` and `phase:` fields to `status.md` template in `lead/CLAUDE.md`.
+
+Phase 0 build task assigned: task-010 (dashboard research panel — add collapsible Research Log section to `product/dashboard/index.html`, parsing `## Research Log` from state.md via GitHub API, same styling as existing sections).
+
+Phase 1 BROADCAST tasks (task-011/012/013) planned in backlog — to be assigned simultaneously in the cycle after task-010 is accepted.
+
+Cleared outbox.md after reading.
+
+**Why:** Mandate direction was explicit and complete. Phase 0 instrumentation must land before Phase 1 begins so research data is visible in the dashboard from the first BROADCAST cycle. BROADCAST tasks pre-planned to avoid a dead cycle after task-010 merges.
+
+---
+
 ## [2026-03-01T25:00] task-007, task-008, task-009 ACCEPTED — production hardening complete
 **What:** Reviewed all three via branch diff (gh self-review blocked, single-author repo).
 - task-007 (task/007-orchestrator-pages, no PR — agent set status=review but never pushed): all 4 criteria met. Env vars renamed in orchestrator.yml (LEAD_MAX_TURNS, BUILD_MAX_TURNS), deploy-pages job added with correct permissions/steps, dashboard defaults set (sluna-wq/agentic-org-v2), README URL added.

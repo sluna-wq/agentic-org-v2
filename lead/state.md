@@ -7,11 +7,15 @@ Full decisions log: `lead/decisions.md` (newest first).
 
 ## Mandate
 
-**Current focus: Production-quality hardening**
+**Current focus: Topology Research Program v1**
 
-Four deliverables: fix orchestrator env var bug + GitHub Pages deploy (task-007), architecture diagram (task-008), repo cleanup + orchestrator re-processing fix (task-009). All three assigned in parallel — no conflicts.
+Research question: Do different AI agent coordination topologies produce measurably different empirical outcomes when given an identical task?
 
-**Prior focus (complete):** Repo restructure to three-domain architecture (task-006 accepted 2026-03-01).
+Controlled task: **Debate Engine** (FastAPI + UI + tests) — built independently under each topology into its own subdirectory.
+
+Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) → 4 (Specialist) → 5 (Synthesis). 40+ cycles. Do not rush.
+
+**Prior focus (complete):** Production-quality hardening — task-007/008/009 accepted 2026-03-01.
 
 ---
 
@@ -23,11 +27,13 @@ Four deliverables: fix orchestrator env var bug + GitHub Pages deploy (task-007)
 
 ### Planned
 <!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
-*(none)*
+- [task-011] BROADCAST task-A: schema.md + api.py | P1 | deps: task-010 accepted (Phase 0 complete)
+- [task-012] BROADCAST task-B: ui.html | P1 | deps: task-010 accepted (Phase 0 complete)
+- [task-013] BROADCAST task-C: tests/test_api.py | P1 | deps: task-010 accepted (Phase 0 complete)
 
 ### Active
 <!-- Format: - [task-XXX] Description | status | branch -->
-*(none)*
+- [task-010] Dashboard research panel | assigned | task/010-dashboard-research-panel
 
 ### Done (recent)
 <!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
@@ -46,6 +52,7 @@ Four deliverables: fix orchestrator env var bug + GitHub Pages deploy (task-007)
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in lead/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T26:00] MANDATE CHANGED — Topology Research Program v1; Phase 0 started; task-010 assigned (dashboard research panel); BROADCAST tasks planned
 - [2026-03-01T25:00] task-007/008/009 ACCEPTED — all production hardening criteria met; accepted via branch diff (single-author)
 - [2026-03-01T24:00] task-009 UPDATED — Problem 4 added to package.md: NO_TASKS robustness safeguard in orchestrator.sh main loop
 - [2026-03-01T23:59] task-009 ASSIGNED — repo cleanup: archive task-001–004, fix orchestrator re-processing, remove lead/logs/build/
@@ -63,7 +70,15 @@ Four deliverables: fix orchestrator env var bug + GitHub Pages deploy (task-007)
 - [2026-02-28T12:00] MANDATE CHANGED — new mandate: Org Progress Dashboard (single-file HTML, GitHub API reads)
 - [2026-02-28T12:00] task-003 ASSIGNED — build dashboard: mandate panel, task board, decisions feed, cycle timeline
 - [2026-03-01T15:00] task-002 ACCEPTED — all 5 endpoints correct, AnyHttpUrl validation, tag filtering, pinned requirements.txt, README with curl examples; mandate complete
-- [2026-03-01T14:00] LEAD CYCLE PASS — no review action; task-002 assigned, task agent not yet run
 - [2026-03-01T13:00] task-002 ASSIGNED — implement Python/FastAPI bookmark manager (mandate not yet built)
-- [2026-03-01T12:00] task-001 ACCEPTED — all 5 endpoints correct, clean 42-line implementation, no PR found so accepted via branch diff
 - [2026-03-01T00:00] task-001 ASSIGNED — first task: bootstrap product context + implement full REST API (Express, in-memory)
+
+---
+
+## Research Log
+
+### Phase 0: INSTRUMENT — 2026-03-01
+**Hypotheses:** All 5 hypotheses (H1–H5) established. H1 and H2 will be tested in Phases 1 and 2. No empirical data yet.
+**Observations:** Infrastructure setup cycle. Lead-direct actions completed: (1) Research Log section added to state.md, (2) topology/phase fields added to status.md template in lead/CLAUDE.md. Dashboard research panel task (task-010) assigned.
+**Surprises:** None yet — Phase 0 is instrumentation only.
+**Next phase adaptation:** Phase 1 BROADCAST (task-011/012/013) will be assigned simultaneously in the cycle after task-010 is accepted. Key watch: do task-012 (ui.html) and task-013 (tests) correctly predict task-011's API contract? Record specific field name / status code mismatches.
