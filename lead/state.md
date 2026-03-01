@@ -27,15 +27,15 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 
 ### Planned
 <!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
-- [task-015] PIPELINE Agent B: api.py (reads schema from task-014) | P1 | deps: task-014
 - [task-016] PIPELINE Agent C: tests/test_api.py (reads schema + api from task-014/015) | P1 | deps: task-014, task-015
 
 ### Active
 <!-- Format: - [task-XXX] Description | status | branch -->
-- [task-014] PIPELINE Agent A: schema.md | assigned | task/014-pipeline-a-schema
+- [task-015] PIPELINE Agent B: api.py (reads schema from task-014) | assigned | task/015-pipeline-b-api
 
 ### Done (recent)
 <!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
+- [task-014] PIPELINE Agent A: schema.md | accepted | 2026-03-01
 - [task-013] BROADCAST Agent C: tests/test_api.py | accepted | 2026-03-01
 - [task-012] BROADCAST Agent B: ui.html | accepted | 2026-03-01
 - [task-011] BROADCAST Agent A: schema.md + api.py | accepted | 2026-03-01
@@ -52,6 +52,7 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in lead/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T29:00] task-014 ACCEPTED — PIPELINE schema: all criteria met, field names explicit, Notes section for B+C; task-015 ASSIGNED
 - [2026-03-01T28:00] task-014/015/016 ASSIGNED — Phase 2 PIPELINE; task-014 active, 015/016 planned (sequential deps)
 - [2026-03-01T28:00] task-011/012/013 ACCEPTED — Phase 1 BROADCAST complete; H1 PARTIALLY REFUTED: B+C each diverged 2/5 dimensions but in different dimensions
 - [2026-03-01T27:00] task-011/012/013 ASSIGNED — Phase 1 BROADCAST begins; all 3 agents simultaneous, isolated, writing to product/debate-engine/broadcast/
@@ -79,9 +80,9 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 
 ### Phase 2: PIPELINE — 2026-03-01
 **Hypotheses:** H2 under test: when agents read upstream output, they produce tighter contract coupling (higher alignment with the authoritative schema). Comparison baseline: BROADCAST alignment scores (B=2/5, C=2/5).
-**Observations:** task-014 assigned (Agent A writes schema.md). task-015 and task-016 planned sequentially — 015 reads 014, 016 reads 014+015. This is the key controlled difference from BROADCAST: full upstream visibility.
-**Surprises:** None yet — Phase 2 just assigned.
-**Next phase adaptation:** After all three accepted, compare task-015's comment block and task-016's comment block against task-014's schema.md on the same 5 dimensions used in Phase 1. Score and compare to BROADCAST baseline.
+**Observations:** task-014 accepted. Agent A schema is highly explicit — includes dedicated Data Models section, 5-constraint Notes for B+C, 422 validation code, optional ?side= filter, ordering spec. Ground truth field names: topic, description, side ("for"|"against"), content. Response envelopes: {"debates":[...]}, {"arguments":[...]}. task-015 assigned (Agent B reads schema, writes api.py). task-016 planned (Agent C reads schema+api, writes tests).
+**Surprises:** PIPELINE Agent A's schema is noticeably more structured than BROADCAST Agent A's. Both were given identical concept descriptions; the PIPELINE agent added implementation guidance explicitly targeting downstream agents. This may be an effect of the system prompt framing ("Agents B and C will read it") — Agent A may self-regulate toward greater explicitness when it knows downstream agents depend on it.
+**Next phase adaptation:** After task-015 accepted, score Agent B's api.py against the 5 BROADCAST dimensions plus check: (1) does it use the Notes section constraints? (2) does it handle 422 correctly? (3) does it implement the ?side= filter? Compare score to BROADCAST B (2/5). Expect higher alignment.
 
 ### Phase 1: BROADCAST — 2026-03-01
 **Hypotheses:** H1 under test: independent agents given identical context will converge on similar API contracts. RESULT: PARTIALLY REFUTED.

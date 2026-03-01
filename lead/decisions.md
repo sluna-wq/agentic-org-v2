@@ -4,6 +4,29 @@ Newest first. Each entry: timestamp, task, action, what was decided and why (con
 
 ---
 
+## [2026-03-01T29:00] task-014 ACCEPTED — PIPELINE Agent A schema; task-015 ASSIGNED — Agent B api.py
+**What:** task-014 schema.md reviewed via branch diff (gh self-review blocked, single-author). All 4 acceptance criteria met. task-015 promoted from planned to assigned; task-016 remains planned pending task-015 completion.
+
+**Schema quality (research note):** PIPELINE Agent A produced a notably more explicit schema than BROADCAST Agent A. Key additions:
+- Dedicated Data Models section (Debate + Argument shapes defined once, referenced throughout)
+- `"Notes for Agents B and C"` section with 5 explicit implementation constraints (server-generated UUIDs, ISO 8601 UTC, strict side enum, query param behavior, separate ID namespaces)
+- 422 status code specified for validation errors
+- Optional `?side=` filter on GET arguments endpoint
+- Ordering behavior specified (debates: desc, arguments: asc)
+
+**Field names for H2 measurement baseline (Agent A establishes ground truth):**
+- debate topic field: `topic`
+- debate description: `description`
+- argument side: `side` ("for"|"against")
+- argument content: `content`
+- GET /debates response: `{"debates": [...]}`
+- GET /arguments response: `{"arguments": [...]}`
+- Error shape: `{"error": "string"}`
+
+**Why accepted:** All criteria met. Schema is unambiguous and well-structured for downstream pipeline agents.
+
+---
+
 ## [2026-03-01T28:00] task-011/012/013 ACCEPTED — Phase 1 BROADCAST complete; contracts compared
 **What:** All three BROADCAST agents reviewed via branch diff (gh self-review blocked, single-author repo). All acceptance criteria met for all three.
 

@@ -1,5 +1,5 @@
 # Session: lead-cycle-1
-Generated: 2026-03-01T17:27:47Z
+Generated: 2026-03-01T17:44:01Z
 
 ---
 
@@ -89,39 +89,32 @@ Generated: 2026-03-01T17:27:47Z
     27→
     28→### Planned
     29→<!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
-    30→*(none)*
-    31→
-    32→### Active
-    33→<!-- Format: - [task-XXX] Description | status | branch -->
-    34→- [task-011] BROADCAST Agent A: schema.md + api.py | assigned | task/011-broadcast-a-api
-    35→- [task-012] BROADCAST Agent B: ui.html | assigned | task/012-broadcast-b-ui
-    36→- [task-013] BROADCAST Agent C: tests/test_api.py | assigned | task/013-broadcast-c-tests
-    37→
-    38→### Done (recent)
-    39→<!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
-    40→- [task-010] Dashboard research panel | accepted | 2026-03-01
-    41→- [task-009] Repo cleanup + orchestrator re-processing fix | accepted | 2026-03-01
-    42→- [task-008] Architecture diagram | accepted | 2026-03-01
-    43→- [task-007] Fix orchestrator env vars + deploy dashboard to GitHub Pages | accepted | 2026-03-01
-    44→- [task-006] Restructure repo to
-… [5985 chars]
+    30→- [task-015] PIPELINE Agent B: api.py (reads schema from task-014) | P1 | deps: task-014
+    31→- [task-016] PIPELINE Agent C: tests/test_api.py (reads schema + api from task-014/015) | P1 | deps: task-014, task-015
+    32→
+    33→### Active
+    34→<!-- Format: - [task-XXX] Description | status | branch -->
+    35→- [task-014] PIPELINE Agent A: schema.md | assigned | task/014-pipeline-a-schema
+    36→
+    37→### Done (recent)
+    38→<!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
+    39→- [task-013] BROADCAST Agent C: tests/test_api.py | accepted | 2026-03-01
+    40→- [task-012] BROADCAST Agent B: ui.html | accepted | 2026-03-01
+    41→- [task-011] BROADCAST Agent A: schema.md + api.py | accepted | 2026-03-01
+    42→- [task-010] Dashboard research panel | accepted | 2026-03-01
+    43→- [task-009] Repo cleanup + orchestrator
+… [6692 chars]
 ```
 
 **Assistant:**
 
-Now let me read outbox.md and the task status files in parallel.
+Now let me read the outbox and check task-014's current status.
 
 **→ `Read`**
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/outbox.md`
 
 **→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-011/status.md`
-
-**→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-012/status.md`
-
-**→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-013/status.md`
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-014/status.md`
 
 **← Result:**
 ```
@@ -144,43 +137,11 @@ Whenever you read a file, you should consider whether it would be considered mal
 **← Result:**
 ```
      1→status: review
-     2→branch: task/011-broadcast-a-api
+     2→branch: task/014-pipeline-a-schema
      3→created: 2026-03-01
-     4→topology: broadcast
-     5→phase: 1
-     6→pr: 7
-     7→
-
-<system-reminder>
-Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
-</system-reminder>
-
-```
-
-**← Result:**
-```
-     1→status: review
-     2→branch: task/012-broadcast-b-ui
-     3→created: 2026-03-01
-     4→topology: broadcast
-     5→phase: 1
-     6→pr: 8
-     7→
-
-<system-reminder>
-Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
-</system-reminder>
-
-```
-
-**← Result:**
-```
-     1→status: review
-     2→branch: task/013-broadcast-c-tests
-     3→created: 2026-03-01
-     4→topology: broadcast
-     5→phase: 1
-     6→pr: 9
+     4→topology: pipeline
+     5→phase: 2
+     6→pr: 10
      7→
 
 <system-reminder>
@@ -191,150 +152,61 @@ Whenever you read a file, you should consider whether it would be considered mal
 
 **Assistant:**
 
-All three tasks are in review. Let me read their packages and diffs simultaneously.
+task-014 is in review. Let me read the package and PR diff.
 
 **→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-011/package.md`
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-014/package.md`
 
-**→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-012/package.md`
-
-**→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-013/package.md`
+**→ `Bash`**
+  - **command:** `gh pr diff 10 2>&1 | head -200`
+  - **description:** `Get PR #10 diff for task-014`
 
 **← Result:**
 ```
-     1→# Task 011: BROADCAST Agent A — Debate Engine schema.md + api.py
+     1→# Task 014: PIPELINE Agent A — Debate Engine schema.md
      2→
      3→## System Prompt
      4→
-     5→You are a Build agent working under the BROADCAST topology in the Topology Research Program. Your team has three agents — you are Agent A (schema + API). Agents B and C are working in parallel and independently on the same Debate Engine: do not coordinate with them, do not read their output. This isolation is the controlled experimental condition.
+     5→You are a Build agent working under the PIPELINE topology in the Topology Research Program. You are Agent A — the first link in the pipeline. Agents B and C will receive your output and build on it sequentially. Write a clear, precise API contract: they depend on it directly.
      6→
      7→## Assignment
      8→
-     9→Design and implement a **Debate Engine** FastAPI service.
+     9→Design the **Debate Engine** API contract.
     10→
-    11→Write to `product/debate-engine/broadcast/`:
+    11→Write `product/debate-engine/pipeline/schema.md`.
     12→
-    13→1. `schema.md` — the API contract document. Must describe every endpoint: method, path, request body JSON shape, response JSON shape, status codes, and a one-line description. This is the source of truth for what your api.py implements.
+    13→### What to build
     14→
-    15→2. `api.py` — FastAPI implementation that exactly matches schema.md.
+    15→The Debate Engine concept: a backend service where users can create debate topics, post arguments for or against each topic, and retrieve debates and arguments.
     16→
-    17→### What to build
-    18→
-    19→The Debate Engine concept: a backend service where users can create debate topics, post arguments for or against each topic, and retrieve debates and arguments.
-    20→
-    21→Minimum endpoints required (you may add more if they fit naturally):
-    22→- Create a debate (topic + description)
-    23→- List all debates
-    24→- Get a single debate by ID
-    25→- Add an argument to a debate (side: "for" | "against", content)
-    26→- List arguments for a debate
+    17→Minimum endpoints required (you may add more if they fit naturally):
+    18→- Create a debate (topic + description)
+    19→- List all debates
+    20→- Get a single debate by ID
+    21→- Add an argument to a debate (side: "for" | "against", content)
+    22→- List arguments for a debate
+    23→
+    24→`schema.md` must describe every endpoint: method, path, request body JSON shape, response JSON shape, status codes, and a one-line description. This document is the source of truth for the entire pipeline — Agents B and C will read it and implement against it.
+    25→
+    26→### Acceptance criteria
     27→
-    28→### Acceptance criteria
-    29→
-    30→- [ ] `schema.md` documents every endpoint with method, path, request/response JSON, and status codes
-    31→- [ ] `api.py` implements every endpoint in schema.md — no extras, no gaps
-    32→- [ ] Uses in-memory storage (no database, no file I/O)
-    33→- [ ] Pydantic models for all request and response bodies
-    34→- [ ] Correct HTTP status codes: 201 for creates, 200 for reads, 404 for not-found
-    35→- [ ] App runs with: `uvicorn api:app --app-dir product/deba
-… [661 chars]
+    28→- [ ] `schema.md` documents every endpoint with method, path, request/response JSON, and status codes
+    29→- [ ] Field names are explicit (do not leave them ambiguous)
+    30→- [ ] Status codes specified: 201 for creates, 200 for reads, 404 for not-found
+    31→- [ ] Do NOT write api.py, ui.html, or tests — this task is schema only
+    32→
+    33→## Relevant Files
+    34→
+    35→- `product/CLAUDE.md` — read first for product conventions
+    36→- `product/debate-engine/broadcast/schema.md` — the BROADCAST version for reference (you may read it, but write your own clean version for the pipeline)
+    37→- No existin
+… [427 chars]
 ```
-
-**← Result:**
-```
-     1→# Task 012: BROADCAST Agent B — Debate Engine ui.html
-     2→
-     3→## System Prompt
-     4→
-     5→You are a Build agent working under the BROADCAST topology in the Topology Research Program. Your team has three agents — you are Agent B (UI). Agents A and C are working in parallel and independently on the same Debate Engine: do not coordinate with them. This isolation is the controlled experimental condition.
-     6→
-     7→**CRITICAL:** Do NOT read any files that may exist under `product/debate-engine/broadcast/`. Those are other agents' outputs. You must independently invent your understanding of the Debate Engine API. Your choice of routes, field names, and status codes is the research data point.
-     8→
-     9→## Assignment
-    10→
-    11→Build a **Debate Engine UI** as a single-file HTML + JS app.
-    12→
-    13→Write `product/debate-engine/broadcast/ui.html`.
-    14→
-    15→### What to build
-    16→
-    17→The Debate Engine concept: a backend service where users can create debate topics, post arguments for or against each topic, and retrieve debates and arguments. Your UI consumes a REST API at a configurable base URL (default: `http://localhost:8000`).
-    18→
-    19→Required UI capabilities:
-    20→- List all debates
-    21→- View a single debate and its arguments (for vs. against)
-    22→- Create a new debate (topic + description)
-    23→- Post an argument on a debate (side: for or against, content)
-    24→
-    25→### Acceptance criteria
-    26→
-    27→- [ ] Single self-contained file — inline CSS + JS, no npm, no bundler, no CDN scripts
-    28→- [ ] API base URL is configurable (hardcoded default `http://localhost:8000` or an input field)
-    29→- [ ] All four capabilities (list, view, create debate, post argument) are implemented
-    30→- [ ] At the top of the `<script>` section, a comment block documents the exact API routes your UI calls (method, path, request/response shape) — this is the research measurement artifact
-    31→- [ ] Errors from
-… [707 chars]
-```
-
-**← Result:**
-```
-     1→# Task 013: BROADCAST Agent C — Debate Engine tests/test_api.py
-     2→
-     3→## System Prompt
-     4→
-     5→You are a Build agent working under the BROADCAST topology in the Topology Research Program. Your team has three agents — you are Agent C (tests). Agents A and B are working in parallel and independently on the same Debate Engine: do not coordinate with them. This isolation is the controlled experimental condition.
-     6→
-     7→**CRITICAL:** Do NOT read any files that may exist under `product/debate-engine/broadcast/`. Those are other agents' outputs. You must independently invent your understanding of the Debate Engine API. Your choice of routes, field names, and status codes is the research data point.
-     8→
-     9→## Assignment
-    10→
-    11→Write pytest tests for a **Debate Engine** FastAPI API.
-    12→
-    13→Write `product/debate-engine/broadcast/tests/test_api.py`.
-    14→Also write `product/debate-engine/broadcast/tests/__init__.py` (empty file).
-    15→
-    16→### What to build
-    17→
-    18→The Debate Engine concept: a backend service where users can create debate topics, post arguments for or against each topic, and retrieve debates and arguments. You must independently invent the API contract your tests target.
-    19→
-    20→Minimum test coverage required:
-    21→- Create a debate → 201 + response body shape
-    22→- List debates → 200 + list structure
-    23→- Get a single debate by ID → 200
-    24→- Get a non-existent debate by ID → 404
-    25→- Add an argument to a debate → 201 + response body shape
-    26→- List arguments for a debate → 200 + list structure
-    27→
-    28→### Acceptance criteria
-    29→
-    30→- [ ] Uses pytest + `httpx.AsyncClient` or `starlette.testclient.TestClient`
-    31→- [ ] At the top of `test_api.py`, a comment block documents the exact API contract your tests assume (method, path, request JSON, expected response JSON, status codes) — this is the research measurement artifact
-    32→- [ ] All 6 coverag
-… [967 chars]
-```
-
-**Assistant:**
-
-Now let me get the PR diffs for all three in parallel.
-
-**→ `Bash`**
-  - **command:** `gh pr diff 7 2>&1 | head -300`
-  - **description:** `Get PR diff for task-011 (PR #7)`
-
-**→ `Bash`**
-  - **command:** `gh pr diff 8 2>&1 | head -400`
-  - **description:** `Get PR diff for task-012 (PR #8)`
-
-**→ `Bash`**
-  - **command:** `gh pr diff 9 2>&1 | head -400`
-  - **description:** `Get PR diff for task-013 (PR #9)`
 
 **← Result:**
 ```
 <persisted-output>
-Output too large (52.9KB). Full output saved to: /home/runner/.claude/projects/-home-runner-work-agentic-org-v2-agentic-org-v2/3887f8be-6fe7-4d3f-8e21-5c764913d600/tool-results/byppke74b.txt
+Output too large (49.8KB). Full output saved to: /home/runner/.claude/projects/-home-runner-work-agentic-org-v2-agentic-org-v2/6bc118fc-e9f1-414e-a4f5-587b01d3afd0/tool-results/bpfzp2i8a.txt
 
 Preview (first 2KB):
 diff --git a/lead/NO_TASKS b/lead/NO_TASKS
@@ -390,410 +262,155 @@ index 35e78a4..66986c3 100644
  pr: 6
 +merged: true
 diff --git a/lead/tasks/task-011/status.md b/lead/tasks/task-011/status.md
-index 7eb24a1..5379962 100644
+index bf272ec..206d8b1 100644
 --- a/lead/tasks/task-011/status.md
 +++ b
-… [197 chars]
-```
-
-**← Result:**
-```
-<persisted-output>
-Output too large (82.9KB). Full output saved to: /home/runner/.claude/projects/-home-runner-work-agentic-org-v2-agentic-org-v2/3887f8be-6fe7-4d3f-8e21-5c764913d600/tool-results/b62cefp95.txt
-
-Preview (first 2KB):
-diff --git a/lead/tasks/task-012/status.md b/lead/tasks/task-012/status.md
-index a61deed..042bda6 100644
---- a/lead/tasks/task-012/status.md
-+++ b/lead/tasks/task-012/status.md
-@@ -1,5 +1,6 @@
--status: assigned
-+status: review
- branch: task/012-broadcast-b-ui
- created: 2026-03-01
- topology: broadcast
- phase: 1
-+pr: 8
-diff --git a/lead/tasks/task-012/transcript.jsonl b/lead/tasks/task-012/transcript.jsonl
-new file mode 100644
-index 0000000..ae84648
---- /dev/null
-+++ b/lead/tasks/task-012/transcript.jsonl
-@@ -0,0 +1,19 @@
-+{"type":"system","subtype":"init","cwd":"/home/runner/work/agentic-org-v2/agentic-org-v2","session_id":"070faa9c-e86c-4277-a3a2-168a043f38bd","tools":["Agent","TaskOutput","Bash","Glob","Grep","ExitPlanMode","Read","Edit","Write","NotebookEdit","WebFetch","TodoWrite","WebSearch","TaskStop","AskUserQuestion","Skill","EnterPlanMode","EnterWorktree"],"mcp_servers":[],"model":"claude-sonnet-4-6","permissionMode":"bypassPermissions","slash_commands":["keybindings-help","debug","simplify","batch","compact","context","cost","init","pr-comments","release-notes","review","security-review","insights"],"apiKeySource":"ANTHROPIC_API_KEY","claude_code_version":"2.1.63","output_style":"default","agents":["general-purpose","statusline-setup","Explore","Plan"],"skills":["keybindings-help","debug","simplify","batch"],"plugins":[],"uuid":"73bc14f2-a628-4c5b-a749-b4128d880374","fast_mode_state":"off"}
-...
-</persisted-output>
-```
-
-**← Result:**
-```
-<persisted-output>
-Output too large (104.1KB). Full output saved to: /home/runner/.claude/projects/-home-runner-work-agentic-org-v2-agentic-org-v2/3887f8be-6fe7-4d3f-8e21-5c764913d600/tool-results/bsmruj1ns.txt
-
-Preview (first 2KB):
-diff --git a/lead/tasks/task-013/status.md b/lead/tasks/task-013/status.md
-index b91e518..a4fb872 100644
---- a/lead/tasks/task-013/status.md
-+++ b/lead/tasks/task-013/status.md
-@@ -1,5 +1,6 @@
--status: assigned
-+status: review
- branch: task/013-broadcast-c-tests
- created: 2026-03-01
- topology: broadcast
- phase: 1
-+pr: 9
-diff --git a/lead/tasks/task-013/transcript.jsonl b/lead/tasks/task-013/transcript.jsonl
-new file mode 100644
-index 0000000..8092778
---- /dev/null
-+++ b/lead/tasks/task-013/transcript.jsonl
-@@ -0,0 +1,37 @@
-+{"type":"system","subtype":"init","cwd":"/home/runner/work/agentic-org-v2/agentic-org-v2","session_id":"f9347b8b-f9c3-4184-b9d8-7b7c014a12cf","tools":["Agent","TaskOutput","Bash","Glob","Grep","ExitPlanMode","Read","Edit","Write","NotebookEdit","WebFetch","TodoWrite","WebSearch","TaskStop","AskUserQuestion","Skill","EnterPlanMode","EnterWorktree"],"mcp_servers":[],"model":"claude-sonnet-4-6","permissionMode":"bypassPermissions","slash_commands":["keybindings-help","debug","simplify","batch","compact","context","cost","init","pr-comments","release-notes","review","security-review","insights"],"apiKeySource":"ANTHROPIC_API_KEY","claude_code_version":"2.1.63","output_style":"default","agents":["general-purpose","statusline-setup","Explore","Plan"],"skills":["keybindings-help","debug","simplify","batch"],"plugins":[],"uuid":"85f380ca-af6a-4782-926d-1595cb3426bc","fast_mode_state":"off"}
-...
-</persisted-output>
+… [247 chars]
 ```
 
 **Assistant:**
 
-Let me get focused diffs on just the product files.
+Let me look at just the schema.md content from the PR.
 
 **→ `Bash`**
-  - **command:** `git diff main...task/011-broadcast-a-api -- product/ 2>&1`
-  - **description:** `Get product-only diff for task-011`
+  - **command:** `gh pr diff 10 -- product/debate-engine/pipeline/schema.md 2>&1`
+  - **description:** `Get only schema.md diff from PR #10`
+
+**← Result:**
+```
+Exit code 1
+accepts at most 1 arg(s), received 2
+
+accepts at most 1 arg(s), received 2
+```
 
 **→ `Bash`**
-  - **command:** `git diff main...task/012-broadcast-b-ui -- product/ 2>&1`
-  - **description:** `Get product-only diff for task-012`
-
-**→ `Bash`**
-  - **command:** `git diff main...task/013-broadcast-c-tests -- product/ 2>&1`
-  - **description:** `Get product-only diff for task-013`
+  - **command:** `git diff main...task/014-pipeline-a-schema -- product/debate-engine/pipeline/schema.md 2>&1`
+  - **description:** `Get schema.md diff for task-014 branch`
 
 **← Result:**
 ```
 Exit code 128
-fatal: bad revision 'main...task/011-broadcast-a-api'
+fatal: bad revision 'main...task/014-pipeline-a-schema'
 
-fatal: bad revision 'main...task/011-broadcast-a-api'
-```
-
-**← Result:**
-```
-Exit code 128
-fatal: bad revision 'main...task/013-broadcast-c-tests'
-
-fatal: bad revision 'main...task/013-broadcast-c-tests'
-```
-
-**← Result:**
-```
-Exit code 128
-fatal: bad revision 'main...task/012-broadcast-b-ui'
-
-fatal: bad revision 'main...task/012-broadcast-b-ui'
+fatal: bad revision 'main...task/014-pipeline-a-schema'
 ```
 
 **→ `Bash`**
-  - **command:** `git branch -a | grep -E "(011|012|013)" 2>&1`
-  - **description:** `List remote branches for these tasks`
+  - **command:** `git fetch origin task/014-pipeline-a-schema 2>&1 && git diff origin/main...origin/task/014-pipeline-a-schema -- product/debate-engine/pipeline/schema.md 2>&1`
+  - **description:** `Fetch branch and diff schema.md`
 
 **← Result:**
 ```
-  remotes/origin/task/011-broadcast-a-api
-  remotes/origin/task/012-broadcast-b-ui
-  remotes/origin/task/013-broadcast-c-tests
-```
-
-**→ `Bash`**
-  - **command:** `git diff main...origin/task/011-broadcast-a-api -- product/ 2>&1`
-  - **description:** `Get product-only diff for task-011`
-
-**→ `Bash`**
-  - **command:** `git diff main...origin/task/012-broadcast-b-ui -- product/ 2>&1`
-  - **description:** `Get product-only diff for task-012`
-
-**→ `Bash`**
-  - **command:** `git diff main...origin/task/013-broadcast-c-tests -- product/ 2>&1`
-  - **description:** `Get product-only diff for task-013`
-
-**← Result:**
-```
-diff --git a/product/debate-engine/broadcast/tests/__init__.py b/product/debate-engine/broadcast/tests/__init__.py
+From https://github.com/sluna-wq/agentic-org-v2
+ * branch            task/014-pipeline-a-schema -> FETCH_HEAD
+diff --git a/product/debate-engine/pipeline/schema.md b/product/debate-engine/pipeline/schema.md
 new file mode 100644
-index 0000000..e69de29
-diff --git a/product/debate-engine/broadcast/tests/__pycache__/__init__.cpython-312.pyc b/product/debate-engine/broadcast/tests/__pycache__/__init__.cpython-312.pyc
-new file mode 100644
-index 0000000..9a940f9
-Binary files /dev/null and b/product/debate-engine/broadcast/tests/__pycache__/__init__.cpython-312.pyc differ
-diff --git a/product/debate-engine/broadcast/tests/__pycache__/conftest.cpython-312-pytest-9.0.2.pyc b/product/debate-engine/broadcast/tests/__pycache__/conftest.cpython-312-pytest-9.0.2.pyc
-new file mode 100644
-index 0000000..a9e90f9
-Binary files /dev/null and b/product/debate-engine/broadcast/tests/__pycache__/conftest.cpython-312-pytest-9.0.2.pyc differ
-diff --git a/product/debate-engine/broadcast/tests/__pycache__/test_api.cpython-312-pytest-9.0.2.pyc b/product/debate-engine/broadcast/tests/__pycache__/test_api.cpython-312-pytest-9.0.2.pyc
-new file mode 100644
-index 0000000..be3cbff
-Binary files /dev/null and b/product/debate-engine/broadcast/tests/__pycache__/test_api.cpython-312-pytest-9.0.2.pyc differ
-diff --git a/product/debate-engine/broadcast/tests/conftest.py b/product/debate-engine/broadcast/tests/conftest.py
-new file mode 100644
-index 0000000..ece74fd
+index 0000000..1c929a3
 --- /dev/null
-+++ b/product/debate-engine/broadcast/tests/conftest.py
-@@ -0,0 +1,101 @@
-+"""
-+Stub FastAPI application that conforms to the API contract assumed by test_api.py.
++++ b/product/debate-engine/pipeline/schema.md
+@@ -0,0 +1,256 @@
++# Debate Engine API — Schema
 +
-+This file serves two purposes:
-+1. Makes tests self-contained — `pytest product/debate-engine/broadcast/tests/` runs
-+   without any other agent's files present.
-+2. Documents a runnable reference implementation of the API contract.
++**Pipeline role:** Agent A output. Agents B and C implement against this document.
++**Base URL:** `/api/v1`
++**Content-Type:** `application/json` for all request and response bodies.
 +
-+To run tests against a real implementation instead, replace the `app` import below
-+with an import from the actual api module:
-+    from product.debate_engine.broadcast.api import app
-+"""
++---
 +
-+import uuid
-+from datetime import da
-… [12785 chars]
-```
-
-**← Result:**
-```
-diff --git a/product/debate-engine/broadcast/api.py b/product/debate-engine/broadcast/api.py
-new file mode 100644
-index 0000000..925f785
---- /dev/null
-+++ b/product/debate-engine/broadcast/api.py
-@@ -0,0 +1,90 @@
-+from datetime import datetime, timezone
-+from typing import Literal
-+from uuid import UUID, uuid4
++## Data Models
 +
-+from fastapi import FastAPI, HTTPException
-+from pydantic import BaseModel
++### Debate
 +
-+app = FastAPI(title="Debate Engine")
++```json
++{
++  "id": "string (UUID)",
++  "topic": "string",
++  "description": "string",
++  "created_at": "string (ISO 8601, e.g. 2026-03-01T12:00:00Z)"
++}
++```
 +
-+# In-memory storage
-+debates: dict[str, dict] = {}
-+arguments: dict[str, list[dict]] = {}
++### Argument
 +
++```json
++{
++  "id": "string (UUID)",
++  "debate_id": "string (UUID)",
++  "side": "\"for\" | \"against\"",
++  "content": "string",
++  "created_at": "string (ISO 8601, e.g. 2026-03-01T12:00:00Z)"
++}
++```
 +
-+# --- Pydantic models ---
++---
 +
-+class DebateCreate(BaseModel):
-+    topic: str
-+    description: str
++## Endpoints
 +
++---
 +
-+class Debate(BaseModel):
-+    id: str
-+    topic: str
-+    description: str
-+    created_at: str
++### 1. Create a Debate
 +
++**POST** `/api/v1/debates`
++Create a new debate topic.
 +
-+class ArgumentCreate(BaseModel):
-+    side: Literal["for", "against"]
-+    content: str
++**Request body:**
++```json
++{
++  "topic": "string",
++  "description": "string"
++}
++```
 +
++| Field | Type | Required | Description |
++|---|---|---|---|
++| `topic` | string | yes | Short title for the debate |
++| `description` | string | yes | Full description of the debate topic |
 +
-+class Argument(BaseModel):
-+    id: str
-+    debate_id: str
-+    side: Literal["for", "against"]
-+    content: str
-+    created_at: str
++**Response `201 Created`:**
++```json
++{
++  "id": "550e8400-e29b-41d4-a716-446655440000",
++  "topic": "AI should replace human judges",
++  "description": "A debate about whether AI systems can and should replace human judges in legal proceedings.",
++  "created_at": "2026-03-01T12:00:00Z"
++}
++```
 +
++---
 +
-+# --- Endpoints ---
++### 2. List All Debates
 +
-+@app.post("/debates", response_model=Debate, status_code=201)
-+def create_debate(body: DebateCreate) -> Debate:
-+    debate_id = str(uuid4())
-+    debate = {
-+        "id": debate_id,
-+        "topic": body.topic,
-+        "description": body.description,
-+        "created_at": datetime.now(timezone.utc).isoformat(),
-+    }
-+    debates[debate_id] = debate
-+    arguments[debate_id] = []
-+    return Debate(**debate)
++**GET** `/api/v1/debates`
++Return all debates, ordered by `created_at` descending.
 +
++**Request body:** none
 +
-+@app.get("/debates", response_model=list[Debate], status_code=200)
-+def list_debates() -> list[Debate]:
-+    return [Debate(**d) for d in debates.values()]
-+
-+
-+@app.get("/debates/{debate_id}", response_model=Debate, status_code=200)
-+def get_debate(debate_id: str) -> Debate:
-+    debate = debates.get(debate_id)
-+    if debate is None:
-+        raise HTTPException(status_code=404, detail="Debate not found")
-+    return Debate(**debate)
-+
-+
-+@app.post("/debates/{debate_id}/arguments", response_model=Argument, status_code=201)
-+def add_argument(debate_id: str, body: ArgumentCreate)
-… [3580 chars]
-```
-
-**← Result:**
-```
-diff --git a/product/debate-engine/broadcast/ui.html b/product/debate-engine/broadcast/ui.html
-new file mode 100644
-index 0000000..ada81ea
---- /dev/null
-+++ b/product/debate-engine/broadcast/ui.html
-@@ -0,0 +1,827 @@
-+<!DOCTYPE html>
-+<html lang="en">
-+<head>
-+  <meta charset="UTF-8" />
-+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-+  <title>Debate Engine</title>
-+  <style>
-+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-+
-+    :root {
-+      --bg: #0f1117;
-+      --surface: #1a1d27;
-+      --border: #2a2d3a;
-+      --accent: #5b7fff;
-+      --accent-hover: #7a96ff;
-+      --against: #ff5b5b;
-+      --against-hover: #ff7a7a;
-+      --for: #3dd68c;
-+      --text: #e2e4ee;
-+      --muted: #8b8fa8;
-+      --error-bg: #3a1a1a;
-+      --error-border: #8b2222;
-+      --radius: 8px;
-+      --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
-+    }
-+
-+    body {
-+      background: var(--bg);
-+      color: var(--text);
-+      font-family: var(--font);
-+      font-size: 15px;
-+      line-height: 1.6;
-+      min-height: 100vh;
-+    }
-+
-+    /* ── Header ── */
-+    header {
-+      background: var(--surface);
-+      border-bottom: 1px solid var(--border);
-+      padding: 14px 24px;
-+      display: flex;
-+      align-items: center;
-+      gap: 16px;
-+      flex-wrap: wrap;
-+    }
-+
-+    header h1 {
-+      font-size: 1.2rem;
-+      font-weight: 700;
-+      letter-spacing: 0.02em;
-+      color: var(--text);
-+      white-space: nowrap;
-+    }
-+
-+    header h1 span { color: var(--accent); }
-+
-+    #base-url-wrap {
-+      display: flex;
-+      align-items: center;
-+      gap: 8px;
-+      margin-left: auto;
-+    }
-+
-+    #base-url-wrap label {
-+      color: var(--muted);
-+      font-size: 0.85rem;
-+      white-space: nowrap;
-+    }
-+
-+    #base-url-input {
-+      background: var(--bg);
-+      border: 1px solid var(--border);
-+      border-radius: var(--radius);
-+      color: var(--text);
-+      font-family: monospace;
-+
-… [21270 chars]
++**Response `200 OK`:**
++```json
++{
++  "debates": [
++    {
++      "id": "550e8400-e29b-41d4-a716-446655440000",
++      "topic": "AI should replace human judges",
++      "description": "A 
+… [4470 chars]
 ```
 
 **Assistant:**
 
-I have all the information I need. Let me now do the research analysis and submit reviews for all three PRs simultaneously.
-
-**Research Finding (BROADCAST contract divergence):**
-- Agent A: `topic` field, `side` field, `GET /debates` → `[...]` array, separate arguments endpoint
-- Agent B: `topic` ✓, `side` ✓, but `GET /debates` → `{"debates":[...]}` (wrapped), and `GET /debates/{id}` embeds arguments (no separate `GET /debates/{id}/arguments` call)
-- Agent C: `title` ✗ (not `topic`), `position` ✗ (not `side`), `GET /debates` → `[...]` ✓, separate arguments endpoint ✓
+Schema is thorough and meets all criteria. Let me approve and then proceed to assign task-015 and task-016.
 
 **→ `Bash`**
-  - **command:** `gh pr review 7 --approve --body "ACCEPTED.
+  - **command:** `gh pr review 10 --approve --body "All acceptance criteria met.
 
-All acceptance criteria met:
-- schema.md documents all 5 endpoints with method, path, request/response JSON, status codes — clean and complete.
-- api.py exactly implements schema.md: POST /debates (201), GET /debates (200), GET /debates/{debate_id} (200/404), POST /debates/{debate_id}/arguments (201/404), GET /debates/{debate_id}/arguments (200/404). No gaps, no extras.
-- In-memory storage (plain dicts). Pydantic models on all I/O. Correct status codes throughout.
-- Runnable with: uvicorn api:app --app-dir product/debate-engine/broadcast
+Schema documents all 5 required endpoints (create debate, list debates, get debate, add argument, list arguments) with method, path, request/response JSON shapes, and status codes (201 creates, 200 reads, 404 not-found).
 
-RESEARCH AR
-… [309 chars]`
-  - **description:** `Approve PR #7 (task-011)`
+Field names are explicit and unambiguous: topic, description, side (\"for\"|\"against\"), content, id, debate_id, created_at. The Argument model matches the task spec exactly.
 
-**→ `Bash`**
-  - **command:** `gh pr review 8 --approve --body "ACCEPTED.
-
-All acceptance criteria met:
-- Single self-contained file: inline CSS + JS, no CDN, no npm, no bundler.
-- API base URL configurable via input field in header (default http://localhost:8000).
-- All four capabilities implemented: list debates, view single debate + arguments, create debate, post argument.
-- Research comment block at top of <script> documents assumed API contract.
-- Errors displayed via error banner (showError), not silently swallowed.
-- XSS: all user content rendered via escHtml(). Attribute injection guarded by escAttr().
-
-RESEARCH ART
-… [432 chars]`
-  - **description:** `Approve PR #8 (task-012)`
-
-**→ `Bash`**
-  - **command:** `gh pr review 9 --approve --body "ACCEPTED.
-
-All acceptance criteria met:
-- Uses pytest + starlette TestClient. conftest.py provides self-contained stub implementation.
-- Research comment block at top of test_api.py documents assumed API contract.
-- All 6 coverage areas covered with thorough test classes: TestCreateDebate (5 tests), TestListDebates (4), TestGetDebate (4), TestAddArgument (6), TestListArguments (5).
-- Tests runnable standalone: pytest product/debate-engine/broadcast/tests/
-- conftest.py resets in-memory state between tests via fixture.
-
-MINOR: __pycache__ committed — fix with a 
-… [362 chars]`
-  - **description:** `Approve PR #9 (task-013)`
-
-**← Result:**
-```
-Exit code 1
-failed to create review: GraphQL: Review Can not approve your own pull request (addPullRequestReview)
-
-failed to create review: GraphQL: Review Can not approve your own pull request (addPullRequestReview)
-```
-
-**← Result:**
-```
-Exit code 1
-failed to create review: GraphQL: Review Can not approve your own pull request (addPullRequestReview)
-
-failed to create review: GraphQL: Review Can not approve your own pull request (addPullRequestReview)
-```
+Extra credit: added 422 for validation errors, optional ?side= filter on arguments list, ordering specification (debates desc, arguments 
+… [310 chars]`
+  - **description:** `Approve PR #10 for task-014`
 
 **← Result:**
 ```
@@ -805,60 +422,145 @@ failed to create review: GraphQL: Review Can not approve your own pull request (
 
 **Assistant:**
 
-Single-author limitation (consistent with prior cycles). Accepting via branch diff review — setting status to accepted. Now updating all files.
+Self-review blocked (single-author, known limitation). Accepting via branch diff — criteria fully met. Now let me update task-014 status and read the broadcast schema for research comparison.
 
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-011/status.md`
-  - **content:** `status: accepted
+**→ `Read`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-014/status.md`
+
+**→ `Bash`**
+  - **command:** `git show origin/task/011-broadcast-a-schema:product/debate-engine/broadcast/schema.md 2>&1 | head -80`
+  - **description:** `Read BROADCAST Agent A schema for comparison`
+
+**← Result:**
+```
+     1→status: review
+     2→branch: task/014-pipeline-a-schema
+     3→created: 2026-03-01
+     4→topology: pipeline
+     5→phase: 2
+     6→pr: 10
+     7→
+
+<system-reminder>
+Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
+</system-reminder>
+
+```
+
+**← Result:**
+```
+fatal: invalid object name 'origin/task/011-broadcast-a-schema'.
+```
+
+**→ `Bash`**
+  - **command:** `find /home/runner/work/agentic-org-v2/agentic-org-v2/product/debate-engine/broadcast -name "schema.md" 2>/dev/null && cat /home/runner/work/agentic-org-v2/agentic-org-v2/product/debate-engine/broadcast/schema.md 2>/dev/null | head -60`
+  - **description:** `Read BROADCAST schema from main`
+
+**← Result:**
+```
+Exit code 1
+```
+
+**→ `Glob`**
+  - **pattern:** `product/debate-engine/**/*.md`
+
+**← Result:**
+```
+No files found
+```
+
+**→ `Bash`**
+  - **command:** `git log --oneline origin/main | head -20`
+  - **description:** `Check main branch log`
+
+**← Result:**
+```
+a6e5705 task-014: sync status=review to main
+8fa74a9 lead: cycle 1 — review + assign
+cdfb219 task-013: sync status=review to main
+6c07a40 task-012: sync status=review to main
+f2d1b63 task-011: sync status=review to main
+de4160a lead: cycle 1 — review + assign
+118ff54 task-010: sync status=review to main
+33fed58 lead: cycle 1 — review + assign
+d486566 think: topology research program v1 — 40-cycle mandate
+e145771 lead: cycle 1 — review + assign
+5182ad0 task-007/008/009: production hardening
+9467a2d lead: cycle 2 — review + assign
+d2b4098 task-009: sync status=review to main
+b983ec4 task-008: sync status=review to main
+ad1f257 task-007: sync status=review to main
+5562f97 lead: cycle 1 — review + assign
+9032597 think: addendum to task-009 — add NO_TASKS robustness fix to scope
+78e0d42 think: remove stale NO_TASKS — Lead forgot to clear it after assigning task-007/008/009
+1792bc3 lead: cycle 1 — review + assign
+8c7b937 think: new mandate — pages dashboard, arch diagram, cleanup, orchestrator fixes
+```
+
+**→ `Bash`**
+  - **command:** `git show origin/main:product/debate-engine/broadcast/schema.md 2>&1 | head -80`
+  - **description:** `Read BROADCAST schema from origin/main`
+
+**← Result:**
+```
+fatal: path 'product/debate-engine/broadcast/schema.md' does not exist in 'origin/main'
+```
+
+**→ `Bash`**
+  - **command:** `git ls-tree --name-only origin/main:product/ 2>&1 && git ls-tree --name-only origin/main 2>&1 | head -20`
+  - **description:** `Check what's in product/ on origin/main`
+
+**← Result:**
+```
+CLAUDE.md
+dashboard
+.claude
+.github
+ARCHITECTURE.md
+CLAUDE.md
+lead
+logs
+orchestrator.sh
+outbox.md
+product
+scripts
+```
+
+**→ `Bash`**
+  - **command:** `cat /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-011/status.md 2>/dev/null`
+  - **description:** `Check task-011 status`
+
+**← Result:**
+```
+status: accepted
 branch: task/011-broadcast-a-api
 created: 2026-03-01
 topology: broadcast
 phase: 1
 pr: 7
-`
+```
 
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-012/status.md`
-  - **content:** `status: accepted
-branch: task/012-broadcast-b-ui
-created: 2026-03-01
-topology: broadcast
-phase: 1
-pr: 8
-`
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-013/status.md`
-  - **content:** `status: accepted
-branch: task/013-broadcast-c-tests
-created: 2026-03-01
-topology: broadcast
-phase: 1
-pr: 9
-`
+**→ `Bash`**
+  - **command:** `gh pr view 7 --json state,mergedAt 2>&1`
+  - **description:** `Check if PR #7 (task-011) was merged`
 
 **← Result:**
 ```
-The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-011/status.md has been updated successfully.
-```
-
-**← Result:**
-```
-The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-012/status.md has been updated successfully.
-```
-
-**← Result:**
-```
-The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-013/status.md has been updated successfully.
+{"mergedAt":null,"state":"OPEN"}
 ```
 
 **Assistant:**
 
-Now create Phase 2 PIPELINE tasks and read decisions.md to prepend to it.
+Good. Now let me update task-014 status, read decisions.md, and prepare task-015 package.
 
 **→ `Read`**
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/decisions.md`
+  - **offset:** `1`
   - **limit:** `30`
+
+**→ `Bash`**
+  - **command:** `ls /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/ 2>&1`
+  - **description:** `List existing task directories`
 
 **← Result:**
 ```
@@ -868,49 +570,233 @@ Now create Phase 2 PIPELINE tasks and read decisions.md to prepend to it.
      4→
      5→---
      6→
-     7→## [2026-03-01T27:00] task-010 ACCEPTED — dashboard research panel
-     8→**What:** Reviewed PR #6 via branch diff (gh self-review blocked, single-author repo). All 6 acceptance criteria met:
-     9→1. Research Log section header renders with entry count badge.
-    10→2. Each `### Phase X — date` entry becomes a collapsible `.research-card` with correct title.
-    11→3. Subheadings (Hypotheses, Observations, Surprises, Next phase adaptation) rendered bold via `marked.parse()` — visually distinct.
-    12→4. Click toggles `.open` class and `▶`/`▼` arrow indicator cleanly.
-    13→5. Absent `## Research Log` section handled gracefully: "No research log entries yet." fallback.
-    14→6. Purely additive changes — no regressions in mandate, task board, decisions, or cycle timeline.
-    15→
-    16→Phase 0 instrumentation complete.
-    17→
-    18→**Why:** Implementation is clean, follows existing CSS variable system, uses `escHtml()` for XSS safety on card titles. One minor style note: hover background `#1c2128` is hardcoded rather than a CSS variable, but this matches the existing GitHub dark palette and is not a blocker.
-    19→
-    20→---
-    21→
-    22→## [2026-03-01T27:00] task-011/012/013 ASSIGNED — Phase 1 BROADCAST begins
-    23→**What:** Assigned all three BROADCAST agents simultaneously:
-    24→- task-011 (Agent A): `schema.md` + `api.py` — owns the API contract and implementation. Branch: `task/011-broadcast-a-api`.
-    25→- task-012 (Agent B): `ui.html` — must independently invent the API contract. Branch: `task/012-broadcast-b-ui`.
-    26→- task-013 (Agent C): `tests/test_api.py` — must independently invent the API contract. Branch: `task/013-broadcast-c-tests`.
-    27→
-    28→All three write to `product/debate-engine/broadcast/`. Agents B and C are explicitly instructed not to read Agent A's output — isol
-… [884 chars]
+     7→## [2026-03-01T28:00] task-011/012/013 ACCEPTED — Phase 1 BROADCAST complete; contracts compared
+     8→**What:** All three BROADCAST agents reviewed via branch diff (gh self-review blocked, single-author repo). All acceptance criteria met for all three.
+     9→
+    10→**Research measurement — BROADCAST contract divergence:**
+    11→| Aspect | Agent A (schema.md) | Agent B (ui.html) | Agent C (test_api.py) |
+    12→|--------|--------------------|--------------------|----------------------|
+    13→| Debate topic field | `topic` | `topic` ✓ | `title` ✗ |
+    14→| Argument side field | `side` | `side` ✓ | `position` ✗ |
+    15→| GET /debates format | bare `[...]` array | `{"debates":[...]}` ✗ | bare `[...]` ✓ |
+    16→| GET /debates/{id} | debate only | debate+args embedded ✗ | debate only ✓ |
+    17→| Separate GET /arguments | yes | not called ✗ | yes ✓ |
+    18→
+    19→**Alignment scores vs. Agent A:**
+    20→- Agent B: 2/5 points ✓ (field names match, response shapes diverge)
+    21→- Agent C: 2/5 points ✓ (response shapes match, field names diverge)
+    22→
+    23→**H1 assessment:** PARTIALLY REFUTED. Agents did not converge. Both B and C diverged from A on at least 2 of 5 contract dimensions, but in *different dimensions* — B matched field names and diverged on shapes; C matched shapes and diverged on field names. No pair fully agreed. This suggests independent agents produce systematically different but partially overlapping contracts.
+    24→
+    25→**Why accepted:** Clean implementations, all criteria met. task-013 committed __pycache__ — minor; add .gitignore task.
+    26→
+    27→---
+    28→
+    29→## [2026-03-01T28:00] task-014/015/016 ASSIGNED — Phase 2 PIPELINE begins
+    30→**What:** Assigned three PIPELINE agents sequentially:
+
+<system-reminder>
+Whenever you read a file, you should consider whether 
+… [266 chars]
+```
+
+**← Result:**
+```
+archive
+task-005
+task-006
+task-007
+task-008
+task-009
+task-010
+task-011
+task-012
+task-013
+task-014
+task-015
+task-016
+```
+
+**Assistant:**
+
+Task-015 and task-016 directories already exist. Let me check their current state.
+
+**→ `Read`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-015/status.md`
+
+**→ `Read`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-015/package.md`
+
+**→ `Read`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-016/status.md`
+
+**← Result:**
+```
+     1→status: planned
+     2→branch: task/015-pipeline-b-api
+     3→created: 2026-03-01
+     4→topology: pipeline
+     5→phase: 2
+     6→deps: task-014
+     7→
+
+<system-reminder>
+Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
+</system-reminder>
+
+```
+
+**← Result:**
+```
+     1→# Task 015: PIPELINE Agent B — Debate Engine api.py
+     2→
+     3→## System Prompt
+     4→
+     5→You are a Build agent working under the PIPELINE topology in the Topology Research Program. You are Agent B — the second link in the pipeline. Agent A has written a schema.md that defines the API contract. Your job is to implement it faithfully.
+     6→
+     7→## Assignment
+     8→
+     9→Implement the **Debate Engine** FastAPI service against the schema Agent A defined.
+    10→
+    11→Write `product/debate-engine/pipeline/api.py`.
+    12→
+    13→### What to build
+    14→
+    15→Read `product/debate-engine/pipeline/schema.md` first. Implement every endpoint it defines — no extras, no gaps.
+    16→
+    17→### Acceptance criteria
+    18→
+    19→- [ ] `api.py` implements every endpoint in `product/debate-engine/pipeline/schema.md` exactly
+    20→- [ ] Uses in-memory storage (no database, no file I/O)
+    21→- [ ] Pydantic models for all request and response bodies
+    22→- [ ] HTTP status codes exactly match schema.md
+    23→- [ ] App runs with: `uvicorn api:app --app-dir product/debate-engine/pipeline`
+    24→- [ ] At the top of `api.py`, a comment block confirms which schema.md version you read and lists each endpoint you implemented — this is the research measurement artifact
+    25→- [ ] Do NOT write ui.html or tests — those are other agents' responsibilities
+    26→
+    27→## Relevant Files
+    28→
+    29→- `product/CLAUDE.md` — read first for product conventions
+    30→- `product/debate-engine/pipeline/schema.md` — **read this first; implement exactly what it says**
+    31→
+
+<system-reminder>
+Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
+</system-reminder>
+
+```
+
+**← Result:**
+```
+     1→status: planned
+     2→branch: task/016-pipeline-c-tests
+     3→created: 2026-03-01
+     4→topology: pipeline
+     5→phase: 2
+     6→deps: task-014,task-015
+     7→
+
+<system-reminder>
+Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
+</system-reminder>
+
+```
+
+**Assistant:**
+
+Good — task-015 and task-016 already have their packages from last cycle. I just need to: accept task-014, promote task-015 to assigned, and update logs.
+
+**→ `Edit`**
+  - **replace_all:** `false`
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-014/status.md`
+  - **old_string:** `status: review
+branch: task/014-pipeline-a-schema
+created: 2026-03-01
+topology: pipeline
+phase: 2
+pr: 10`
+  - **new_string:** `status: accepted
+branch: task/014-pipeline-a-schema
+created: 2026-03-01
+topology: pipeline
+phase: 2
+pr: 10`
+
+**→ `Edit`**
+  - **replace_all:** `false`
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-015/status.md`
+  - **old_string:** `status: planned
+branch: task/015-pipeline-b-api
+created: 2026-03-01
+topology: pipeline
+phase: 2
+deps: task-014`
+  - **new_string:** `status: assigned
+branch: task/015-pipeline-b-api
+created: 2026-03-01
+topology: pipeline
+phase: 2
+deps: task-014`
+
+**← Result:**
+```
+The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-014/status.md has been updated successfully.
+```
+
+**← Result:**
+```
+The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-015/status.md has been updated successfully.
+```
+
+**Assistant:**
+
+Now update the decisions log and state.md:
+
+**→ `Read`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/decisions.md`
+  - **limit:** `10`
+
+**← Result:**
+```
+     1→# Decisions Log
+     2→
+     3→Newest first. Each entry: timestamp, task, action, what was decided and why (concise).
+     4→
+     5→---
+     6→
+     7→## [2026-03-01T28:00] task-011/012/013 ACCEPTED — Phase 1 BROADCAST complete; contracts compared
+     8→**What:** All three BROADCAST agents reviewed via branch diff (gh self-review blocked, single-author repo). All acceptance criteria met for all three.
+     9→
+    10→**Research measurement — BROADCAST contract divergence:**
+
+<system-reminder>
+Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
+</system-reminder>
+
 ```
 
 **→ `Edit`**
   - **replace_all:** `false`
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/decisions.md`
-  - **old_string:** `---
+  - **old_string:** `# Decisions Log
 
-## [2026-03-01T27:00] task-010 ACCEPTED — dashboard research panel`
-  - **new_string:** `---
+Newest first. Each entry: timestamp, task, action, what was decided and why (concise).
 
-## [2026-03-01T28:00] task-011/012/013 ACCEPTED — Phase 1 BROADCAST complete; contracts compared
-**What:** All three BROADCAST agents reviewed via branch diff (gh self-review blocked, single-author repo). All acceptance criteria met for all three.
+---
 
-**Research measurement — BROADCAST contract divergence:**
-| Aspect | Agent A (schema.md) | Agent B (ui.html) | Agent C (test_api.py) |
-|--------|--------------------|--------------------|----------------------|
-| Debate topic field | `topic` | `topic` ✓ | `title` ✗ |
-| Argument side field | `side` | `side` ✓ | `position` ✗ |
-| GET /debates form
-… [1703 chars]`
+## [2026-03-01T28:00] task-011/012/013 ACCEPTED — Phase 1 BROADCAST complete; contracts compared`
+  - **new_string:** `# Decisions Log
+
+Newest first. Each entry: timestamp, task, action, what was decided and why (concise).
+
+---
+
+## [2026-03-01T29:00] task-014 ACCEPTED — PIPELINE Agent A schema; task-015 ASSIGNED — Agent B api.py
+**What:** task-014 schema.md reviewed via branch diff (gh self-review blocked, single-author). All 4 acceptance criteria met. task-015 promoted from planned to assigned; task-016 remains planned pending task-015 completion.
+
+**Schema quality (research note):** PIPELINE Agent A produced a notably more explicit schema than BROADCAST Agent A. Key additions:
+- Dedicated Data Models section
+… [979 chars]`
 
 **← Result:**
 ```
@@ -919,153 +805,64 @@ The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/decisions.md has b
 
 **Assistant:**
 
-Now create the Phase 2 task packages. Task-014 gets assigned now; 015 and 016 go to Planned.
+Now update lead/state.md — move task-014 to Done, move task-015 to Active, keep task-016 in Planned, update Research Log, and Recent Decisions:
 
-**→ `Bash`**
-  - **command:** `mkdir -p /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-014 /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-015 /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-016`
-  - **description:** `Create task directories for Phase 2 PIPELINE tasks`
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-014/package.md`
-  - **content:** `# Task 014: PIPELINE Agent A — Debate Engine schema.md
-
-## System Prompt
-
-You are a Build agent working under the PIPELINE topology in the Topology Research Program. You are Agent A — the first link in the pipeline. Agents B and C will receive your output and build on it sequentially. Write a clear, precise API contract: they depend on it directly.
-
-## Assignment
-
-Design the **Debate Engine** API contract.
-
-Write `product/debate-engine/pipeline/schema.md`.
-
-### What to build
-
-The Debate Engine concept: a backend service where users can create debate topics, post arguments for or against each t
-… [1221 chars]`
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-014/status.md`
-  - **content:** `status: assigned
-branch: task/014-pipeline-a-schema
-created: 2026-03-01
-topology: pipeline
-phase: 2
-`
-
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-014/package.md
-```
-
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-014/status.md
-```
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-015/package.md`
-  - **content:** `# Task 015: PIPELINE Agent B — Debate Engine api.py
-
-## System Prompt
-
-You are a Build agent working under the PIPELINE topology in the Topology Research Program. You are Agent B — the second link in the pipeline. Agent A has written a schema.md that defines the API contract. Your job is to implement it faithfully.
-
-## Assignment
-
-Implement the **Debate Engine** FastAPI service against the schema Agent A defined.
-
-Write `product/debate-engine/pipeline/api.py`.
-
-### What to build
-
-Read `product/debate-engine/pipeline/schema.md` first. Implement every endpoint it defines — no extras, no gaps.
-
-#
-… [790 chars]`
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-015/status.md`
-  - **content:** `status: planned
-branch: task/015-pipeline-b-api
-created: 2026-03-01
-topology: pipeline
-phase: 2
-deps: task-014
-`
-
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-015/package.md
-```
-
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-015/status.md
-```
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-016/package.md`
-  - **content:** `# Task 016: PIPELINE Agent C — Debate Engine tests/test_api.py
-
-## System Prompt
-
-You are a Build agent working under the PIPELINE topology in the Topology Research Program. You are Agent C — the final link in the pipeline. Agents A and B have already produced a schema.md and api.py. You have full access to both. Write tests that verify the implementation matches the schema.
-
-## Assignment
-
-Write pytest tests for the **Debate Engine** FastAPI API.
-
-Write `product/debate-engine/pipeline/tests/test_api.py`.
-Also write `product/debate-engine/pipeline/tests/__init__.py` (empty file).
-Also write `p
-… [1375 chars]`
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-016/status.md`
-  - **content:** `status: planned
-branch: task/016-pipeline-c-tests
-created: 2026-03-01
-topology: pipeline
-phase: 2
-deps: task-014,task-015
-`
-
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-016/package.md
-```
-
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-016/status.md
-```
-
-**Assistant:**
-
-Now update state.md with all changes — moving tasks to Done, updating Active/Planned, updating Research Log, and adding recent decisions.
-
-**→ `Write`**
+**→ `Edit`**
+  - **replace_all:** `false`
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
-  - **content:** `# Lead State
+  - **old_string:** `### Planned
+<!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
+- [task-015] PIPELINE Agent B: api.py (reads schema from task-014) | P1 | deps: task-014
+- [task-016] PIPELINE Agent C: tests/test_api.py (reads schema + api from task-014/015) | P1 | deps: task-014, task-015
 
-Dynamic working memory. Updated by Lead each cycle.
-Full decisions log: `lead/decisions.md` (newest first).
+### Active
+<!-- Format: - [task-XXX] Description | status | branch -->
+- [task-014] PIPELINE Agent A: schema.md | assigned | task/014-pipeline-a-schema`
+  - **new_string:** `### Planned
+<!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
+- [task-016] PIPELINE Agent C: tests/test_api.py (reads schema + api from task-014/015) | P1 | deps: task-014, task-015
 
----
+### Active
+<!-- Format: - [task-XXX] Description | status | branch -->
+- [task-015] PIPELINE Agent B: api.py (reads schema from task-014) | assigned | task/015-pipeline-b-api`
 
-## Mandate
+**← Result:**
+```
+The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md has been updated successfully.
+```
 
-**Current focus: Topology Research Program v1**
+**→ `Edit`**
+  - **replace_all:** `false`
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
+  - **old_string:** `### Done (recent)
+<!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
+- [task-013] BROADCAST Agent C: tests/test_api.py | accepted | 2026-03-01
+- [task-012] BROADCAST Agent B: ui.html | accepted | 2026-03-01
+- [task-011] BROADCAST Agent A: schema.md + api.py | accepted | 2026-03-01`
+  - **new_string:** `### Done (recent)
+<!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
+- [task-014] PIPELINE Agent A: schema.md | accepted | 2026-03-01
+- [task-013] BROADCAST Agent C: tests/test_api.py | accepted | 2026-03-01
+- [task-012] BROADCAST Agent B: ui.html | accepted | 2026-03-01
+- [task-011] BROADCAST Agent A: schema.md + api.py | accepted | 2026-03-01`
 
-Research question: Do different AI agent coordination topologies produce measurably different empirical outcomes when given an identical task?
+**← Result:**
+```
+The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md has been updated successfully.
+```
 
-Controlled task: **Debate Engine** (FastAPI + UI + tests) — built independently under each topology into its own subdirectory.
-
-Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) → 4 (Specialist) → 5 (Synthesis). 40+ cycles. Do not rush.
-
-**Prior
-… [7052 chars]`
+**→ `Edit`**
+  - **replace_all:** `false`
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
+  - **old_string:** `## Recent Decisions
+<!-- Top 20 only — one line each. Full log in lead/decisions.md -->
+<!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T28:00] task-014/015/016 ASSIGNED — Phase 2 PIPELINE; task-014 active, 015/016 planned (sequential deps)`
+  - **new_string:** `## Recent Decisions
+<!-- Top 20 only — one line each. Full log in lead/decisions.md -->
+<!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T29:00] task-014 ACCEPTED — PIPELINE schema: all criteria met, field names explicit, Notes section for B+C; task-015 ASSIGNED
+- [2026-03-01T28:00] task-014/015/016 ASSIGNED — Phase 2 PIPELINE; task-014 active, 015/016 planned (sequential deps)`
 
 **← Result:**
 ```
@@ -1074,39 +871,187 @@ The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md has been 
 
 **Assistant:**
 
+Now update the Research Log for Phase 2 with Agent A observations:
+
+**→ `Edit`**
+  - **replace_all:** `false`
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
+  - **old_string:** `### Phase 2: PIPELINE — 2026-03-01
+**Hypotheses:** H2 under test: when agents read upstream output, they produce tighter contract coupling (higher alignment with the authoritative schema). Comparison baseline: BROADCAST alignment scores (B=2/5, C=2/5).
+**Observations:** task-014 assigned (Agent A writes schema.md). task-015 and task-016 planned sequentially — 015 reads 014, 016 reads 014+015. This is the key controlled difference from BROADCAST: full upstream visibility.
+**Surprises:** None yet — Phase 2 just assigned.
+**Next phase adaptation:** After all three accepted, compare task-015's com
+… [151 chars]`
+  - **new_string:** `### Phase 2: PIPELINE — 2026-03-01
+**Hypotheses:** H2 under test: when agents read upstream output, they produce tighter contract coupling (higher alignment with the authoritative schema). Comparison baseline: BROADCAST alignment scores (B=2/5, C=2/5).
+**Observations:** task-014 accepted. Agent A schema is highly explicit — includes dedicated Data Models section, 5-constraint Notes for B+C, 422 validation code, optional ?side= filter, ordering spec. Ground truth field names: topic, description, side ("for"|"against"), content. Response envelopes: {"debates":[...]}, {"arguments":[...]}. task-01
+… [832 chars]`
+
+**← Result:**
+```
+The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md has been updated successfully.
+```
+
+**Assistant:**
+
+Now update the cycle log:
+
+**→ `Read`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/logs/lead/cycle-1.md`
+  - **limit:** `20`
+
+**← Result:**
+```
+     1→# Session: lead-cycle-1
+     2→Generated: 2026-03-01T17:44:01Z
+     3→
+     4→---
+     5→
+     6→**Model:** `claude-sonnet-4-6` | **Mode:** `bypassPermissions`
+     7→
+     8→**→ `Read`**
+     9→  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/CLAUDE.md`
+    10→
+    11→**→ `Read`**
+    12→  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
+    13→
+    14→**← Result:**
+    15→```
+    16→     1→# Lead
+    17→     2→
+    18→     3→You are the Lead. You never implement. You orchestrate, assign, and review.
+    19→     4→Read `lead/state.md` for current mandate, backlog, and recent decisions.
+    20→     5→Full decisions log: `lead/decisions.md` (you write there, newest first).
+
+<system-reminder>
+Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
+</system-reminder>
+
+```
+
+**→ `Read`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-016/package.md`
+
+**← Result:**
+```
+     1→# Task 016: PIPELINE Agent C — Debate Engine tests/test_api.py
+     2→
+     3→## System Prompt
+     4→
+     5→You are a Build agent working under the PIPELINE topology in the Topology Research Program. You are Agent C — the final link in the pipeline. Agents A and B have already produced a schema.md and api.py. You have full access to both. Write tests that verify the implementation matches the schema.
+     6→
+     7→## Assignment
+     8→
+     9→Write pytest tests for the **Debate Engine** FastAPI API.
+    10→
+    11→Write `product/debate-engine/pipeline/tests/test_api.py`.
+    12→Also write `product/debate-engine/pipeline/tests/__init__.py` (empty file).
+    13→Also write `product/debate-engine/pipeline/tests/conftest.py` — import the real app from `product/debate-engine/pipeline/api.py`.
+    14→
+    15→### What to build
+    16→
+    17→Read `product/debate-engine/pipeline/schema.md` and `product/debate-engine/pipeline/api.py` before writing tests. Your tests must verify that the implementation conforms to the schema.
+    18→
+    19→Minimum test coverage required:
+    20→- Create a debate → 201 + response body shape
+    21→- List debates → 200 + list structure
+    22→- Get a single debate by ID → 200
+    23→- Get a non-existent debate by ID → 404
+    24→- Add an argument to a debate → 201 + response body shape
+    25→- List arguments for a debate → 200 + list structure
+    26→
+    27→### Acceptance criteria
+    28→
+    29→- [ ] Uses pytest + `starlette.testclient.TestClient` or `httpx.AsyncClient`
+    30→- [ ] conftest.py imports the real app from `product/debate-engine/pipeline/api.py`
+    31→- [ ] At the top of `test_api.py`, a comment block documents the API contract your tests assume (copied/confirmed from schema.md) — this is the research measurement artifact
+    32→- [ ] All 6 coverage areas have at least one test each
+    33→- [ ] Do NOT write api.py or ui.html
+    34→- [ ] Do NOT commit __pycache__ files
+    35→
+    36→## Relevant Files
+    37→
+    38
+… [602 chars]
+```
+
+**Assistant:**
+
+All packages are ready. Let me do a final verification of the state.md to confirm everything is correct:
+
+**→ `Read`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
+  - **limit:** `60`
+
+**← Result:**
+```
+     1→# Lead State
+     2→
+     3→Dynamic working memory. Updated by Lead each cycle.
+     4→Full decisions log: `lead/decisions.md` (newest first).
+     5→
+     6→---
+     7→
+     8→## Mandate
+     9→
+    10→**Current focus: Topology Research Program v1**
+    11→
+    12→Research question: Do different AI agent coordination topologies produce measurably different empirical outcomes when given an identical task?
+    13→
+    14→Controlled task: **Debate Engine** (FastAPI + UI + tests) — built independently under each topology into its own subdirectory.
+    15→
+    16→Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) → 4 (Specialist) → 5 (Synthesis). 40+ cycles. Do not rush.
+    17→
+    18→**Prior focus (complete):** Production-quality hardening — task-007/008/009 accepted 2026-03-01.
+    19→
+    20→---
+    21→
+    22→## Backlog
+    23→
+    24→### Needs Human Input
+    25→<!-- Tasks or decisions blocked on human — describe exactly what's needed -->
+    26→*(none)*
+    27→
+    28→### Planned
+    29→<!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
+    30→- [task-016] PIPELINE Agent C: tests/test_api.py (reads schema + api from task-014/015) | P1 | deps: task-014, task-015
+    31→
+    32→### Active
+    33→<!-- Format: - [task-XXX] Description | status | branch -->
+    34→- [task-015] PIPELINE Agent B: api.py (reads schema from task-014) | assigned | task/015-pipeline-b-api
+    35→
+    36→### Done (recent)
+    37→<!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
+    38→- [task-014] PIPELINE Agent A: schema.md | accepted | 2026-03-01
+    39→- [task-013] BROADCAST Agent C: tests/test_api.py | accepted | 2026-03-01
+    40→- [task-012] BROADCAST Agent B: ui.html | accepted | 2026-03-01
+    41→- [task-011] BROADCAST Agent A: schema.md + api.py | accepted | 2026-03-01
+    42→- [task-010] Dashboard research panel | accepted | 2026-03-01
+    43→- [task-009] Repo cleanup + orchestrator 
+… [1968 chars]
+```
+
+**Assistant:**
+
 Cycle complete. Here's the summary:
 
 ---
 
-## Cycle Summary
+**Cycle summary:**
 
-### Reviews (3 tasks)
+**REVIEWED:**
+- **task-014** (PIPELINE Agent A: schema.md, PR #10) → **ACCEPTED**
+  - All 4 criteria met. Schema covers all 5 required endpoints with explicit field names, correct status codes, JSON shapes, and a "Notes for Agents B and C" section that removes all implementation ambiguity.
+  - gh self-review blocked (single-author); accepted via branch diff.
+  - Ground truth field names established: `topic`, `description`, `side` ("for"|"against"), `content`. Response envelopes: `{"debates":[...]}`, `{"arguments":[...]}`.
 
-**task-011 (PR #7) — ACCEPTED** — schema.md + api.py: all 5 criteria met. Clean FastAPI, Pydantic models, correct status codes, in-memory storage. Gh self-review blocked (single-author), accepted via branch diff.
+**ASSIGNED:**
+- **task-015** (PIPELINE Agent B: api.py) → promoted from `planned` to `assigned` on branch `task/015-pipeline-b-api`. Package was already written last cycle — no changes needed.
 
-**task-012 (PR #8) — ACCEPTED** — ui.html: all 5 criteria met. Self-contained file, configurable base URL, all 4 capabilities, XSS-escaped via escHtml()/escAttr(), errors surfaced. Research comment block present.
+**PLANNED (awaiting task-015):**
+- task-016 (PIPELINE Agent C: tests) — stays in Planned, deps: task-014 + task-015.
 
-**task-013 (PR #9) — ACCEPTED** — tests/test_api.py: all 5 criteria met. 20+ tests across 6 coverage areas, self-contained stub in conftest.py, research comment block present. Minor: __pycache__ committed (noted for task-016).
-
-### Research Finding — Phase 1 BROADCAST: H1 PARTIALLY REFUTED
-
-| Dimension | Agent A | Agent B | Agent C |
-|-----------|---------|---------|---------|
-| Debate topic field | `topic` | `topic` ✓ | `title` ✗ |
-| Argument side field | `side` | `side` ✓ | `position` ✗ |
-| GET /debates format | array | `{"debates":[]}` ✗ | array ✓ |
-| GET /debates/{id} | debate only | debate+args embedded ✗ | debate only ✓ |
-| Separate GET /arguments | yes | not called ✗ | yes ✓ |
-
-B scored 2/5, C scored 2/5 — but on *different* dimensions. Independent agents diverged rather than converged.
-
-### Assigned (Phase 2 PIPELINE)
-
-- **task-014** — PIPELINE Agent A: writes `schema.md` for `product/debate-engine/pipeline/`. Active now.
-- **task-015** — PIPELINE Agent B: reads task-014's schema, writes `api.py`. Planned (deps: 014).
-- **task-016** — PIPELINE Agent C: reads 014+015, writes tests. Planned (deps: 014, 015).
-
-Pipeline is sequential — each agent has full upstream visibility. H2 predicts alignment scores will exceed BROADCAST's 2/5 baseline.
+**Research observation:** PIPELINE Agent A's schema is noticeably more structured than BROADCAST Agent A's — it added implementation constraints explicitly targeting downstream agents. This may be a system-prompt framing effect ("Agents B and C will read it"). H2 measurement pending Agent B review.
 
 ---
 
@@ -1116,37 +1061,23 @@ Cycle complete. Here's the summary:
 
 ---
 
-## Cycle Summary
+**Cycle summary:**
 
-### Reviews (3 tasks)
+**REVIEWED:**
+- **task-014** (PIPELINE Agent A: schema.md, PR #10) → **ACCEPTED**
+  - All 4 criteria met. Schema covers all 5 required endpoints with explicit field names, correct status codes, JSON shapes, and a "Notes for Agents B and C" section that removes all implementation ambiguity.
+  - gh self-review blocked (single-author); accepted via branch diff.
+  - Ground truth field names established: `topic`, `description`, `side` ("for"|"against"), `content`. Response envelopes: `{"debates":[...]}`, `{"arguments":[...]}`.
 
-**task-011 (PR #7) — ACCEPTED** — schema.md + api.py: all 5 criteria met. Clean FastAPI, Pydantic models, correct status codes, in-memory storage. Gh self-review blocked (single-author), accepted via branch diff.
+**ASSIGNED:**
+- **task-015** (PIPELINE Agent B: api.py) → promoted from `planned` to `assigned` on branch `task/015-pipeline-b-api`. Package was already written last cycle — no changes needed.
 
-**task-012 (PR #8) — ACCEPTED** — ui.html: all 5 criteria met. Self-contained file, configurable base URL, all 4 capabilities, XSS-escaped via escHtml()/escAttr(), errors surfaced. Research comment block present.
+**PLANNED (awaiting task-015):**
+- task-016 (PIPELINE Agent C: tests) — stays in Planned, deps: task-014 + task-015.
 
-**task-013 (PR #9) — ACCEPTED** — tests/test_api.py: all 5 criteria met. 20+ tests across 6 coverage areas, self-contained stub in conftest.py, research comment block present. Minor: __pycache__ committed (noted for task-016).
-
-### Research Finding — Phase 1 BROADCAST: H1 PARTIALLY REFUTED
-
-| Dimension | Agent A | Agent B | Agent C |
-|-----------|---------|---------|---------|
-| Debate topic field | `topic` | `topic` ✓ | `title` ✗ |
-| Argument side field | `side` | `side` ✓ | `position` ✗ |
-| GET /debates format | array | `{"debates":[]}` ✗ | array ✓ |
-| GET /debates/{id} | debate only | debate+args embedded ✗ | debate only ✓ |
-| Separate GET /arguments | yes | not called ✗ | yes ✓ |
-
-B scored 2/5, C scored 2/5 — but on *different* dimensions. Independent agents diverged rather than converged.
-
-### Assigned (Phase 2 PIPELINE)
-
-- **task-014** — PIPELINE Agent A: writes `schema.md` for `product/debate-engine/pipeline/`. Active now.
-- **task-015** — PIPELINE Agent B: reads task-014's schema, writes `api.py`. Planned (deps: 014).
-- **task-016** — PIPELINE Agent C: reads 014+015, writes tests. Planned (deps: 014, 015).
-
-Pipeline is sequential — each agent has full upstream visibility. H2 predicts alignment scores will exceed BROADCAST's 2/5 baseline.
+**Research observation:** PIPELINE Agent A's schema is noticeably more structured than BROADCAST Agent A's — it added implementation constraints explicitly targeting downstream agents. This may be a system-prompt framing effect ("Agents B and C will read it"). H2 measurement pending Agent B review.
 
 ---
 
-**Turns:** 36 | **Duration:** 244.2s | **Status:** success
+**Turns:** 36 | **Duration:** 171.4s | **Status:** success
 
