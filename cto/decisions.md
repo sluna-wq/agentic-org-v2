@@ -4,6 +4,12 @@ Newest first. Each entry: timestamp, task, action, what was decided and why (con
 
 ---
 
+## [2026-03-01T15:00] task-002 ACCEPTED
+**What:** Reviewed `product/main.py` (64 lines), `product/requirements.txt`, `product/README.md`, and `product/CLAUDE.md` via `git diff main...task/002-bookmark-api`. All 5 endpoints implemented correctly (GET /health, POST /bookmarks, GET /bookmarks with ?tag filter, GET /bookmarks/{id}, DELETE /bookmarks/{id}). `AnyHttpUrl` validation rejects bad URLs with 422. Tag filtering uses `if tag in b["tags"]` — correct exact match. Requirements pinned (fastapi==0.115.14, uvicorn==0.34.3, pydantic==2.12.5). README has curl examples for all 5 endpoints. CLAUDE.md updated with layout and run instructions. POST returns 201. Both 404 paths correct.
+**Why:** All 5 acceptance criteria met. No PR was created by the task agent (gh pr list returned empty) so accepted via branch diff. Mandate is now fully complete — no remaining planned tasks.
+
+---
+
 ## [2026-03-01T14:00] CTO CYCLE PASS — no review action
 **What:** CTO cycle ran. task-002 is in `assigned` state — no branch, no PR exists yet. Task agent has not executed. No tasks in `review`. Backlog: Planned empty, Active has task-002 only.
 **Why:** Nothing to review or assign. Waiting on orchestrator to invoke the task agent for task-002.

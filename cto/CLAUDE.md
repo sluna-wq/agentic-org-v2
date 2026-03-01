@@ -89,10 +89,11 @@ We are building a **bookmark manager REST API** in Python using FastAPI.
 
 ### Active
 <!-- Format: - [task-XXX] Description | status | branch -->
-- [task-002] Bookmark Manager REST API (Python/FastAPI) | assigned | task/002-bookmark-api
+*(none)*
 
 ### Done (recent)
 <!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
+- [task-002] Bookmark Manager REST API (Python/FastAPI) | accepted | 2026-03-01
 - [task-001] Node.js REST API (items CRUD) | accepted | 2026-03-01
 
 ---
@@ -100,6 +101,7 @@ We are building a **bookmark manager REST API** in Python using FastAPI.
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in cto/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T15:00] task-002 ACCEPTED — all 5 endpoints correct, AnyHttpUrl validation, tag filtering, pinned requirements.txt, README with curl examples; mandate complete
 - [2026-03-01T14:00] CTO CYCLE PASS — no review action; task-002 assigned, task agent not yet run
 - [2026-03-01T13:00] task-002 ASSIGNED — implement Python/FastAPI bookmark manager (mandate not yet built)
 - [2026-03-01T12:00] task-001 ACCEPTED — all 5 endpoints correct, clean 42-line implementation, no PR found so accepted via branch diff
