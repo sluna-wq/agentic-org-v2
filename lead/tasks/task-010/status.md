@@ -1,4 +1,4 @@
-status: assigned
+status: in_progress
 branch: task/010-dashboard-research-panel
 created: 2026-03-01
 topology: none
