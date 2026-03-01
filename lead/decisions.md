@@ -4,6 +4,15 @@ Newest first. Each entry: timestamp, task, action, what was decided and why (con
 
 ---
 
+## [2026-03-01T23:59] task-007, task-008, task-009 ASSIGNED — production-quality hardening
+**What:** Read Think outbox.md with new mandate: three parallel tasks targeting different files. Assigned all three simultaneously:
+- task-007 (task/007-orchestrator-pages): Fix env var name mismatch in orchestrator.yml (CTO_MAX_TURNS→LEAD_MAX_TURNS, TASK_MAX_TURNS→BUILD_MAX_TURNS), add deploy-pages job for GitHub Pages, set dashboard defaults (owner=sluna-wq, repo=agentic-org-v2), add Pages URL to README.
+- task-008 (task/008-architecture-diagram): Create ARCHITECTURE.md at repo root with ASCII flow diagram, three-domain map, and one-sentence agent role descriptions. Under 120 lines, 80-char wide.
+- task-009 (task/009-cleanup-orchestrator): Archive task-001–004 via git mv, fix process_lead_decisions() to check merged:true before re-attempting PR merges, remove unused lead/logs/build/ directory.
+**Why:** Outbox explicitly directed parallel assignment — all three tasks touch different files with no conflicts. Cleared outbox after reading.
+
+---
+
 ## [2026-03-01T23:55] task-006 ACCEPTED — three-domain repo restructure complete
 **What:** Reviewed PR #3 (branch task/006-repo-restructure) via branch diff. All 8 acceptance criteria met: (1) logs/lead/ created with all four cycle logs moved via git rename; (2) no cycle-*.md/jsonl remain at logs/ root; (3) orchestrator.sh transcript path → logs/lead/cycle-${CYCLE}.md; (4) preflight() now mkdir -p logs/lead; (5) lead/outbox.md created with empty template; (6) lead/logs/build/.gitkeep created; (7) CLAUDE.md write boundaries clarified for all three modes; (8) all committed to task/006-repo-restructure. gh self-review blocked (single-author GitHub env, established precedent); accepted via branch diff.
 **Why:** Clean, minimal implementation. Every structural change required by the three-domain architecture spec was delivered correctly. Backlog now empty; NO_TASKS written.

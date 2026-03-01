@@ -7,11 +7,11 @@ Full decisions log: `lead/decisions.md` (newest first).
 
 ## Mandate
 
-**Current focus: Repo restructure to three-domain architecture**
+**Current focus: Production-quality hardening**
 
-Re-running task-004 from scratch as task-006. PR #1 (task-004) was closed with merge conflicts; structural changes never landed on main. task-005 (merge gate fix) is now on main — clean base for the restructure.
+Four deliverables: fix orchestrator env var bug + GitHub Pages deploy (task-007), architecture diagram (task-008), repo cleanup + orchestrator re-processing fix (task-009). All three assigned in parallel — no conflicts.
 
-**Prior focus (complete):** Orchestrator merge gate fix (task-005 accepted 2026-03-01).
+**Prior focus (complete):** Repo restructure to three-domain architecture (task-006 accepted 2026-03-01).
 
 ---
 
@@ -27,7 +27,9 @@ Re-running task-004 from scratch as task-006. PR #1 (task-004) was closed with m
 
 ### Active
 <!-- Format: - [task-XXX] Description | status | branch -->
-*(none)*
+- [task-007] Fix orchestrator env vars + deploy dashboard to GitHub Pages | assigned | task/007-orchestrator-pages
+- [task-008] Architecture diagram | assigned | task/008-architecture-diagram
+- [task-009] Repo cleanup + orchestrator re-processing fix | assigned | task/009-cleanup-orchestrator
 
 ### Done (recent)
 <!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
@@ -43,6 +45,9 @@ Re-running task-004 from scratch as task-006. PR #1 (task-004) was closed with m
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in lead/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T23:59] task-009 ASSIGNED — repo cleanup: archive task-001–004, fix orchestrator re-processing, remove lead/logs/build/
+- [2026-03-01T23:59] task-008 ASSIGNED — create ARCHITECTURE.md with ASCII flow diagram and domain map
+- [2026-03-01T23:59] task-007 ASSIGNED — fix orchestrator env var names, add GitHub Pages deploy job, set dashboard defaults
 - [2026-03-01T23:55] task-006 ACCEPTED — all 8 criteria met; gh self-review blocked (single-author), accepted via branch diff; NO_TASKS written
 - [2026-03-01T23:50] task-006 ASSIGNED — repo restructure re-run from main; PR #1 already closed, changes never landed
 - [2026-03-01T23:45] LEAD CYCLE PASS — no tasks in review, backlog empty, NO_TASKS confirmed; awaiting next mandate
