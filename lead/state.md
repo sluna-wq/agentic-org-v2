@@ -27,15 +27,18 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 
 ### Active
 <!-- Format: - [task-XXX] Description | status | branch -->
-- [task-017] ADVERSARIAL Agent A: schema.md | assigned | task/017-adversarial-a-schema
+- [task-020] SPECIALIST Agent A: schema.md | assigned | task/020-specialist-a-schema
 
 ### Planned
 <!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
-- [task-018] ADVERSARIAL Agent B: api.py | P1 | deps: task-017
-- [task-019] ADVERSARIAL Agent C: critique.md + tests/test_api.py | P1 | deps: task-017,task-018
+- [task-021] SPECIALIST Agent B: api.py | P1 | deps: task-020
+- [task-022] SPECIALIST Agent C: evaluation.md + tests/test_api.py | P1 | deps: task-020,task-021
 
 ### Done (recent)
 <!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
+- [task-019] ADVERSARIAL Agent C: critique.md + tests/test_api.py | accepted | 2026-03-01
+- [task-018] ADVERSARIAL Agent B: api.py | accepted | 2026-03-01
+- [task-017] ADVERSARIAL Agent A: schema.md | accepted | 2026-03-01
 - [task-016] PIPELINE Agent C: tests/test_api.py | accepted | 2026-03-01
 - [task-015] PIPELINE Agent B: api.py | accepted | 2026-03-01
 - [task-014] PIPELINE Agent A: schema.md | accepted | 2026-03-01
@@ -43,16 +46,13 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 - [task-012] BROADCAST Agent B: ui.html | accepted | 2026-03-01
 - [task-011] BROADCAST Agent A: schema.md + api.py | accepted | 2026-03-01
 - [task-010] Dashboard research panel | accepted | 2026-03-01
-- [task-009] Repo cleanup + orchestrator re-processing fix | accepted | 2026-03-01
-- [task-008] Architecture diagram | accepted | 2026-03-01
-- [task-007] Fix orchestrator env vars + deploy dashboard to GitHub Pages | accepted | 2026-03-01
-- [task-006] Restructure repo to three-domain architecture | accepted | 2026-03-01
 
 ---
 
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in lead/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T32:00] task-017/018/019 ACCEPTED — ADVERSARIAL 5/5 across all agents; 61 tests vs PIPELINE 29; H3: adversarial framing ~2x tests even with 0 deviations; task-020/021/022 ASSIGNED — Phase 4 SPECIALIST
 - [2026-03-01T31:00] task-016 ACCEPTED — PIPELINE tests: Agent C 5/5 (H2 fully supported across full pipeline); task-017/018/019 ASSIGNED — Phase 3 ADVERSARIAL
 - [2026-03-01T30:00] task-015 ACCEPTED — PIPELINE api.py: 5/5 score vs BROADCAST B 2/5 (H2 strongly supported); task-016 ASSIGNED
 - [2026-03-01T29:00] task-014 ACCEPTED — PIPELINE schema: all criteria met, field names explicit, Notes section for B+C; task-015 ASSIGNED
@@ -73,19 +73,27 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 - [2026-03-01T23:00] task-005 ASSIGNED — fix orchestrator merge gate; remove reviewDecision check from orchestrator.sh; read from outbox.md direction
 - [2026-03-01T22:00] task-004 ACCEPTED — all 9 criteria met; gh self-review blocked (known single-author limit), accepted via branch diff; NO_TASKS written
 - [2026-03-01T21:00] task-004 ASSIGNED — repo restructure to three-domain architecture per Think outbox.md direction; NO_TASKS cleared
-- [2026-03-01T20:00] LEAD CYCLE PASS — mandate complete, all tasks accepted, backlog empty; NO_TASKS written
-- [2026-03-01T18:00] task-003 ACCEPTED — dashboard renders mandate, task board, decisions, cycle timeline; no PR (Think-mode session); accepted via direct diff
-- [2026-02-28T12:00] MANDATE CHANGED — new mandate: Org Progress Dashboard (single-file HTML, GitHub API reads)
 
 ---
 
 ## Research Log
 
-### Phase 3: ADVERSARIAL — 2026-03-01
+### Phase 4: SPECIALIST — 2026-03-01
+**Hypotheses:** H4 under test: when agents are explicitly framed as domain specialists (Senior REST API Designer, Senior FastAPI Engineer, QA Contract Testing Specialist), do they make measurably different design decisions vs PIPELINE agents given the same structural topology? Does specialist framing produce qualitatively different schema choices, implementation patterns, or test strategies?
+**Design:** Same pipeline structure as Phase 2 (Agent B reads A's schema; Agent C reads both). Key additions: Agent A adds "Design Rationale" section; Agent B adds "Implementation Notes"; Agent C adds "Specialist Observations" per dimension + "Specialist Verdict". Measurement: compare field name choices, schema structure, test count, and design decisions to PIPELINE equivalents.
+**Measurement:** Schema field names vs PIPELINE/ADVERSARIAL; test count vs PIPELINE (29) and ADVERSARIAL (61); any qualitative design divergence in Design Rationale / Implementation Notes.
+**Observations:** In progress — task-020 active, task-021/022 planned.
+
+### Phase 3: ADVERSARIAL — 2026-03-01 ✅ COMPLETE
 **Hypotheses:** H3 under test: when Agent C is explicitly framed as an adversary (red-team reviewer), does it produce a more rigorous critique and test suite than a neutral PIPELINE Agent C? Does adversarial framing cause Agent C to find deviations that a neutral tester would miss?
 **Design:** Agent A writes schema with Notes-for-B-and-C section (adversarial anchor). Agent B implements, trying to give Agent C no ammunition. Agent C reads both, writes critique.md (5-dimension schema-vs-implementation comparison + score), then writes tests designed to catch deviations.
 **Measurement:** Compare Agent C's critique score, test count, and test assertion depth to PIPELINE Agent C (5/5, 29 tests, UUID/ISO validation present). Key question: does adversarial framing change the output?
-**Observations:** In progress — task-017 active, task-018/019 planned.
+**Observations:**
+- task-017 (Agent A schema): 26-constraint Notes section — most precise adversarial anchor in program. Field names: title/description (Debate), side/body (Argument).
+- task-018 (Agent B api.py): perfect compliance — 0 deviations. Correct ?side= validation precedence (validates before checking debate existence). Custom 422 handler. Input sanitization.
+- task-019 (Agent C critique + tests): score 5/5. 61 tests vs PIPELINE 29 (~2x). Adversarial framing changed testing strategy: more edge cases, explicit deviation-hunting tests, set-equality field assertions, precedence tests.
+**Result: H3 PARTIALLY SUPPORTED.** Adversarial framing produced ~2x more tests and more systematic edge-case coverage even when Agent B had 0 deviations. Agent C could not "find deviations that a neutral tester would miss" because there were no deviations to find — but the testing approach was demonstrably more rigorous. Future test: run adversarial topology against a deliberately flawed implementation.
+**Surprises:** The framing effect on Agent C was measurable in the "no deviations" case — test count alone (~2x) suggests the adversarial identity changes the testing strategy independent of what is found. Agent A's 26-constraint schema is qualitatively different from PIPELINE Agent A's Notes section (which had ~5 constraints).
 
 ### Phase 2: PIPELINE — 2026-03-01 ✅ COMPLETE
 **Hypotheses:** H2 under test: when agents read upstream output, they produce tighter contract coupling (higher alignment with the authoritative schema). Comparison baseline: BROADCAST alignment scores (B=2/5, C=2/5).

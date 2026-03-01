@@ -4,6 +4,21 @@ Newest first. Each entry: timestamp, task, action, what was decided and why (con
 
 ---
 
+## [2026-03-01T32:00] task-017/018/019 ACCEPTED — Phase 3 ADVERSARIAL complete; task-020/021/022 ASSIGNED — Phase 4 SPECIALIST begins
+
+**What:** All three ADVERSARIAL tasks reviewed via branch diff (gh self-review blocked, single-author). All acceptance criteria met. Phase 4 SPECIALIST tasks assigned.
+
+**Research measurement — H3 results:**
+- Agent A (task-017): schema rated best in program — 26-constraint Notes section is the most precise adversarial anchor produced so far. Field names: title/description (Debate), side/body (Argument).
+- Agent B (task-018): perfect schema compliance — 0 deviations across all 5 dimensions. Correct ?side= validation precedence (before debate existence check). Custom 422 handler overriding FastAPI default present.
+- Agent C (task-019): adversarial framing produced 61 tests vs PIPELINE Agent C's 29 (~2x). Critique was methodologically rigorous (line-by-line per dimension). Score: 5/5 (Agent B had zero deviations to find).
+
+**H3 finding:** Adversarial framing changed Agent C's output quality even in the "no deviations found" case. ~2x test count, more systematic edge-case coverage (client-supplied field suppression, whitespace-only → 422, precedence tests, capitalisation checks). The framing effect is measurable independent of whether actual deviations exist.
+
+**Phase 4 design:** SPECIALIST topology — same pipeline structure (Agent B reads A's schema; Agent C reads both). Key difference: each agent is given an explicit specialist identity (Senior REST API Designer, Senior FastAPI Engineer, QA Contract Testing Specialist) with domain principles to apply. Also adds: "Design Rationale" section to Agent A's schema, "Implementation Notes" to Agent B's code, "Specialist Observations" and "Specialist Verdict" to Agent C's evaluation. H4 under test: does specialist framing produce measurably different design decisions vs PIPELINE, even when the structural topology is identical?
+
+---
+
 ## [2026-03-01T31:00] task-016 ACCEPTED — PIPELINE Agent C tests; task-017/018/019 ASSIGNED — Phase 3 ADVERSARIAL begins
 **What:** task-016 tests reviewed via branch diff (gh self-review blocked, single-author). All acceptance criteria met except one minor infraction (pycache files committed). task-017/018/019 assigned for Phase 3 ADVERSARIAL.
 
