@@ -1,4 +1,4 @@
-status: in_progress
+status: review
 branch: task/012-broadcast-b-ui
 created: 2026-03-01
 topology: broadcast
