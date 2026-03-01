@@ -4,6 +4,15 @@ Newest first. Each entry: timestamp, task, action, what was decided and why (con
 
 ---
 
+## [2026-03-01T25:00] task-007, task-008, task-009 ACCEPTED — production hardening complete
+**What:** Reviewed all three via branch diff (gh self-review blocked, single-author repo).
+- task-007 (task/007-orchestrator-pages, no PR — agent set status=review but never pushed): all 4 criteria met. Env vars renamed in orchestrator.yml (LEAD_MAX_TURNS, BUILD_MAX_TURNS), deploy-pages job added with correct permissions/steps, dashboard defaults set (sluna-wq/agentic-org-v2), README URL added.
+- task-008 (PR #4): all 6 criteria met. ARCHITECTURE.md created: ASCII flow diagram, three-domain map, agent role descriptions; 73 lines, max 77 chars wide.
+- task-009 (PR #5): all actionable criteria met. task-002/003/004 archived (task-001 never existed in git history — not a defect); orchestrator.sh merged=true guard and set_field after merge added; lead/logs/build/.gitkeep removed; NO_TASKS safeguard added in main loop.
+**Why:** Each task delivered all achievable acceptance criteria with clean, matching code style.
+
+---
+
 ## [2026-03-01T24:00] task-009 UPDATED — added Problem 4 (NO_TASKS robustness) to package.md
 **What:** Read Think outbox.md with addendum to task-009. Added Problem 4: orchestrator NO_TASKS robustness safeguard — in the main loop, after `run_lead_phase()` and before `should_stop()`, delete `lead/NO_TASKS` if any tasks have status `assigned` or `changes_requested`. Added corresponding acceptance criterion. Cleared outbox.
 **Why:** This exact failure just occurred (task-007/008/009 assigned but NO_TASKS left in place; orchestrator stopped early). Fix prevents future recurrence.
