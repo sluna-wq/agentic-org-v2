@@ -1,5 +1,5 @@
 # Session: lead-cycle-1
-Generated: 2026-03-01T14:37:55Z
+Generated: 2026-03-01T14:58:28Z
 
 ---
 
@@ -69,126 +69,54 @@ Generated: 2026-03-01T14:37:55Z
      7→
      8→## Mandate
      9→
-    10→We are building an **Org Progress Dashboard** — a browser-based UI that lets the human see the real-time state of this agentic org: mandate, task board, decision log, and cycle history.
+    10→**Current focus: Repo restructuring (infrastructure/housekeeping)**
     11→
-    12→**Core requirements:**
-    13→- Single self-contained HTML file: `product/dashboard/index.html`
-    14→- No build step — open directly in browser or serve statically
-    15→- Reads live data from the GitHub API (no backend)
-    16→- Config: user enters `owner/repo` + optional GitHub PAT (saved to localStorage)
-    17→- Data sources: `lead/state.md`, `lead/decisions.md`, `lead/tasks/*/status.md`, `lead/tasks/*/package.md`, GitHub Actions runs
+    12→Restructuring the repo to a clean three-domain architecture, directed by Think via `outbox.md`:
+    13→- `logs/lead/` — Lead invocation logs (moved from `logs/`)
+    14→- `lead/outbox.md` — Lead→Think communication channel
+    15→- `lead/logs/build/` — Build invocation logs
+    16→- Updated root `CLAUDE.md` with explicit per-mode write boundaries
+    17→- Cleared root `outbox.md` after Lead reads it
     18→
-    19→**What it shows:**
-    20→1. **Mandate panel** — current mandate parsed from `lead/state.md`
-    21→2. **Task board** — columns: Planned / Active / Review / Done with task cards (title, status, branch)
-    22→3. **Decisions feed** — parsed entries from `lead/decisions.md` (timestamp, action, what/why)
-    23→4. **Cycle timeline** — last 10 GitHub Actions workflow runs (name, status, duration, link)
+    19→**Prior product mandate (complete):** Org Progress Dashboard — single-file browser app (`product/dashboard/index.html`) reading live org state from the GitHub API. All 3 product tasks delivered (task-001 through task-003).
+    20→
+    21→**Next:** Human to set next product mandate after restructuring completes.
+    22→
+    23→---
     24→
-    25→**Quality bar:**
-    26→1. Works on a public repo with no PAT (unauthenticated GitHub API, 60 req/hr)
-    27→2. Works on a private repo when a PAT is supplied
-    28→3. Clean dark UI — readable at a glance, no clutter
-    29→4. Refresh button re-fetches all data without page reload
-    30→5. Graceful error states (rate limit message, repo not found, etc.)
-    31→6. `product/dashboard/README.md` with setup instructions
-    32→
-    33→**Done means:** all 4 sections render correctly against this repo, config persists across page loads, errors surface clearly.
+    25→## Backlog
+    26→
+    27→### Needs Human Input
+    28→<!-- Tasks or decisions blocked on human — describe exactly what's needed -->
+    29→*(none)*
+    30→
+    31→### Planned
+    32→<!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
+    33→*(none)*
     34→
-    35→---
-    36→
-    37→## Backlog
+    35→### Active
+    36→<!-- Format: - [task-XXX] Description | status | branch -->
+    37→*(none)*
     38→
-    39→### Needs Human Input
-    40→<!-- Tasks or decisions blocked on human — describe exactly
-… [2411 chars]
+    39→### Done (recent)
+    40→<!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
+    41→- [task-004] Restructure repo to three-domain architecture | accepted | 2026-03-01
+    42→- [task-003] Org Progress Dashboard (single-file HTML, GitHub API) | accepted | 2026-03-01
+    43→- [task-002] Bookmark Manager REST API (Python/FastAPI) | accepted | 2026-03-01
+    44→- [task-001] Node.js REST API (items CRUD) | accepted | 2026-03-01
+    45→
+    46→---
+    47→
+    48→## Recent Decisions
+    49→<!-- Top 20
+… [1978 chars]
 ```
-
-**→ `Glob`**
-  - **pattern:** `lead/tasks/**/*.md`
 
 **→ `Glob`**
   - **pattern:** `lead/NO_TASKS`
 
-**← Result:**
-```
-/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-002/package.md
-/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-002/status.md
-/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-003/package.md
-/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-003/status.md
-```
-
-**← Result:**
-```
-/home/runner/work/agentic-org-v2/agentic-org-v2/lead/NO_TASKS
-```
-
-**→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-002/status.md`
-
-**→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-003/status.md`
-
-**→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/NO_TASKS`
-
-**← Result:**
-```
-     1→Backlog fully complete as of 2026-03-01T20:00.
-     2→
-     3→All tasks accepted:
-     4→- task-001: Node.js REST API — accepted 2026-03-01
-     5→- task-002: Python/FastAPI Bookmark Manager — accepted 2026-03-01
-     6→- task-003: Org Progress Dashboard — accepted 2026-03-01
-     7→
-     8→Current mandate (Org Progress Dashboard) is delivered.
-     9→Awaiting human to set next mandate.
-    10→
-
-<system-reminder>
-Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
-</system-reminder>
-
-```
-
-**← Result:**
-```
-     1→status: accepted
-     2→branch: task/002-bookmark-api
-     3→created: 2026-03-01
-     4→reviewed: 2026-03-01
-     5→
-
-<system-reminder>
-Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
-</system-reminder>
-
-```
-
-**← Result:**
-```
-     1→status: accepted
-     2→branch: task/003-dashboard
-     3→created: 2026-02-28
-     4→reviewed: 2026-03-01
-     5→note: no PR created (build ran in Think session, not orchestrator); accepted via direct diff
-     6→
-
-<system-reminder>
-Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
-</system-reminder>
-
-```
-
-**→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/logs/cycle-1.md`
-
 **→ `Read`**
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/decisions.md`
-
-**← Result:**
-```
-<system-reminder>Warning: the file exists but is shorter than the provided offset (1). The file has 1 lines.</system-reminder>
-```
 
 **← Result:**
 ```
@@ -198,55 +126,76 @@ Whenever you read a file, you should consider whether it would be considered mal
      4→
      5→---
      6→
-     7→## [2026-03-01T20:00] LEAD CYCLE PASS — mandate complete, backlog empty
-     8→**What:** Reviewed all task statuses. task-001, task-002, task-003 all accepted. No tasks in review, active, or planned. Mandate (Org Progress Dashboard) fully delivered. Writing NO_TASKS stop signal.
-     9→**Why:** Backlog is done. Nothing to assign. Human input needed to set next mandate before work can continue.
+     7→## [2026-03-01T22:00] task-004 ACCEPTED — three-domain repo restructure
+     8→**What:** Reviewed PR #1 (branch task/004-repo-restructure) via `git diff main...task/004-repo-restructure`. All 9 acceptance criteria verified: `logs/lead/` contains cycle-1 files; old `logs/cycle-1.*` removed; `orchestrator.sh` transcript path updated to `logs/lead/cycle-${CYCLE}.md` and `preflight()` has `mkdir -p logs/lead`; `lead/outbox.md` created with correct template; `lead/logs/build/.gitkeep` present; root `CLAUDE.md` explicitly states per-mode read/write boundaries for Think/Lead/Build; root `outbox.md` cleared to empty template. `gh pr review --approve` blocked by GitHub's self-review restriction (same single-author environment as prior tasks). Accepted via branch diff per established precedent (task-002, task-003).
+     9→**Why:** Implementation is correct and complete. Three-domain architecture is now in place. Backlog is empty — writing NO_TASKS. Human input needed to set next mandate.
     10→
     11→---
     12→
-    13→## [2026-03-01T18:00] task-003 ACCEPTED
-    14→**What:** Reviewed `product/dashboard/index.html` (single-file, ~550 lines HTML+CSS+JS). Implements all 4 required sections: mandate panel (parsed from lead/state.md), task board with Planned/Active/Review/Done columns (from lead/tasks/*/status.md + package.md via Git Trees API), decisions feed (last 10 from lead/decisions.md), cycle timeline (GitHub Actions runs). Config persists to localStorage. Works unauthenticated on public repos. Error states for rate limit, 404, network failures. Refresh button re-fetches. `product/dashboard/README.md` present with setup and PAT instructions.
-    15→**Why:** All 6 acceptance criteria met. No PR was created — task ran in Think-mode session rather than via orchestrator; accepted via branch diff. This is a known deviation for this initial bootstrap cycle; future tasks should run through orchestrator.
-    16→
-    17→---
-    18→
-    19→## [2026-02-28T12:00] MANDATE CHANGED + task-003 ASSIGNED
-    20→**What:** Prior mandate (bookmark manager REST API) is complete. New mandate is the Org Progress Dashboard — a single-file browser app (`product/dashboard/index.html`) that reads live org state from the GitHub API and renders: mandate panel, task board (Planned/Active/Review/Done columns), decisions feed, and cycle timeline (GitHub Actions runs). No build step. Works unauthenticated on public repos; PAT stored 
-… [4123 chars]
+    13→## [2026-03-01T21:00] task-004 ASSIGNED — repo restructure to three-domain architecture
+    14→**What:** Read `outbox.md` queued by Think. Direction: restructure repo to three-domain model with `logs/lead/` for Lead logs, `lead/outbox.md` for Lead→Think channel, `lead/logs/build/` for Build logs, updated `CLAUDE.md` write boundaries, and cleared `outbox.md`. Created task-004 with expanded write scope (root CLAUDE.md, outbox.md, orchestrator.sh, logs/, lead/ structural files). Deleted `lead/NO_TASKS` stop signal. Updated mandate in state.md.
+    15→**Why:** Think explicitly queued this direction via outbox.md. It's a pure housekeeping task — no product changes. The three-domain separation makes write boundaries unambiguous and gives each mode a clear communication channel. Spec is tight; Build has a conc
+… [6048 chars]
 ```
-
-**→ `Bash`**
-  - **command:** `git log --oneline -10`
-  - **description:** `Show recent git commits`
 
 **← Result:**
 ```
-11d873d think: queue repo restructure to three-domain architecture
-6d31c35 lead: cycle 1 — review + assign
-0219e14 docs: enforce Think-mode write restriction in CLAUDE.md
-2c654cf lead: task-003 accepted; cycle-1 complete
-834ed5b lead: cycle 1 — mandate change + task-003 assigned; cycle log
-0aa5e78 feat(task-003): org progress dashboard v1
-1f630b8 chore: remove stale cto_cycle transcripts; rename TASK→BUILD
-c63184c refactor: rename cto/ to lead/, update all vocabulary to Think/Lead/Task
-9a2647f refactor: rename modes to Think/Lead/Task, move logs/ to repo root
-9d0ab88 refactor: split cto/CLAUDE.md into instructions + state, add cto/logs/
+/home/runner/work/agentic-org-v2/agentic-org-v2/lead/NO_TASKS
 ```
 
-**→ `Bash`**
-  - **command:** `git show 11d873d --stat`
-  - **description:** `Show what files changed in the "queue repo restructure" commit`
+**Assistant:**
+
+Let me check the tasks directory for any review-status tasks.
+
+**→ `Glob`**
+  - **pattern:** `lead/tasks/*/status.md`
+
+**→ `Read`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/NO_TASKS`
 
 **← Result:**
 ```
-commit 11d873d8eff2e52ca84fbf55a8c48accdced41a9
-Author: Santiago Luna <santiagoluna@Santiagos-MacBook-Air.local>
-Date:   Sun Mar 1 09:36:50 2026 -0500
+     1→Backlog empty. Awaiting human to set next mandate.
+     2→
 
-    think: queue repo restructure to three-domain architecture
+<system-reminder>
+Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
+</system-reminder>
 
- outbox.md | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+```
+
+**← Result:**
+```
+/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-002/status.md
+/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-003/status.md
+/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-004/status.md
+```
+
+**→ `Bash`**
+  - **command:** `grep -r "^status:" /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/`
+  - **description:** `Check status of all tasks`
+
+**← Result:**
+```
+/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-002/status.md:status: accepted
+/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-003/status.md:status: accepted
+/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-004/status.md:status: accepted
+```
+
+**→ `Read`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/outbox.md`
+
+**→ `Glob`**
+  - **pattern:** `outbox.md`
+
+**← Result:**
+```
+File does not exist. Note: your current working directory is /home/runner/work/agentic-org-v2/agentic-org-v2.
+```
+
+**← Result:**
+```
+/home/runner/work/agentic-org-v2/agentic-org-v2/outbox.md
 ```
 
 **→ `Read`**
@@ -256,31 +205,17 @@ Date:   Sun Mar 1 09:36:50 2026 -0500
 ```
      1→# Think → Lead Outbox
      2→
-     3→## Direction: Restructure repo to three-domain architecture
-     4→
-     5→The repo needs to reflect a clean three-domain model:
-     6→
-     7→- **Root (`/`)** is Think's domain. The orchestrator, CLAUDE.md, and outbox.md live here.
-     8→- **`lead/`** is Lead's domain. Add `lead/outbox.md` (Lead → Think channel) and `lead/logs/build/` (Build invocation logs).
-     9→- **`product/`** is Build's domain. Unchanged.
-    10→
-    11→### Structural changes needed
-    12→
-    13→1. Create `outbox.md` at root — already done (this file). Lead should acknowledge and clear after reading.
-    14→2. Create `logs/lead/` at root — for Lead invocation logs (jsonl).
-    15→3. Create `lead/outbox.md` — Lead's channel back to Think (proposals, flags, status).
-    16→4. Create `lead/logs/build/` — for Build invocation logs (jsonl).
-    17→5. Move existing `logs/cycle-*.md` files into `logs/lead/` — they are Lead invocation records.
-    18→6. Update `CLAUDE.md` to reflect correct write boundaries per mode:
-    19→   - Think: writes to root `outbox.md` only
-    20→   - Lead: writes to `lead/` only (including `lead/outbox.md`)
-    21→   - Build: writes to `product/` and own `lead/tasks/<id>/status.md` only
-    22→7. Update `MEMORY.md` to reflect new structure and correct Think write access.
-    23→
-    24→### Intent
-    25→
-    26→This is a structural/housekeeping task. No product changes. Lead should spec it tightly and assign to Build.
-    27→
+     3→<!-- Think writes directions here for Lead to read and act on. -->
+     4→<!-- Lead clears this file after reading. -->
+     5→
+     6→## Fix: orchestrator merge gate
+     7→
+     8→The orchestrator currently requires BOTH `status.md: accepted` AND a GitHub PR `reviewDecision: APPROVED` to merge. GitHub blocks self-review when the same token creates and reviews the PR, so accepted tasks never merge automatically.
+     9→
+    10→**Fix:** remove the `reviewDecision` check from `process_lead_decisions()` in `orchestrator.sh`. Merge on `status.md: accepted` alone. The PR exists for visibility — Lead's decision in `status.md` is the authority.
+    11→
+    12→This will also unblock PR #1 (task-004) which is already `accepted` but stuck open.
+    13→
 
 <system-reminder>
 Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
@@ -290,42 +225,125 @@ Whenever you read a file, you should consider whether it would be considered mal
 
 **Assistant:**
 
-Now I have the full picture. The `outbox.md` has a new direction from Think: restructure the repo to a three-domain architecture. Let me check existing structure before creating the task.
+There's a direction in `outbox.md`. But looking at the git log, commit `5ec5cdb` already implemented this fix. Let me verify the orchestrator and clear the outbox.
 
 **→ `Bash`**
-  - **command:** `ls -la /home/runner/work/agentic-org-v2/agentic-org-v2/logs/`
-  - **description:** `List logs directory`
-
-**→ `Bash`**
-  - **command:** `ls -la /home/runner/work/agentic-org-v2/agentic-org-v2/lead/`
-  - **description:** `List lead directory`
+  - **command:** `grep -n "reviewDecision\|accepted\|merge" /home/runner/work/agentic-org-v2/agentic-org-v2/orchestrator.sh | head -40`
+  - **description:** `Check orchestrator merge gate logic`
 
 **← Result:**
 ```
-total 76
-drwxr-xr-x 2 runner runner  4096 Mar  1 14:37 .
-drwxr-xr-x 9 runner runner  4096 Mar  1 14:37 ..
--rw-r--r-- 1 runner runner     0 Mar  1 14:37 .gitkeep
--rw-r--r-- 1 runner runner 61117 Mar  1 14:38 cycle-1.jsonl
--rw-r--r-- 1 runner runner  7717 Mar  1 14:38 cycle-1.md
+10:#   Orchestrator  → squash-merges PR when Lead accepts
+14:# Main branch only ever receives accepted, squash-merged PRs.
+194:   - Submit your decision as a GitHub PR review — this is the merge gate:
+195:     * Accept  → `gh pr review PR_NUMBER --approve --body "reason"`; set status: accepted in status.md
+204:   - Move accepted/discarded tasks to Done section.
+237:  # Merge accepted PRs — only if Lead has approved them on GitHub
+246:      log "$task_id: accepted but no PR number recorded — skipping merge"
+252:      --json reviewDecision --jq '.reviewDecision' 2>/dev/null || echo "")
+256:      gh pr merge "$pr_number" --squash --delete-branch \
+258:        2>&1 || log "WARNING: could not merge PR #$pr_number (may already be merged)"
+260:      log "BLOCKED: $task_id PR #$pr_number status.md=accepted but GitHub reviewDecision=$review_decision"
+263:  done < <(tasks_with_status "accepted")
+280:  # Pull main after merges
+464:    # Always process decisions — merges/closes must happen even if this is the last cycle
 ```
+
+**→ `Read`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/orchestrator.sh`
+  - **offset:** `235`
+  - **limit:** `35`
 
 **← Result:**
 ```
-total 36
-drwxr-xr-x 3 runner runner 4096 Mar  1 14:37 .
-drwxr-xr-x 9 runner runner 4096 Mar  1 14:37 ..
--rw-r--r-- 1 runner runner 2147 Mar  1 14:37 CLAUDE.md
--rw-r--r-- 1 runner runner  340 Mar  1 14:37 NO_TASKS
--rw-r--r-- 1 runner runner  308 Mar  1 14:37 NO_TASKS.md
--rw-r--r-- 1 runner runner 5413 Mar  1 14:37 decisions.md
--rw-r--r-- 1 runner runner 3612 Mar  1 14:37 state.md
-drwxr-xr-x 4 runner runner 4096 Mar  1 14:37 tasks
+   235→  git checkout main
+   236→
+   237→  # Merge accepted PRs — only if Lead has approved them on GitHub
+   238→  while IFS= read -r task_dir; do
+   239→    [ -d "$task_dir" ] || continue
+   240→    local task_id branch pr_number review_decision
+   241→    task_id=$(basename "$task_dir")
+   242→    branch=$(get_field "$task_dir" "branch")
+   243→    pr_number=$(get_field "$task_dir" "pr")
+   244→
+   245→    if [ -z "$pr_number" ]; then
+   246→      log "$task_id: accepted but no PR number recorded — skipping merge"
+   247→      continue
+   248→    fi
+   249→
+   250→    # Verify the Lead actually approved on GitHub (this is the real gate)
+   251→    review_decision=$(gh pr view "$pr_number" \
+   252→      --json reviewDecision --jq '.reviewDecision' 2>/dev/null || echo "")
+   253→
+   254→    if [ "$review_decision" = "APPROVED" ]; then
+   255→      log "$task_id: PR #$pr_number is GitHub-approved — squash merging"
+   256→      gh pr merge "$pr_number" --squash --delete-branch \
+   257→        --subject "$task_id: $(head -1 "$task_dir/package.md" | sed 's/^# //')" \
+   258→        2>&1 || log "WARNING: could not merge PR #$pr_number (may already be merged)"
+   259→    else
+   260→      log "BLOCKED: $task_id PR #$pr_number status.md=accepted but GitHub reviewDecision=$review_decision"
+   261→      log "  → Lead must run: gh pr review $pr_number --approve"
+   262→    fi
+   263→  done < <(tasks_with_status "accepted")
+   264→
+   265→  # Close discarded PRs
+   266→  while IFS= read -r task_dir; do
+   267→    [ -d "$task_dir" ] || continue
+   268→    local task_id branch pr_number
+   269→    task_id=$(basename "$task_dir")
+
+<system-reminder>
+Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
+</system-reminder>
+
 ```
 
+**Assistant:**
+
+The `reviewDecision` check is still in the orchestrator. Let me check what commit `5ec5cdb` actually changed.
+
 **→ `Bash`**
-  - **command:** `ls -la /home/runner/work/agentic-org-v2/agentic-org-v2/`
-  - **description:** `List root directory`
+  - **command:** `git show 5ec5cdb --stat`
+  - **description:** `Show what files commit 5ec5cdb changed`
+
+**← Result:**
+```
+commit 5ec5cdbec4a0ede5d6022725b633e8e2640b59af
+Author: Santiago Luna <santiagoluna@Santiagos-MacBook-Air.local>
+Date:   Sun Mar 1 09:57:10 2026 -0500
+
+    think: fix orchestrator merge gate — trust status.md accepted, drop reviewDecision check
+
+ outbox.md | 26 ++++++--------------------
+ 1 file changed, 6 insertions(+), 20 deletions(-)
+```
+
+**Assistant:**
+
+That commit only updated `outbox.md` — the human wrote a direction there. The actual fix to `orchestrator.sh` has not been implemented. I need to create a task for this.
+
+Let me also check the lead/outbox.md and logs structure:
+
+**→ `Glob`**
+  - **pattern:** `lead/**/*.md`
+
+**← Result:**
+```
+/home/runner/work/agentic-org-v2/agentic-org-v2/lead/CLAUDE.md
+/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md
+/home/runner/work/agentic-org-v2/agentic-org-v2/lead/decisions.md
+/home/runner/work/agentic-org-v2/agentic-org-v2/lead/NO_TASKS.md
+/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-002/package.md
+/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-002/status.md
+/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-003/package.md
+/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-003/status.md
+/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-004/package.md
+/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-004/status.md
+```
+
+**Assistant:**
+
+There's both `lead/NO_TASKS` and `lead/NO_TASKS.md` — let me check:
 
 **→ `Read`**
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/NO_TASKS.md`
@@ -347,399 +365,58 @@ Whenever you read a file, you should consider whether it would be considered mal
 
 ```
 
-**← Result:**
-```
-total 64
-drwxr-xr-x 9 runner runner  4096 Mar  1 14:37 .
-drwxr-xr-x 3 runner runner  4096 Mar  1 14:37 ..
-drwxr-xr-x 2 runner runner  4096 Mar  1 14:37 .claude
-drwxr-xr-x 7 runner runner  4096 Mar  1 14:37 .git
-drwxr-xr-x 3 runner runner  4096 Mar  1 14:37 .github
--rw-r--r-- 1 runner runner  2081 Mar  1 14:37 CLAUDE.md
-drwxr-xr-x 3 runner runner  4096 Mar  1 14:37 lead
-drwxr-xr-x 2 runner runner  4096 Mar  1 14:37 logs
--rwxr-xr-x 1 runner runner 17160 Mar  1 14:37 orchestrator.sh
--rw-r--r-- 1 runner runner  1317 Mar  1 14:37 outbox.md
-drwxr-xr-x 3 runner runner  4096 Mar  1 14:37 product
-drwxr-xr-x 2 runner runner  4096 Mar  1 14:37 scripts
-```
-
-**→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/orchestrator.sh`
-  - **limit:** `80`
-
-**← Result:**
-```
-     1→#!/usr/bin/env bash
-     2→set -euo pipefail
-     3→
-     4→# ─────────────────────────────────────────────────────────────────
-     5→# Orchestrator
-     6→#
-     7→# Commit strategy (explicit):
-     8→#   Build agents  → commit code to their branch as they work
-     9→#   Orchestrator  → pushes branch, opens PR when task completes
-    10→#   Orchestrator  → squash-merges PR when Lead accepts
-    11→#   Orchestrator  → closes + deletes branch when Lead discards
-    12→#   Orchestrator  → commits lead/ changes directly to main
-    13→#
-    14→# Main branch only ever receives accepted, squash-merged PRs.
-    15→# ─────────────────────────────────────────────────────────────────
-    16→
-    17→REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    18→LEAD_DIR="$REPO_ROOT/lead"
-    19→TASKS_DIR="$LEAD_DIR/tasks"
-    20→MAX_CYCLES="${MAX_CYCLES:-999}"
-    21→LEAD_MAX_TURNS="${LEAD_MAX_TURNS:-40}"
-    22→BUILD_MAX_TURNS="${BUILD_MAX_TURNS:-60}"
-    23→CYCLE=0
-    24→
-    25→# ── Pre-flight ────────────────────────────────────────────────────
-    26→
-    27→preflight() {
-    28→  local missing=()
-    29→  command -v claude  &>/dev/null || missing+=("claude (npm install -g @anthropic-ai/claude-code)")
-    30→  command -v gh      &>/dev/null || missing+=("gh (https://cli.github.com)")
-    31→  command -v git     &>/dev/null || missing+=("git")
-    32→  command -v python3 &>/dev/null || missing+=("python3")
-    33→
-    34→  if [ ${#missing[@]} -gt 0 ]; then
-    35→    echo "[orchestrator] ERROR: missing required tools:"
-    36→    for t in "${missing[@]}"; do echo "  - $t"; done
-    37→    exit 1
-    38→  fi
-    39→
-    40→  if [ -z "${ANTHROPIC_API_KEY:-}" ]; then
-    41→    echo "[orchestrator] ERROR: ANTHROPIC_API_KEY is not set."
-    42→    exit 1
-    43→  fi
-    44→
-    45→  # Set git identity if not configured (needed for unattended runs)
-    46→  [ -n "$(git config user.email 2>/dev/null || true)" ] || \
-    47→    git config user.email "orchestrator@rep
-… [1549 chars]
-```
-
-**→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/orchestrator.sh`
-  - **offset:** `80`
-  - **limit:** `120`
-
-**← Result:**
-```
-    80→#
-    81→# $1 label        — human-readable name for the transcript header
-    82→# $2 prompt       — the full prompt string
-    83→# $3 max_turns    — --max-turns value
-    84→# $4 out_md       — path to write formatted markdown transcript (also shown in terminal)
-    85→#
-    86→# Raw stream-json is written to ${out_md%.md}.jsonl alongside the markdown.
-    87→# Both files are committed to the repo for full auditability.
-    88→run_claude() {
-    89→  local label="$1" prompt="$2" max_turns="$3" out_md="$4"
-    90→  local out_jsonl="${out_md%.md}.jsonl"
-    91→
-    92→  # Pipeline:
-    93→  #   claude -> tee(raw jsonl) -> jsonl_to_md -> tee(transcript md + terminal)
-    94→  claude --dangerously-skip-permissions \
-    95→    --max-turns "$max_turns" \
-    96→    -p "$prompt" \
-    97→    --output-format stream-json \
-    98→    --verbose \
-    99→    2>&1 \
-   100→    | tee "$out_jsonl" \
-   101→    | jsonl_to_md "$label" \
-   102→    | tee "$out_md"
-   103→}
-   104→
-   105→# Extract the "Final Output" section from a prior transcript jsonl.
-   106→# Used for revision context — we inject the summary, not the full tool log.
-   107→extract_final_output() {
-   108→  local jsonl="$1"
-   109→  [ -f "$jsonl" ] || return 0
-   110→  python3 -c "
-   111→import sys, json
-   112→for line in open(sys.argv[1]):
-   113→    line = line.strip()
-   114→    if not line: continue
-   115→    try:
-   116→        e = json.loads(line)
-   117→        if e.get('type') == 'result':
-   118→            print(e.get('result', ''))
-   119→    except: pass
-   120→" "$jsonl" 2>/dev/null || true
-   121→}
-   122→
-   123→# Commit anything pending in the repo to current branch
-   124→commit_all() {
-   125→  local msg="$1"
-   126→  cd "$REPO_ROOT"
-   127→  # Stage everything including deletions
-   128→  git add -A
-   129→  if ! git diff --cached --quiet; then
-   130→    git commit -m "$msg"
-   131→    log "Committed: $msg"
-   132→  else
-   133→    log "Nothing to commit: $msg"
-   134→  fi
-   135→
-… [2967 chars]
-```
-
-**→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/orchestrator.sh`
-  - **offset:** `200`
-  - **limit:** `150`
-
-**← Result:**
-```
-   200→     Format: ## [TIMESTAMP] task-XXX ACTION\n**What:** ...\n**Why:** ...
-   201→   - Add one-liner to "Recent Decisions" in lead/state.md (keep top 20 only).
-   202→
-   203→2. UPDATE the backlog in lead/state.md:
-   204→   - Move accepted/discarded tasks to Done section.
-   205→   - Move changes_requested tasks back to Active.
-   206→   - Flag anything blocked on human input in "Needs Human Input" section.
-   207→
-   208→3. ASSIGN next tasks from Planned:
-   209→   - Pick highest-priority unblocked tasks.
-   210→   - Create lead/tasks/task-XXX/ with package.md and status.md (status: assigned).
-   211→   - Move them to Active section in backlog.
-   212→
-   213→4. STOP signal: if backlog is fully done and nothing to assign, write lead/NO_TASKS.
-   214→
-   215→Rules:
-   216→- Do not commit — orchestrator handles all git operations.
-   217→- Do not write to product/.
-   218→- Be concise. lead/state.md is your working memory, keep it clean.
-   219→PROMPT
-   220→)
-   221→
-   222→  local transcript="$REPO_ROOT/logs/cycle-${CYCLE}.md"
-   223→  run_claude "lead-cycle-${CYCLE}" "$lead_prompt" "$LEAD_MAX_TURNS" "$transcript"
-   224→
-   225→  # Commit all Lead changes (decisions, backlog, new task packages) to main
-   226→  commit_all "lead: cycle $CYCLE — review + assign"
-   227→  push_branch main
-   228→}
-   229→
-   230→# ── Phase 1b: Merge or close PRs based on Lead decisions ──────────
-   231→
-   232→process_lead_decisions() {
-   233→  log "=== Phase 1b: Processing Lead decisions ==="
-   234→  cd "$REPO_ROOT"
-   235→  git checkout main
-   236→
-   237→  # Merge accepted PRs — only if Lead has approved them on GitHub
-   238→  while IFS= read -r task_dir; do
-   239→    [ -d "$task_dir" ] || continue
-   240→    local task_id branch pr_number review_decision
-   241→    task_id=$(basename "$task_dir")
-   242→    branch=$(get_field "$task_dir" "branch")
-   243→    pr_number=$(get_field "$task_dir" "pr")
-   244→
-   245→    if [ -z "$pr_number" ]; then
-   246→      log "$task
-… [5234 chars]
-```
-
-**→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/orchestrator.sh`
-  - **offset:** `350`
-  - **limit:** `100`
-
-**← Result:**
-```
-   350→    elif [ -f "$transcript_file" ]; then
-   351→      # Fallback: no jsonl yet (first run before this change), use full md transcript
-   352→      revision_context="${revision_context}"$(printf '\n\n---\n\n## Prior Transcript\n\n%s' "$(cat "$transcript_file")")
-   353→    fi
-   354→
-   355→    local task_prompt
-   356→    task_prompt=$(cat <<PROMPT
-   357→[MODE:BUILD]
-   358→
-   359→Task ID  : $task_id
-   360→Branch   : $branch
-   361→
-   362→$(cat "$package_file")${revision_context}
-   363→
-   364→---
-   365→
-   366→Instructions:
-   367→- Read product/CLAUDE.md before writing any code.
-   368→- Write all code changes to product/.
-   369→- Commit your work to this branch as you go (git add + git commit with clear messages).
-   370→  Do NOT push — the orchestrator handles push and PR creation.
-   371→- When done, set the status field in lead/tasks/$task_id/status.md to: review
-   372→  (just update that one field — the orchestrator will commit it with the rest)
-   373→PROMPT
-   374→)
-   375→
-   376→    # Run the task agent — it commits its own code changes
-   377→    run_claude "$task_id" "$task_prompt" "$BUILD_MAX_TURNS" "$transcript_file"
-   378→
-   379→    # Safety: force status=review if agent forgot
-   380→    local current_status
-   381→    current_status=$(get_field "$task_dir" "status")
-   382→    if [ "$current_status" != "review" ]; then
-   383→      log "WARNING: $task_id did not set status=review. Forcing."
-   384→      set_field "$task_dir" "status" "review"
-   385→    fi
-   386→
-   387→    # Commit transcript + status update on the task branch
-   388→    git add -A
-   389→    git diff --cached --quiet || git commit -m "$task_id: transcript + status=review"
-   390→
-   391→    # Push the task branch to origin
-   392→    push_branch "$branch"
-   393→
-   394→    # Open or update the PR
-   395→    pr_number=$(get_field "$task_dir" "pr")
-   396→    if [ -z "$pr_number" ]; then
-   397→      # New PR — use --body-file to avoid shell escaping issues with 
-… [2381 chars]
-```
-
-**→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/orchestrator.sh`
-  - **offset:** `440`
-  - **limit:** `60`
-
-**← Result:**
-```
-   440→
-   441→should_stop() {
-   442→  if [ -f "$LEAD_DIR/NO_TASKS" ]; then
-   443→    log "Lead signaled done: $(cat "$LEAD_DIR/NO_TASKS")"
-   444→    return 0
-   445→  fi
-   446→  if [ "$CYCLE" -ge "$MAX_CYCLES" ]; then
-   447→    log "Reached max cycles ($MAX_CYCLES)."
-   448→    return 0
-   449→  fi
-   450→  return 1
-   451→}
-   452→
-   453→# ── Main loop ─────────────────────────────────────────────────────
-   454→
-   455→main() {
-   456→  log "Starting orchestrator. Repo: $REPO_ROOT"
-   457→  preflight
-   458→
-   459→  while true; do
-   460→    CYCLE=$((CYCLE + 1))
-   461→    log "══════ Cycle $CYCLE ══════"
-   462→
-   463→    run_lead_phase
-   464→    # Always process decisions — merges/closes must happen even if this is the last cycle
-   465→    process_lead_decisions
-   466→    should_stop && { log "Stopping."; break; }
-   467→
-   468→    run_build_phase
-   469→    should_stop && { log "Stopping."; break; }
-   470→
-   471→    log "Cycle $CYCLE complete."
-   472→  done
-   473→
-   474→  log "Orchestrator finished after $CYCLE cycle(s)."
-   475→}
-   476→
-   477→main "$@"
-   478→
-
-<system-reminder>
-Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
-</system-reminder>
-
-```
-
 **Assistant:**
 
-Good. I have the full picture:
-- No tasks in review (all accepted)
-- `outbox.md` has a new direction from Think: restructure to three-domain architecture
-- `lead/NO_TASKS` must be removed to unblock the orchestrator
+Now I have the full picture:
+- Root `outbox.md` has a queued direction: fix the orchestrator merge gate (remove `reviewDecision` check)
+- `orchestrator.sh` still has the blocking check (commit `5ec5cdb` only wrote to `outbox.md`, didn't fix the code)
+- `lead/NO_TASKS` exists but must be cleared since there's now a task to assign
 
-Actions this cycle:
-1. Delete `lead/NO_TASKS` (stop signal now obsolete)
-2. Create task-004: repo restructure
-3. Update state.md and decisions.md
-
-**→ `TodoWrite`**
-  - **todos:** `[{"content": "Delete lead/NO_TASKS stop signal", "status": "in_progress", "activeForm": "Deleting lead/NO_TASKS stop signal"}, {"content": "Create task-004: repo restructure", "status": "pending", "activeForm": "Creating task-004"}, {"content": "Update lead/state.md (mandate, backlog, decisions)", "status": "pending", "activeForm": "Updating lead/state.md"}, {"content": "Prepend to lead/decisions.md", "status": "pending", "activeForm": "Prepending to lead/decisions.md"}]`
-
-**← Result:**
-```
-Todos have been modified successfully. Ensure that you continue to use the todo list to track your progress. Please proceed with the current tasks if applicable
-```
+I'll create task-005, update state, log the decision, and clear NO_TASKS.
 
 **→ `Bash`**
-  - **command:** `rm /home/runner/work/agentic-org-v2/agentic-org-v2/lead/NO_TASKS`
-  - **description:** `Delete lead/NO_TASKS stop signal`
-
-**→ `TodoWrite`**
-  - **todos:** `[{"content": "Delete lead/NO_TASKS stop signal", "status": "completed", "activeForm": "Deleting lead/NO_TASKS stop signal"}, {"content": "Create task-004: repo restructure", "status": "in_progress", "activeForm": "Creating task-004"}, {"content": "Update lead/state.md (mandate, backlog, decisions)", "status": "pending", "activeForm": "Updating lead/state.md"}, {"content": "Prepend to lead/decisions.md", "status": "pending", "activeForm": "Prepending to lead/decisions.md"}]`
-
-**← Result:**
-```
-Todos have been modified successfully. Ensure that you continue to use the todo list to track your progress. Please proceed with the current tasks if applicable
-```
-
-**→ `Bash`**
-  - **command:** `mkdir -p /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-004`
-  - **description:** `Create task-004 directory`
+  - **command:** `mkdir -p /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-005`
+  - **description:** `Create task-005 directory`
 
 **→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-004/package.md`
-  - **content:** `# Task 004: Restructure repo to three-domain architecture
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-005/package.md`
+  - **content:** `# Task 005: Fix orchestrator merge gate — trust status.md accepted
 
 ## System Prompt
+You are a Build agent responsible for infrastructure maintenance in an agent orchestration repo. You make precise, surgical changes to shell scripts and config files. You do not touch product code.
 
-You are a Build agent performing a structural infrastructure change to this agentic repo. This is NOT a product task — you are restructuring the repo's own orchestration layout. You will be modifying root-level files, log directories, CLAUDE.md, and orchestrator.sh.
+## Assignment
 
-**Expanded write access for this task only (explicitly authorized by Lead):**
-- Root directory: `CLAUDE.md`, `outbox.md`, `orchestrator.sh`
-- `logs/` directory (move/reorganize files)
-- `lead/outbox.md` (new file to create)
-- `lead/logs/build/` (new direc
-… [3059 chars]`
+Fix the merge gate logic in `orchestrator.sh` so that accepted tasks merge automatically without requiring a GitHub PR approval review.
+
+**Background:** GitHub blocks self-review — the same token that creates a PR cannot approve it. This means `reviewDecision` never becomes `APPROVED` in single-autho
+… [1679 chars]`
 
 **← Result:**
 ```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-004/package.md
+File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-005/package.md
 ```
 
 **→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-004/status.md`
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-005/status.md`
   - **content:** `status: assigned
-branch: task/004-repo-restructure
+branch: task/005-fix-merge-gate
 created: 2026-03-01
 `
 
 **← Result:**
 ```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-004/status.md
+File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-005/status.md
 ```
 
-**→ `TodoWrite`**
-  - **todos:** `[{"content": "Delete lead/NO_TASKS stop signal", "status": "completed", "activeForm": "Deleting lead/NO_TASKS stop signal"}, {"content": "Create task-004: repo restructure", "status": "completed", "activeForm": "Creating task-004"}, {"content": "Update lead/state.md (mandate, backlog, decisions)", "status": "in_progress", "activeForm": "Updating lead/state.md"}, {"content": "Prepend to lead/decisions.md", "status": "pending", "activeForm": "Prepending to lead/decisions.md"}]`
+**Assistant:**
 
-**← Result:**
-```
-Todos have been modified successfully. Ensure that you continue to use the todo list to track your progress. Please proceed with the current tasks if applicable
-```
+Now update `lead/state.md` — update mandate, move task-005 to Active, delete NO_TASKS reference:
 
-**→ `Write`**
+**→ `Edit`**
+  - **replace_all:** `false`
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
-  - **content:** `# Lead State
-
-Dynamic working memory. Updated by Lead each cycle.
-Full decisions log: `lead/decisions.md` (newest first).
-
----
-
-## Mandate
+  - **old_string:** `## Mandate
 
 **Current focus: Repo restructuring (infrastructure/housekeeping)**
 
@@ -750,100 +427,207 @@ Restructuring the repo to a clean three-domain architecture, directed by Think v
 - Updated root `CLAUDE.md` with explicit per-mode write boundaries
 - Cleared root `outbox.md` after Lead reads it
 
-**Prior product mandat
-… [2454 chars]`
+**Prior product mandate (complete):** Org Progress Dashboard — single-file browser app (`product/dashboard/index.html`) reading live org state from th
+… [148 chars]`
+  - **new_string:** `## Mandate
+
+**Current focus: Orchestrator fix (infrastructure/housekeeping)**
+
+Fix merge gate in `orchestrator.sh`: remove GitHub `reviewDecision` check; merge on `status.md: accepted` alone. Direction queued by Think via root `outbox.md`.
+
+**Prior focus (complete):** Repo restructuring to three-domain architecture (task-004 accepted 2026-03-01).
+
+**Next:** Human to set next product mandate after orchestrator fix completes.`
 
 **← Result:**
 ```
 The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md has been updated successfully.
 ```
 
-**→ `TodoWrite`**
-  - **todos:** `[{"content": "Delete lead/NO_TASKS stop signal", "status": "completed", "activeForm": "Deleting lead/NO_TASKS stop signal"}, {"content": "Create task-004: repo restructure", "status": "completed", "activeForm": "Creating task-004"}, {"content": "Update lead/state.md (mandate, backlog, decisions)", "status": "completed", "activeForm": "Updating lead/state.md"}, {"content": "Prepend to lead/decisions.md", "status": "in_progress", "activeForm": "Prepending to lead/decisions.md"}]`
+**→ `Edit`**
+  - **replace_all:** `false`
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
+  - **old_string:** `### Active
+<!-- Format: - [task-XXX] Description | status | branch -->
+*(none)*`
+  - **new_string:** `### Active
+<!-- Format: - [task-XXX] Description | status | branch -->
+- [task-005] Fix orchestrator merge gate (remove reviewDecision check) | assigned | task/005-fix-merge-gate`
 
 **← Result:**
 ```
-Todos have been modified successfully. Ensure that you continue to use the todo list to track your progress. Please proceed with the current tasks if applicable
+The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md has been updated successfully.
+```
+
+**Assistant:**
+
+Now prepend to `lead/decisions.md`:
+
+**→ `Read`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/decisions.md`
+  - **limit:** `10`
+
+**← Result:**
+```
+     1→# Decisions Log
+     2→
+     3→Newest first. Each entry: timestamp, task, action, what was decided and why (concise).
+     4→
+     5→---
+     6→
+     7→## [2026-03-01T22:00] task-004 ACCEPTED — three-domain repo restructure
+     8→**What:** Reviewed PR #1 (branch task/004-repo-restructure) via `git diff main...task/004-repo-restructure`. All 9 acceptance criteria verified: `logs/lead/` contains cycle-1 files; old `logs/cycle-1.*` removed; `orchestrator.sh` transcript path updated to `logs/lead/cycle-${CYCLE}.md` and `preflight()` has `mkdir -p logs/lead`; `lead/outbox.md` created with correct template; `lead/logs/build/.gitkeep` present; root `CLAUDE.md` explicitly states per-mode read/write boundaries for Think/Lead/Build; root `outbox.md` cleared to empty template. `gh pr review --approve` blocked by GitHub's self-review restriction (same single-author environment as prior tasks). Accepted via branch diff per established precedent (task-002, task-003).
+     9→**Why:** Implementation is correct and complete. Three-domain architecture is now in place. Backlog is empty — writing NO_TASKS. Human input needed to set next mandate.
+    10→
+
+<system-reminder>
+Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
+</system-reminder>
+
 ```
 
 **→ `Edit`**
   - **replace_all:** `false`
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/decisions.md`
-  - **old_string:** `# Decisions Log
+  - **old_string:** `---
 
-Newest first. Each entry: timestamp, task, action, what was decided and why (concise).
+## [2026-03-01T22:00] task-004 ACCEPTED — three-domain repo restructure`
+  - **new_string:** `---
 
----
-
-## [2026-03-01T20:00] LEAD CYCLE PASS — mandate complete, backlog empty`
-  - **new_string:** `# Decisions Log
-
-Newest first. Each entry: timestamp, task, action, what was decided and why (concise).
-
----
-
-## [2026-03-01T21:00] task-004 ASSIGNED — repo restructure to three-domain architecture
-**What:** Read `outbox.md` queued by Think. Direction: restructure repo to three-domain model with `logs/lead/` for Lead logs, `lead/outbox.md` for Lead→Think channel, `lead/logs/build/` for Build logs, updated `CLAUDE.md` write boundaries, and cleared `outbox.md`. Created task-004 with expanded write scope (root CLAUDE.md, outbox.md, orchestrator.sh, logs/, lead/ structural files). Deleted `lead/NO
-… [437 chars]`
+## [2026-03-01T23:00] task-005 ASSIGNED — fix orchestrator merge gate
+**What:** Read direction from root `outbox.md` (commit 5ec5cdb, authored by human in Think mode): remove the `reviewDecision` check from `process_lead_decisions()` in `orchestrator.sh`. Currently the orchestrator only merges accepted PRs when GitHub's `reviewDecision=APPROVED`, but GitHub blocks self-review in single-author environments, so no PR ever auto-merges. Fix: merge on `status.md: accepted` alone; drop the `gh pr view --json reviewDecision` gate entirely. Build agent also clears `outbox.md` back to empty templa
+… [447 chars]`
 
 **← Result:**
 ```
 The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/decisions.md has been updated successfully.
 ```
 
-**→ `TodoWrite`**
-  - **todos:** `[{"content": "Delete lead/NO_TASKS stop signal", "status": "completed", "activeForm": "Deleting lead/NO_TASKS stop signal"}, {"content": "Create task-004: repo restructure", "status": "completed", "activeForm": "Creating task-004"}, {"content": "Update lead/state.md (mandate, backlog, decisions)", "status": "completed", "activeForm": "Updating lead/state.md"}, {"content": "Prepend to lead/decisions.md", "status": "completed", "activeForm": "Prepending to lead/decisions.md"}]`
+**Assistant:**
+
+Now add the one-liner to Recent Decisions in state.md and delete NO_TASKS:
+
+**→ `Edit`**
+  - **replace_all:** `false`
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
+  - **old_string:** `## Recent Decisions
+<!-- Top 20 only — one line each. Full log in lead/decisions.md -->
+<!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T22:00] task-004 ACCEPTED — all 9 criteria met; gh self-review blocked (known single-author limit), accepted via branch diff; NO_TASKS written`
+  - **new_string:** `## Recent Decisions
+<!-- Top 20 only — one line each. Full log in lead/decisions.md -->
+<!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T23:00] task-005 ASSIGNED — fix orchestrator merge gate; remove reviewDecision check from orchestrator.sh; read from outbox.md direction
+- [2026-03-01T22:00] task-004 ACCEPTED — all 9 criteria met; gh self-review blocked (known single-author limit), accepted via branch diff; NO_TASKS written`
 
 **← Result:**
 ```
-Todos have been modified successfully. Ensure that you continue to use the todo list to track your progress. Please proceed with the current tasks if applicable
+The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md has been updated successfully.
 ```
 
 **Assistant:**
 
-Cycle complete. Here's what happened:
+Now delete `lead/NO_TASKS` since we have active work:
 
-**No tasks in review** — task-001, 002, 003 all previously accepted. Nothing to act on.
+**→ `Bash`**
+  - **command:** `rm /home/runner/work/agentic-org-v2/agentic-org-v2/lead/NO_TASKS`
+  - **description:** `Remove NO_TASKS stop signal — active task exists`
 
-**New direction read:** `outbox.md` (committed by Think) directs repo restructure to a three-domain architecture:
-- `logs/lead/` for Lead invocation logs
-- `lead/outbox.md` as Lead→Think channel
-- `lead/logs/build/` for Build invocation logs
-- Updated `CLAUDE.md` write boundaries
-- `outbox.md` cleared after Lead reads it
+**Assistant:**
 
-**Actions taken:**
-1. **Deleted `lead/NO_TASKS`** — stop signal removed; orchestrator will proceed to Build phase
-2. **Created `lead/tasks/task-004/`** — package.md with full checklist + explicit expanded write scope for this structural task; status: assigned, branch: `task/004-repo-restructure`
-3. **Updated `lead/state.md`** — new mandate (repo restructure), task-004 in Active backlog
-4. **Prepended to `lead/decisions.md`** — full what/why logged
+Now verify final state:
 
-Build will execute task-004 next, making all structural file moves and updates.
+**→ `Read`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
+
+**← Result:**
+```
+     1→# Lead State
+     2→
+     3→Dynamic working memory. Updated by Lead each cycle.
+     4→Full decisions log: `lead/decisions.md` (newest first).
+     5→
+     6→---
+     7→
+     8→## Mandate
+     9→
+    10→**Current focus: Orchestrator fix (infrastructure/housekeeping)**
+    11→
+    12→Fix merge gate in `orchestrator.sh`: remove GitHub `reviewDecision` check; merge on `status.md: accepted` alone. Direction queued by Think via root `outbox.md`.
+    13→
+    14→**Prior focus (complete):** Repo restructuring to three-domain architecture (task-004 accepted 2026-03-01).
+    15→
+    16→**Next:** Human to set next product mandate after orchestrator fix completes.
+    17→
+    18→---
+    19→
+    20→## Backlog
+    21→
+    22→### Needs Human Input
+    23→<!-- Tasks or decisions blocked on human — describe exactly what's needed -->
+    24→*(none)*
+    25→
+    26→### Planned
+    27→<!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
+    28→*(none)*
+    29→
+    30→### Active
+    31→<!-- Format: - [task-XXX] Description | status | branch -->
+    32→- [task-005] Fix orchestrator merge gate (remove reviewDecision check) | assigned | task/005-fix-merge-gate
+    33→
+    34→### Done (recent)
+    35→<!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
+    36→- [task-004] Restructure repo to three-domain architecture | accepted | 2026-03-01
+    37→- [task-003] Org Progress Dashboard (single-file HTML, GitHub API) | accepted | 2026-03-01
+    38→- [task-002] Bookmark Manager REST API (Python/FastAPI) | accepted | 2026-03-01
+    39→- [task-001] Node.js REST API (items CRUD) | accepted | 2026-03-01
+    40→
+    41→---
+    42→
+    43→## Recent Decisions
+    44→<!-- Top 20 only — one line each. Full log in lead/decisions.md -->
+    45→<!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+    46→- [2026-03-01T23:00] task-005 ASSIGNED — fix orchestrator merge gate; remove reviewDecision check from orchestrator.sh; read 
+… [1878 chars]
+```
+
+**Assistant:**
+
+Lead cycle complete. Here's what happened:
+
+**Reviewed:** No tasks in `review` status — nothing to act on.
+
+**Read outbox.md:** Human (Think mode) queued a direction via commit `5ec5cdb`: fix the orchestrator merge gate by removing the `reviewDecision` check from `orchestrator.sh`. The orchestrator currently blocks accepted-task merges with `if reviewDecision=APPROVED`, but GitHub prevents self-review in single-author environments, so no PR ever auto-merges.
+
+**Assigned:**
+- **task-005** (`task/005-fix-merge-gate`) — surgical edit to `orchestrator.sh`: remove the `gh pr view --json reviewDecision` gate and merge on `status.md: accepted` alone. Build agent also clears `outbox.md` back to empty template.
+
+**State changes:**
+- `lead/NO_TASKS` deleted (active work exists)
+- `lead/state.md` updated with new mandate + task-005 in Active
+- `lead/decisions.md` prepended
+- `lead/tasks/task-005/package.md` + `status.md` created
 
 ---
 
 ## Final Output
 
-Cycle complete. Here's what happened:
+Lead cycle complete. Here's what happened:
 
-**No tasks in review** — task-001, 002, 003 all previously accepted. Nothing to act on.
+**Reviewed:** No tasks in `review` status — nothing to act on.
 
-**New direction read:** `outbox.md` (committed by Think) directs repo restructure to a three-domain architecture:
-- `logs/lead/` for Lead invocation logs
-- `lead/outbox.md` as Lead→Think channel
-- `lead/logs/build/` for Build invocation logs
-- Updated `CLAUDE.md` write boundaries
-- `outbox.md` cleared after Lead reads it
+**Read outbox.md:** Human (Think mode) queued a direction via commit `5ec5cdb`: fix the orchestrator merge gate by removing the `reviewDecision` check from `orchestrator.sh`. The orchestrator currently blocks accepted-task merges with `if reviewDecision=APPROVED`, but GitHub prevents self-review in single-author environments, so no PR ever auto-merges.
 
-**Actions taken:**
-1. **Deleted `lead/NO_TASKS`** — stop signal removed; orchestrator will proceed to Build phase
-2. **Created `lead/tasks/task-004/`** — package.md with full checklist + explicit expanded write scope for this structural task; status: assigned, branch: `task/004-repo-restructure`
-3. **Updated `lead/state.md`** — new mandate (repo restructure), task-004 in Active backlog
-4. **Prepended to `lead/decisions.md`** — full what/why logged
+**Assigned:**
+- **task-005** (`task/005-fix-merge-gate`) — surgical edit to `orchestrator.sh`: remove the `gh pr view --json reviewDecision` gate and merge on `status.md: accepted` alone. Build agent also clears `outbox.md` back to empty template.
 
-Build will execute task-004 next, making all structural file moves and updates.
+**State changes:**
+- `lead/NO_TASKS` deleted (active work exists)
+- `lead/state.md` updated with new mandate + task-005 in Active
+- `lead/decisions.md` prepended
+- `lead/tasks/task-005/package.md` + `status.md` created
 
 ---
 
-**Turns:** 33 | **Duration:** 271.3s | **Status:** success
+**Turns:** 26 | **Duration:** 154.7s | **Status:** success
 

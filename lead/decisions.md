@@ -4,6 +4,12 @@ Newest first. Each entry: timestamp, task, action, what was decided and why (con
 
 ---
 
+## [2026-03-01T23:00] task-005 ASSIGNED — fix orchestrator merge gate
+**What:** Read direction from root `outbox.md` (commit 5ec5cdb, authored by human in Think mode): remove the `reviewDecision` check from `process_lead_decisions()` in `orchestrator.sh`. Currently the orchestrator only merges accepted PRs when GitHub's `reviewDecision=APPROVED`, but GitHub blocks self-review in single-author environments, so no PR ever auto-merges. Fix: merge on `status.md: accepted` alone; drop the `gh pr view --json reviewDecision` gate entirely. Build agent also clears `outbox.md` back to empty template. Created task-005 on branch `task/005-fix-merge-gate`. Deleted `lead/NO_TASKS` stop signal.
+**Why:** The merge gate is broken by design in this single-author GitHub environment. Every accepted task stays blocked. The fix is a 5-line surgical edit to orchestrator.sh — low risk, high value. Lead's status.md decision is the authority; GitHub review is redundant here.
+
+---
+
 ## [2026-03-01T22:00] task-004 ACCEPTED — three-domain repo restructure
 **What:** Reviewed PR #1 (branch task/004-repo-restructure) via `git diff main...task/004-repo-restructure`. All 9 acceptance criteria verified: `logs/lead/` contains cycle-1 files; old `logs/cycle-1.*` removed; `orchestrator.sh` transcript path updated to `logs/lead/cycle-${CYCLE}.md` and `preflight()` has `mkdir -p logs/lead`; `lead/outbox.md` created with correct template; `lead/logs/build/.gitkeep` present; root `CLAUDE.md` explicitly states per-mode read/write boundaries for Think/Lead/Build; root `outbox.md` cleared to empty template. `gh pr review --approve` blocked by GitHub's self-review restriction (same single-author environment as prior tasks). Accepted via branch diff per established precedent (task-002, task-003).
 **Why:** Implementation is correct and complete. Three-domain architecture is now in place. Backlog is empty — writing NO_TASKS. Human input needed to set next mandate.

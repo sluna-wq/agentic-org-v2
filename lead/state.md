@@ -7,18 +7,13 @@ Full decisions log: `lead/decisions.md` (newest first).
 
 ## Mandate
 
-**Current focus: Repo restructuring (infrastructure/housekeeping)**
+**Current focus: Orchestrator fix (infrastructure/housekeeping)**
 
-Restructuring the repo to a clean three-domain architecture, directed by Think via `outbox.md`:
-- `logs/lead/` — Lead invocation logs (moved from `logs/`)
-- `lead/outbox.md` — Lead→Think communication channel
-- `lead/logs/build/` — Build invocation logs
-- Updated root `CLAUDE.md` with explicit per-mode write boundaries
-- Cleared root `outbox.md` after Lead reads it
+Fix merge gate in `orchestrator.sh`: remove GitHub `reviewDecision` check; merge on `status.md: accepted` alone. Direction queued by Think via root `outbox.md`.
 
-**Prior product mandate (complete):** Org Progress Dashboard — single-file browser app (`product/dashboard/index.html`) reading live org state from the GitHub API. All 3 product tasks delivered (task-001 through task-003).
+**Prior focus (complete):** Repo restructuring to three-domain architecture (task-004 accepted 2026-03-01).
 
-**Next:** Human to set next product mandate after restructuring completes.
+**Next:** Human to set next product mandate after orchestrator fix completes.
 
 ---
 
@@ -34,7 +29,7 @@ Restructuring the repo to a clean three-domain architecture, directed by Think v
 
 ### Active
 <!-- Format: - [task-XXX] Description | status | branch -->
-*(none)*
+- [task-005] Fix orchestrator merge gate (remove reviewDecision check) | assigned | task/005-fix-merge-gate
 
 ### Done (recent)
 <!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
@@ -48,6 +43,7 @@ Restructuring the repo to a clean three-domain architecture, directed by Think v
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in lead/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T23:00] task-005 ASSIGNED — fix orchestrator merge gate; remove reviewDecision check from orchestrator.sh; read from outbox.md direction
 - [2026-03-01T22:00] task-004 ACCEPTED — all 9 criteria met; gh self-review blocked (known single-author limit), accepted via branch diff; NO_TASKS written
 - [2026-03-01T21:00] task-004 ASSIGNED — repo restructure to three-domain architecture per Think outbox.md direction; NO_TASKS cleared
 - [2026-03-01T20:00] LEAD CYCLE PASS — mandate complete, all tasks accepted, backlog empty; NO_TASKS written
