@@ -5,7 +5,7 @@ set -euo pipefail
 # Orchestrator
 #
 # Commit strategy (explicit):
-#   Task agents   → commit code to their branch as they work
+#   Build agents  → commit code to their branch as they work
 #   Orchestrator  → pushes branch, opens PR when task completes
 #   Orchestrator  → squash-merges PR when Lead accepts
 #   Orchestrator  → closes + deletes branch when Lead discards
@@ -19,7 +19,7 @@ LEAD_DIR="$REPO_ROOT/lead"
 TASKS_DIR="$LEAD_DIR/tasks"
 MAX_CYCLES="${MAX_CYCLES:-999}"
 LEAD_MAX_TURNS="${LEAD_MAX_TURNS:-40}"
-TASK_MAX_TURNS="${TASK_MAX_TURNS:-60}"
+BUILD_MAX_TURNS="${BUILD_MAX_TURNS:-60}"
 CYCLE=0
 
 # ── Pre-flight ────────────────────────────────────────────────────
@@ -62,7 +62,7 @@ preflight() {
   fi
   git checkout main
 
-  log "Pre-flight OK. Max turns: Lead=$LEAD_MAX_TURNS Task=$TASK_MAX_TURNS"
+  log "Pre-flight OK. Max turns: Lead=$LEAD_MAX_TURNS Task=$BUILD_MAX_TURNS"
 }
 
 # ── Helpers ───────────────────────────────────────────────────────
@@ -281,10 +281,10 @@ process_lead_decisions() {
   git pull --rebase origin main 2>/dev/null || true
 }
 
-# ── Phase 2: Run task agents ──────────────────────────────────────
+# ── Phase 2: Run build agents ──────────────────────────────────────
 
-run_task_phase() {
-  log "=== Phase 2: Tasks (cycle $CYCLE) ==="
+run_build_phase() {
+  log "=== Phase 2: Build (cycle $CYCLE) ==="
 
   # Run both newly assigned tasks AND tasks needing changes
   local runnable=()
@@ -292,7 +292,7 @@ run_task_phase() {
   while IFS= read -r d; do [ -d "$d" ] && runnable+=("$d"); done < <(tasks_with_status "changes_requested")
 
   if [ ${#runnable[@]} -eq 0 ]; then
-    log "No runnable tasks this cycle."
+    log "No runnable builds this cycle."
     return 0
   fi
 
@@ -354,7 +354,7 @@ run_task_phase() {
 
     local task_prompt
     task_prompt=$(cat <<PROMPT
-[MODE:TASK]
+[MODE:BUILD]
 
 Task ID  : $task_id
 Branch   : $branch
@@ -374,7 +374,7 @@ PROMPT
 )
 
     # Run the task agent — it commits its own code changes
-    run_claude "$task_id" "$task_prompt" "$TASK_MAX_TURNS" "$transcript_file"
+    run_claude "$task_id" "$task_prompt" "$BUILD_MAX_TURNS" "$transcript_file"
 
     # Safety: force status=review if agent forgot
     local current_status
@@ -465,7 +465,7 @@ main() {
     process_lead_decisions
     should_stop && { log "Stopping."; break; }
 
-    run_task_phase
+    run_build_phase
     should_stop && { log "Stopping."; break; }
 
     log "Cycle $CYCLE complete."

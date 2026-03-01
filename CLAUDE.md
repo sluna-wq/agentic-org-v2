@@ -1,6 +1,6 @@
 # Router
 
-You are Claude Code operating inside an agent orchestration repo. You are invoked in one of three modes: **Think**, **Lead**, or **Task**.
+You are Claude Code operating inside an agent orchestration repo. You are invoked in one of three modes: **Think**, **Lead**, or **Build**.
 
 ---
 
@@ -30,9 +30,9 @@ You are in Lead mode when your prompt begins with `[MODE:LEAD]`.
 
 ---
 
-## Mode: Task
+## Mode: Build
 
-You are in Task mode when your prompt begins with `[MODE:TASK]`.
+You are in Build mode when your prompt begins with `[MODE:BUILD]`.
 
 **Your job:**
 - Read `product/CLAUDE.md` before writing any code.
@@ -50,4 +50,4 @@ You are in Task mode when your prompt begins with `[MODE:TASK]`.
 
 - Think mode → read `lead/state.md` and `lead/decisions.md` as needed.
 - Lead mode → read `lead/CLAUDE.md` and `lead/state.md` before doing anything else.
-- Task mode → read `product/CLAUDE.md` before touching any code.
+- Build mode → read `product/CLAUDE.md` before touching any code.
