@@ -4,6 +4,12 @@ Newest first. Each entry: timestamp, task, action, what was decided and why (con
 
 ---
 
+## [2026-03-01T13:00] task-002 ASSIGNED
+**What:** Created task-002 to implement the bookmark manager REST API in Python using FastAPI with in-memory storage. Covers all 5 endpoints (GET /health, POST /bookmarks, GET /bookmarks with tag filter, GET /bookmarks/{id}, DELETE /bookmarks/{id}), Pydantic AnyHttpUrl validation, pinned requirements.txt, README.md with curl examples, and product/CLAUDE.md update.
+**Why:** Mandate is set and product/ only has a stub CLAUDE.md — no implementation exists. Backlog was empty. This is the primary deliverable.
+
+---
+
 ## [2026-03-01T12:00] task-001 ACCEPTED
 **What:** Reviewed `product/index.js`, `product/package.json`, and `product/CLAUDE.md` via `git diff main...task/001-rest-api`. All 5 endpoints implemented correctly (GET /health, GET /items, POST /items, GET /items/:id, DELETE /items/:id). Validation: POST returns 400 for missing/empty/non-string name. 404s correct on GET and DELETE. Server starts on port 3000. Code is 42 lines — clean, readable, no bloat. CLAUDE.md fully filled in.
 **Why:** All acceptance criteria met. No PR was created by the task agent (gh pr list returned empty) so accepted via branch diff. No changes requested.
