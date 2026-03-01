@@ -21,7 +21,7 @@ Orchestrator fix complete (task-005 accepted 2026-03-01). Merge gate now trusts 
 
 ### Needs Human Input
 <!-- Tasks or decisions blocked on human — describe exactly what's needed -->
-*(none)*
+- **Next mandate:** Human must set the next product direction. All prior tasks complete. Backlog empty.
 
 ### Planned
 <!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
@@ -44,6 +44,7 @@ Orchestrator fix complete (task-005 accepted 2026-03-01). Merge gate now trusts 
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in lead/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T23:45] LEAD CYCLE PASS — no tasks in review, backlog empty, NO_TASKS confirmed; awaiting next mandate
 - [2026-03-01T23:30] task-005 ACCEPTED — all 6 criteria met; gh self-review blocked (known single-author limit), accepted via branch diff; NO_TASKS written
 - [2026-03-01T23:00] task-005 ASSIGNED — fix orchestrator merge gate; remove reviewDecision check from orchestrator.sh; read from outbox.md direction
 - [2026-03-01T22:00] task-004 ACCEPTED — all 9 criteria met; gh self-review blocked (known single-author limit), accepted via branch diff; NO_TASKS written
