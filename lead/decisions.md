@@ -4,6 +4,12 @@ Newest first. Each entry: timestamp, task, action, what was decided and why (con
 
 ---
 
+## [2026-03-01T23:30] task-005 ACCEPTED — orchestrator merge gate fixed
+**What:** Reviewed PR #2 (branch task/005-fix-merge-gate) via `git diff main...task/005-fix-merge-gate`. All 6 acceptance criteria verified: `reviewDecision` variable and `gh pr view --json reviewDecision` call removed; accepted PRs now merge immediately on `status.md=accepted`; "no PR number recorded — skipping merge" guard retained; comment updated to "trust status.md: accepted as merge authority"; `outbox.md` cleared to empty template; no other logic changed. `gh pr review --approve` blocked by GitHub self-review restriction (single-author environment, same as task-004). Accepted via branch diff per established precedent.
+**Why:** Clean surgical 5-line edit. Merge gate is now correct — Lead's status.md decision is sole authority. Backlog now empty; writing NO_TASKS.
+
+---
+
 ## [2026-03-01T23:00] task-005 ASSIGNED — fix orchestrator merge gate
 **What:** Read direction from root `outbox.md` (commit 5ec5cdb, authored by human in Think mode): remove the `reviewDecision` check from `process_lead_decisions()` in `orchestrator.sh`. Currently the orchestrator only merges accepted PRs when GitHub's `reviewDecision=APPROVED`, but GitHub blocks self-review in single-author environments, so no PR ever auto-merges. Fix: merge on `status.md: accepted` alone; drop the `gh pr view --json reviewDecision` gate entirely. Build agent also clears `outbox.md` back to empty template. Created task-005 on branch `task/005-fix-merge-gate`. Deleted `lead/NO_TASKS` stop signal.
 **Why:** The merge gate is broken by design in this single-author GitHub environment. Every accepted task stays blocked. The fix is a 5-line surgical edit to orchestrator.sh — low risk, high value. Lead's status.md decision is the authority; GitHub review is redundant here.
