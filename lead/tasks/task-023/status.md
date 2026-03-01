@@ -1,4 +1,4 @@
-status: in_progress
+status: review
 branch: task/023-synthesis-report
 created: 2026-03-01
 topology: none
