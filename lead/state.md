@@ -7,13 +7,11 @@ Full decisions log: `lead/decisions.md` (newest first).
 
 ## Mandate
 
-**Current focus: Awaiting next mandate**
+**Current focus: Repo restructure to three-domain architecture**
 
-Orchestrator fix complete (task-005 accepted 2026-03-01). Merge gate now trusts `status.md: accepted` as sole authority — no GitHub reviewDecision gate.
+Re-running task-004 from scratch as task-006. PR #1 (task-004) was closed with merge conflicts; structural changes never landed on main. task-005 (merge gate fix) is now on main — clean base for the restructure.
 
-**Prior focus (complete):** Repo restructuring to three-domain architecture (task-004 accepted 2026-03-01).
-
-**Next:** Human to set next product mandate.
+**Prior focus (complete):** Orchestrator merge gate fix (task-005 accepted 2026-03-01).
 
 ---
 
@@ -21,7 +19,7 @@ Orchestrator fix complete (task-005 accepted 2026-03-01). Merge gate now trusts 
 
 ### Needs Human Input
 <!-- Tasks or decisions blocked on human — describe exactly what's needed -->
-- **Next mandate:** Human must set the next product direction. All prior tasks complete. Backlog empty.
+*(none)*
 
 ### Planned
 <!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
@@ -29,12 +27,12 @@ Orchestrator fix complete (task-005 accepted 2026-03-01). Merge gate now trusts 
 
 ### Active
 <!-- Format: - [task-XXX] Description | status | branch -->
-*(none)*
+- [task-006] Restructure repo to three-domain architecture | assigned | task/006-repo-restructure
 
 ### Done (recent)
 <!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
 - [task-005] Fix orchestrator merge gate (remove reviewDecision check) | accepted | 2026-03-01
-- [task-004] Restructure repo to three-domain architecture | accepted | 2026-03-01
+- [task-004] Restructure repo to three-domain architecture | discarded (PR #1 closed, merge conflicts) | 2026-03-01
 - [task-003] Org Progress Dashboard (single-file HTML, GitHub API) | accepted | 2026-03-01
 - [task-002] Bookmark Manager REST API (Python/FastAPI) | accepted | 2026-03-01
 - [task-001] Node.js REST API (items CRUD) | accepted | 2026-03-01
@@ -44,6 +42,7 @@ Orchestrator fix complete (task-005 accepted 2026-03-01). Merge gate now trusts 
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in lead/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T23:50] task-006 ASSIGNED — repo restructure re-run from main; PR #1 already closed, changes never landed
 - [2026-03-01T23:45] LEAD CYCLE PASS — no tasks in review, backlog empty, NO_TASKS confirmed; awaiting next mandate
 - [2026-03-01T23:30] task-005 ACCEPTED — all 6 criteria met; gh self-review blocked (known single-author limit), accepted via branch diff; NO_TASKS written
 - [2026-03-01T23:00] task-005 ASSIGNED — fix orchestrator merge gate; remove reviewDecision check from orchestrator.sh; read from outbox.md direction

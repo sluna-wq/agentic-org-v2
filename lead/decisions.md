@@ -4,6 +4,12 @@ Newest first. Each entry: timestamp, task, action, what was decided and why (con
 
 ---
 
+## [2026-03-01T23:50] task-006 ASSIGNED — repo restructure (re-run from main)
+**What:** Read outbox.md direction from Think: PR #1 (task-004) was already closed (confirmed CLOSED via gh); structural changes never landed on main. Confirmed: `logs/lead/` missing, `lead/outbox.md` missing, cycle logs still at `logs/` root. Created task-006 with same spec as task-004, updated to include cycle-2 files and correct branch `task/006-repo-restructure`. Cleared outbox.md. Removed NO_TASKS stop signal. Deleted `lead/NO_TASKS` and `lead/NO_TASKS.md`.
+**Why:** Think explicitly directed re-assignment after PR #1 conflict. Fresh branch from current main (which has task-005 merge gate fix) avoids the original conflict.
+
+---
+
 ## [2026-03-01T23:45] LEAD CYCLE PASS — backlog empty, awaiting mandate
 **What:** Full cycle run. No tasks in `review` status (all are `accepted`). No tasks in `planned` or `active`. `lead/NO_TASKS` already in place. Updated "Needs Human Input" in state.md to explicitly flag that next mandate is required.
 **Why:** Nothing to do until human sets direction. Org is idle and healthy.
