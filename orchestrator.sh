@@ -68,6 +68,127 @@ preflight() {
 
 log() { echo "[orchestrator] $*"; }
 
+# Convert claude's stream-json output to readable markdown.
+# Reads from stdin, writes to stdout.
+# Usage: claude ... --output-format stream-json | jsonl_to_md "label" | tee transcript.md
+jsonl_to_md() {
+  python3 - "$1" <<'PYEOF'
+import sys, json
+from datetime import datetime, timezone
+
+label = sys.argv[1] if len(sys.argv) > 1 else "session"
+now   = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+print(f"# Session: {label}")
+print(f"Generated: {now}\n\n---\n")
+
+def clip(s, n=600):
+    s = str(s)
+    return s if len(s) <= n else s[:n] + f"\n… [{len(s)-n} chars]"
+
+for raw in sys.stdin:
+    raw = raw.strip()
+    if not raw:
+        continue
+    try:
+        e = json.loads(raw)
+    except json.JSONDecodeError:
+        sys.stderr.write(f"[non-json] {raw}\n")
+        continue
+
+    t = e.get("type", "")
+
+    if t == "system":
+        model = e.get("model", "")
+        mode  = e.get("permissionMode", "")
+        tools = [x["name"] for x in e.get("tools", []) if "name" in x]
+        print(f"**Model:** `{model}` | **Mode:** `{mode}`")
+        if tools:
+            print(f"**Tools available:** {', '.join(tools)}")
+        print()
+
+    elif t == "assistant":
+        for blk in e.get("message", {}).get("content", []):
+            bt = blk.get("type", "")
+            if bt == "text":
+                text = blk.get("text", "").strip()
+                if text:
+                    print(f"**Assistant:**\n\n{text}\n")
+            elif bt == "tool_use":
+                name = blk.get("name", "")
+                inp  = blk.get("input", {})
+                print(f"**→ `{name}`**")
+                for k, v in inp.items():
+                    s = json.dumps(v) if not isinstance(v, str) else v
+                    print(f"  - **{k}:** `{clip(s)}`")
+                print()
+
+    elif t == "user":
+        for blk in e.get("message", {}).get("content", []):
+            if blk.get("type") != "tool_result":
+                continue
+            raw_content = blk.get("content", "")
+            if isinstance(raw_content, list):
+                text = "\n".join(i.get("text","") for i in raw_content if i.get("type")=="text")
+            else:
+                text = str(raw_content)
+            if text.strip():
+                print(f"**← Result:**\n```\n{clip(text, 2000)}\n```\n")
+
+    elif t == "result":
+        result   = e.get("result", "")
+        turns    = e.get("num_turns", "?")
+        duration = e.get("duration_ms", 0) / 1000
+        is_error = e.get("is_error", False)
+        status   = "ERROR" if is_error else "success"
+        print(f"---\n\n## Final Output\n\n{result}\n")
+        print(f"---\n\n**Turns:** {turns} | **Duration:** {duration:.1f}s | **Status:** {status}\n")
+PYEOF
+}
+
+# Run a claude session, capturing full stream-json + formatted markdown transcript.
+#
+# $1 label        — human-readable name for the transcript header
+# $2 prompt       — the full prompt string
+# $3 max_turns    — --max-turns value
+# $4 out_md       — path to write formatted markdown transcript (also shown in terminal)
+#
+# Raw stream-json is written to ${out_md%.md}.jsonl alongside the markdown.
+# Both files are committed to the repo for full auditability.
+run_claude() {
+  local label="$1" prompt="$2" max_turns="$3" out_md="$4"
+  local out_jsonl="${out_md%.md}.jsonl"
+
+  # Pipeline:
+  #   claude -> tee(raw jsonl) -> jsonl_to_md -> tee(transcript md + terminal)
+  claude --dangerously-skip-permissions \
+    --max-turns "$max_turns" \
+    -p "$prompt" \
+    --output-format stream-json \
+    2>&1 \
+    | tee "$out_jsonl" \
+    | jsonl_to_md "$label" \
+    | tee "$out_md"
+}
+
+# Extract the "Final Output" section from a prior transcript jsonl.
+# Used for revision context — we inject the summary, not the full tool log.
+extract_final_output() {
+  local jsonl="$1"
+  [ -f "$jsonl" ] || return
+  python3 -c "
+import sys, json
+for line in open(sys.argv[1]):
+    line = line.strip()
+    if not line: continue
+    try:
+        e = json.loads(line)
+        if e.get('type') == 'result':
+            print(e.get('result', ''))
+    except: pass
+" "$jsonl" 2>/dev/null || true
+}
+
 # Commit anything pending in the repo to current branch
 commit_all() {
   local msg="$1"
@@ -168,11 +289,7 @@ PROMPT
 )
 
   local transcript="$CTO_DIR/cto_cycle_${CYCLE}.transcript.md"
-  claude --dangerously-skip-permissions \
-    --max-turns "$CTO_MAX_TURNS" \
-    -p "$cto_prompt" \
-    --output-format text \
-    2>&1 | tee "$transcript"
+  run_claude "cto-cycle-${CYCLE}" "$cto_prompt" "$CTO_MAX_TURNS" "$transcript"
 
   # Commit all CTO changes (decisions, backlog, new task packages) to main
   commit_all "cto: cycle $CYCLE — review + assign"
@@ -293,8 +410,15 @@ run_task_phase() {
       fi
     fi
 
-    # Append prior transcript for full context on revisions
-    if [ -f "$transcript_file" ]; then
+    # For revisions: inject only the final output summary from the prior session,
+    # not the full tool log — keeps tokens manageable.
+    local prior_jsonl="${transcript_file%.md}.jsonl"
+    local prior_summary
+    prior_summary=$(extract_final_output "$prior_jsonl")
+    if [ -n "$prior_summary" ]; then
+      revision_context="${revision_context}"$(printf '\n\n---\n\n## Prior Session Summary\n\n%s' "$prior_summary")
+    elif [ -f "$transcript_file" ]; then
+      # Fallback: no jsonl yet (first run before this change), use full md transcript
       revision_context="${revision_context}"$(printf '\n\n---\n\n## Prior Transcript\n\n%s' "$(cat "$transcript_file")")
     fi
 
@@ -320,11 +444,7 @@ PROMPT
 )
 
     # Run the task agent — it commits its own code changes
-    claude --dangerously-skip-permissions \
-      --max-turns "$TASK_MAX_TURNS" \
-      -p "$task_prompt" \
-      --output-format text \
-      2>&1 | tee "$transcript_file"
+    run_claude "$task_id" "$task_prompt" "$TASK_MAX_TURNS" "$transcript_file"
 
     # Safety: force status=review if agent forgot
     local current_status
