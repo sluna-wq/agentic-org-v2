@@ -89,15 +89,16 @@ We are building a simple REST API in Node.js (Express).
 
 ### Active
 <!-- Format: - [task-XXX] Description | status | branch -->
-- [task-001] Bootstrap product/CLAUDE.md + implement REST API | assigned | task/001-rest-api
+*(none)*
 
 ### Done (recent)
 <!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
-*(none)*
+- [task-001] Bootstrap product/CLAUDE.md + implement REST API | accepted | 2026-03-01
 
 ---
 
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in cto/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T12:00] task-001 ACCEPTED — all 5 endpoints correct, clean 42-line implementation, no PR found so accepted via branch diff
 - [2026-03-01T00:00] task-001 ASSIGNED — first task: bootstrap product context + implement full REST API (Express, in-memory)

@@ -1,0 +1,6 @@
+All tasks complete as of 2026-03-01.
+
+Mandate fulfilled: simple REST API (Node.js + Express, in-memory) with all 5 endpoints
+implemented and accepted (task-001). No backlog remaining.
+
+Next action: orchestrator should merge task/001-rest-api into main.
