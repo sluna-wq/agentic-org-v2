@@ -1,19 +1,19 @@
-name: CTO Orchestrator
+name: Agentic Org Orchestrator
 
 on:
   # Manual trigger — main way to run this
   workflow_dispatch:
     inputs:
       max_cycles:
-        description: "How many CTO→Task cycles to run"
+        description: "How many Lead→Build cycles to run"
         required: false
         default: "3"
-      cto_max_turns:
-        description: "Max turns per CTO session"
+      lead_max_turns:
+        description: "Max turns per Lead session"
         required: false
         default: "40"
-      task_max_turns:
-        description: "Max turns per Task session"
+      build_max_turns:
+        description: "Max turns per Build session"
         required: false
         default: "60"
 
@@ -21,15 +21,19 @@ on:
   # schedule:
   #   - cron: "0 9 * * 1-5"
 
-# Needed to push branches, open/merge/close PRs, and commit to main
+# Needed to push branches, open/merge/close PRs, commit to main, and deploy Pages
 permissions:
   contents: write
   pull-requests: write
+  pages: write
+  id-token: write
 
 jobs:
   run:
     runs-on: ubuntu-latest
     timeout-minutes: 120  # hard ceiling — adjust if tasks are very long
+    outputs:
+      dashboard_changed: ${{ steps.check_dashboard.outputs.changed }}
 
     steps:
       - name: Checkout repo (full history)
@@ -48,8 +52,8 @@ jobs:
 
       - name: Configure git identity
         run: |
-          git config user.email "orchestrator@cto-repo.local"
-          git config user.name "CTO Orchestrator"
+          git config user.email "orchestrator@repo.local"
+          git config user.name "Orchestrator"
 
       - name: Run orchestrator
         run: ./orchestrator.sh
@@ -58,7 +62,41 @@ jobs:
           # gh CLI picks up GH_TOKEN automatically for PR operations
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MAX_CYCLES: ${{ inputs.max_cycles || '3' }}
-          CTO_MAX_TURNS: ${{ inputs.cto_max_turns || '40' }}
-          TASK_MAX_TURNS: ${{ inputs.task_max_turns || '60' }}
+          LEAD_MAX_TURNS: ${{ inputs.lead_max_turns || '40' }}
+          BUILD_MAX_TURNS: ${{ inputs.build_max_turns || '60' }}
           # Tell git to push to the right remote
           GITHUB_REPOSITORY: ${{ github.repository }}
+
+      - name: Check if dashboard changed
+        id: check_dashboard
+        run: |
+          if git diff HEAD~1 --name-only 2>/dev/null | grep -q 'product/dashboard/'; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  deploy-pages:
+    needs: run
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload dashboard as Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: product/dashboard
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

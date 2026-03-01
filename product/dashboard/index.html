@@ -394,7 +394,7 @@ const LS_TOKEN = 'org_dash_token';
 const $ = id => document.getElementById(id);
 
 function loadConfig() {
-  $('inp-repo').value  = localStorage.getItem(LS_REPO)  || '';
+  $('inp-repo').value  = localStorage.getItem(LS_REPO)  || 'sluna-wq/agentic-org-v2';
   $('inp-token').value = localStorage.getItem(LS_TOKEN) || '';
 }
 

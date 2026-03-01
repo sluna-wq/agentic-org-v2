@@ -1,47 +1,40 @@
 # Org Progress Dashboard
 
-A single-file browser dashboard that shows the live state of this agentic org — mandate, task board, decisions log, and cycle timeline — by reading directly from the GitHub API.
+Live dashboard for this agentic org — mandate, task board, decisions log, and cycle timeline.
 
-## How to open it
+## Access
+
+**GitHub Pages (primary):** https://sluna-wq.github.io/agentic-org-v2/
+
+Auto-deployed after every orchestrator run. No setup needed — just visit the URL.
+
+> First-time setup: go to **Settings → Pages → Source → GitHub Actions** in the repo to enable Pages.
 
 **Locally:**
 ```
 open product/dashboard/index.html
-# or:
-python3 -m http.server 8080 --directory product/dashboard
-# then visit http://localhost:8080
 ```
-
-**GitHub Pages:**
-Enable Pages on the repo (Settings → Pages → Source: `main` branch, `/docs` folder or a deploy workflow), copy `index.html` to the configured location. No build step needed.
 
 ## Configuration
 
-On first load you'll see a config bar at the top:
+The dashboard defaults to `sluna-wq/agentic-org-v2` — loads automatically on first open.
 
-| Field | Required | Description |
+| Field | Required | Notes |
 |---|---|---|
-| GitHub repo | Yes | `owner/repo` — e.g. `acme/agentic-org` |
-| Personal access token | No* | Needed for private repos. Raises rate limit from 60 to 5000 req/hr. |
+| GitHub repo | Yes | Pre-filled. Change only if you fork. |
+| Personal access token | No | For private repos or >60 req/hr rate limit. |
 
-Config is saved to `localStorage` and auto-loaded on next visit.
-
-## Getting a GitHub PAT
-
-1. GitHub → Settings → Developer Settings → Personal access tokens → Fine-grained tokens
-2. Create token with **read access** to: `Contents`, `Actions`, `Metadata`
-3. Paste into the token field in the dashboard
+Config is saved to `localStorage`.
 
 ## What it shows
 
 | Section | Source |
 |---|---|
-| **Mandate** | `lead/state.md` (the `## Mandate` section) |
-| **Task Board** | `lead/tasks/*/status.md` + `lead/tasks/*/package.md` — grouped into Planned / Active / Review / Done |
+| **Mandate** | `lead/state.md` — current focus |
+| **Task Board** | `lead/tasks/*/status.md` + `package.md` — Planned / Active / Review / Done |
 | **Decisions** | `lead/decisions.md` — last 10 entries |
-| **Cycle Timeline** | GitHub Actions workflow runs — last 10, with status and duration |
+| **Cycle Timeline** | GitHub Actions runs — last 10, with status and duration |
 
-## Dependencies
+## Getting a PAT (if needed)
 
-- [`marked.js`](https://marked.js.org/) via CDN (markdown rendering only) — loaded from `cdn.jsdelivr.net`
-- GitHub REST API v3 (no API key needed for public repos)
+Settings → Developer Settings → Fine-grained tokens → read access to: `Contents`, `Actions`, `Metadata`.
