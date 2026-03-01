@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Debate Engine</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --border: #2a2d3a;
+      --accent: #5b7fff;
+      --accent-hover: #7a96ff;
+      --against: #ff5b5b;
+      --against-hover: #ff7a7a;
+      --for: #3dd68c;
+      --text: #e2e4ee;
+      --muted: #8b8fa8;
+      --error-bg: #3a1a1a;
+      --error-border: #8b2222;
+      --radius: 8px;
+      --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    header h1 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    header h1 span { color: var(--accent); }
+
+    #base-url-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+    }
+
+    #base-url-wrap label {
+      color: var(--muted);
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+
+    #base-url-input {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: monospace;
+      font-size: 0.85rem;
+      padding: 5px 10px;
+      width: 220px;
+    }
+
+    #base-url-input:focus { outline: none; border-color: var(--accent); }
+
+    /* ── Nav ── */
+    nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      display: flex;
+      gap: 4px;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-family: var(--font);
+      font-size: 0.9rem;
+      padding: 10px 14px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .nav-btn:hover { color: var(--text); }
+    .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    /* ── Error banner ── */
+    #error-banner {
+      display: none;
+      background: var(--error-bg);
+      border: 1px solid var(--error-border);
+      border-radius: var(--radius);
+      color: #ff8080;
+      font-size: 0.9rem;
+      margin: 16px 24px 0;
+      padding: 10px 14px;
+      position: relative;
+    }
+
+    #error-banner button {
+      background: none;
+      border: none;
+      color: #ff8080;
+      cursor: pointer;
+      font-size: 1.1rem;
+      line-height: 1;
+      position: absolute;
+      right: 10px;
+      top: 8px;
+    }
+
+    /* ── Main ── */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* ── Views ── */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ── Section heading ── */
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .section-head h2 {
+      font-size: 1.15rem;
+      font-weight: 600;
+    }
+
+    .section-head .count {
+      background: var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      padding: 1px 8px;
+    }
+
+    /* ── Card list ── */
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      background: #1e2133;
+    }
+
+    .card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .card .meta {
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 8px;
+    }
+
+    /* ── Empty state ── */
+    .empty {
+      color: var(--muted);
+      font-size: 0.9rem;
+      padding: 32px 0;
+      text-align: center;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-family: var(--font);
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 8px 18px;
+      transition: background 0.15s, opacity 0.15s;
+    }
+
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:not(:disabled):hover { background: var(--accent-hover); }
+
+    .btn-secondary {
+      background: var(--border);
+      color: var(--text);
+    }
+
+    .btn-secondary:not(:disabled):hover { background: #363a52; }
+
+    .btn-sm { font-size: 0.82rem; padding: 5px 12px; }
+
+    /* ── Back link ── */
+    .back-link {
+      background: none;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+      font-family: var(--font);
+      font-size: 0.88rem;
+      margin-bottom: 16px;
+      padding: 0;
+    }
+
+    .back-link:hover { text-decoration: underline; }
+
+    /* ── Debate detail ── */
+    .debate-header {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 20px;
+      padding: 20px;
+    }
+
+    .debate-header h2 { font-size: 1.2rem; margin-bottom: 6px; }
+
+    .debate-header p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    .debate-header .meta { color: var(--muted); font-size: 0.78rem; }
+
+    /* ── Argument columns ── */
+    .args-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 600px) {
+      .args-grid { grid-template-columns: 1fr; }
+    }
+
+    .args-col h3 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .args-col.for h3 { color: var(--for); }
+    .args-col.against h3 { color: var(--against); }
+
+    .arg-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.88rem;
+      margin-bottom: 8px;
+      padding: 12px 14px;
+    }
+
+    .args-col.for .arg-card { border-left: 3px solid var(--for); }
+    .args-col.against .arg-card { border-left: 3px solid var(--against); }
+
+    .arg-card .arg-meta {
+      color: var(--muted);
+      font-size: 0.75rem;
+      margin-top: 6px;
+    }
+
+    /* ── Post argument inline form ── */
+    .post-arg-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+
+    .post-arg-panel h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .side-toggle {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .side-btn {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--muted);
+      cursor: pointer;
+      font-family: var(--font);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 6px 16px;
+      transition: all 0.15s;
+    }
+
+    .side-btn.active-for {
+      background: rgba(61,214,140,0.12);
+      border-color: var(--for);
+      color: var(--for);
+    }
+
+    .side-btn.active-against {
+      background: rgba(255,91,91,0.12);
+      border-color: var(--against);
+      color: var(--against);
+    }
+
+    /* ── Forms ── */
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      color: var(--muted);
+      font-size: 0.83rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+
+    input[type="text"],
+    textarea {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 0.92rem;
+      padding: 9px 12px;
+      width: 100%;
+      resize: vertical;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    textarea { min-height: 80px; }
+
+    .form-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 16px;
+    }
+
+    /* ── Loading spinner ── */
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-msg {
+      color: var(--muted);
+      font-size: 0.9rem;
+      padding: 24px 0;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Debate <span>Engine</span></h1>
+  <div id="base-url-wrap">
+    <label for="base-url-input">API base URL</label>
+    <input id="base-url-input" type="text" value="http://localhost:8000" spellcheck="false" />
+  </div>
+</header>
+
+<nav>
+  <button class="nav-btn active" data-view="list" onclick="showView('list')">All Debates</button>
+  <button class="nav-btn" data-view="create" onclick="showView('create')">+ New Debate</button>
+</nav>
+
+<div id="error-banner">
+  <span id="error-text"></span>
+  <button onclick="clearError()">&#x2715;</button>
+</div>
+
+<main>
+
+  <!-- ── View: List ── -->
+  <div id="view-list" class="view active">
+    <div class="section-head">
+      <h2>Debates</h2>
+      <span class="count" id="list-count">…</span>
+      <button class="btn btn-secondary btn-sm" style="margin-left:auto" onclick="loadDebates()">Refresh</button>
+    </div>
+    <div id="debate-list" class="card-list">
+      <div class="loading-msg"><span class="spinner"></span>Loading…</div>
+    </div>
+  </div>
+
+  <!-- ── View: Create Debate ── -->
+  <div id="view-create" class="view">
+    <button class="back-link" onclick="showView('list')">&#8592; Back to all debates</button>
+    <div class="section-head"><h2>New Debate</h2></div>
+    <form id="create-form" onsubmit="submitCreateDebate(event)"
+          style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;max-width:540px">
+      <div class="form-group">
+        <label for="debate-topic">Topic</label>
+        <input type="text" id="debate-topic" placeholder="e.g. Universal Basic Income improves society" required />
+      </div>
+      <div class="form-group">
+        <label for="debate-desc">Description</label>
+        <textarea id="debate-desc" placeholder="Optional context or background for this debate…"></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" onclick="showView('list')">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="create-submit-btn">Create Debate</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ── View: Debate Detail ── -->
+  <div id="view-detail" class="view">
+    <button class="back-link" onclick="showView('list')">&#8592; Back to all debates</button>
+    <div id="debate-detail-content">
+      <div class="loading-msg"><span class="spinner"></span>Loading…</div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+/*
+ * ═══════════════════════════════════════════════════════════════════
+ * DEBATE ENGINE API CONTRACT  (Agent B — UI agent, independent design)
+ * ═══════════════════════════════════════════════════════════════════
+ *
+ * Base URL: configurable, default http://localhost:8000
+ *
+ * ── List all debates ──────────────────────────────────────────────
+ * GET /debates
+ * Response 200:
+ *   {
+ *     "debates": [
+ *       {
+ *         "id": "string",
+ *         "topic": "string",
+ *         "description": "string",
+ *         "created_at": "ISO-8601 string"
+ *       },
+ *       ...
+ *     ]
+ *   }
+ *
+ * ── Get a single debate with its arguments ────────────────────────
+ * GET /debates/{id}
+ * Response 200:
+ *   {
+ *     "id": "string",
+ *     "topic": "string",
+ *     "description": "string",
+ *     "created_at": "ISO-8601 string",
+ *     "arguments": [
+ *       {
+ *         "id": "string",
+ *         "side": "for" | "against",
+ *         "content": "string",
+ *         "created_at": "ISO-8601 string"
+ *       },
+ *       ...
+ *     ]
+ *   }
+ * Response 404: { "detail": "Debate not found" }
+ *
+ * ── Create a debate ───────────────────────────────────────────────
+ * POST /debates
+ * Request body (JSON):
+ *   {
+ *     "topic": "string",       // required
+ *     "description": "string"  // optional, may be empty string
+ *   }
+ * Response 201:
+ *   {
+ *     "id": "string",
+ *     "topic": "string",
+ *     "description": "string",
+ *     "created_at": "ISO-8601 string"
+ *   }
+ * Response 422: { "detail": "..." }  // validation error
+ *
+ * ── Post an argument on a debate ──────────────────────────────────
+ * POST /debates/{id}/arguments
+ * Request body (JSON):
+ *   {
+ *     "side": "for" | "against",  // required
+ *     "content": "string"          // required
+ *   }
+ * Response 201:
+ *   {
+ *     "id": "string",
+ *     "debate_id": "string",
+ *     "side": "for" | "against",
+ *     "content": "string",
+ *     "created_at": "ISO-8601 string"
+ *   }
+ * Response 404: { "detail": "Debate not found" }
+ * Response 422: { "detail": "..." }  // validation error
+ *
+ * ═══════════════════════════════════════════════════════════════════
+ */
+
+// ── State ──────────────────────────────────────────────────────────
+let currentView = 'list';
+let currentDebateId = null;
+let argSide = 'for';
+
+// ── Helpers ────────────────────────────────────────────────────────
+
+function baseUrl() {
+  return document.getElementById('base-url-input').value.replace(/\/+$/, '');
+}
+
+function showError(msg) {
+  const banner = document.getElementById('error-banner');
+  document.getElementById('error-text').textContent = msg;
+  banner.style.display = 'block';
+}
+
+function clearError() {
+  document.getElementById('error-banner').style.display = 'none';
+}
+
+async function apiFetch(path, options = {}) {
+  clearError();
+  const url = baseUrl() + path;
+  const res = await fetch(url, {
+    headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+    ...options,
+  });
+  if (!res.ok) {
+    let detail = `HTTP ${res.status}`;
+    try {
+      const body = await res.json();
+      detail = body.detail || JSON.stringify(body);
+    } catch (_) { /* non-JSON error body */ }
+    throw new Error(detail);
+  }
+  // 204 No Content → return null
+  if (res.status === 204) return null;
+  return res.json();
+}
+
+function formatDate(iso) {
+  if (!iso) return '';
+  try {
+    return new Date(iso).toLocaleString(undefined, {
+      year: 'numeric', month: 'short', day: 'numeric',
+      hour: '2-digit', minute: '2-digit',
+    });
+  } catch (_) { return iso; }
+}
+
+// ── View routing ───────────────────────────────────────────────────
+
+function showView(name, debateId) {
+  // Update nav highlights
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.view === name);
+  });
+
+  // Hide all views
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+
+  currentView = name;
+
+  if (name === 'list') {
+    document.getElementById('view-list').classList.add('active');
+    loadDebates();
+  } else if (name === 'create') {
+    document.getElementById('view-create').classList.add('active');
+    document.getElementById('create-form').reset();
+  } else if (name === 'detail') {
+    currentDebateId = debateId;
+    document.getElementById('view-detail').classList.add('active');
+    loadDebateDetail(debateId);
+  }
+}
+
+// ── List debates ───────────────────────────────────────────────────
+
+async function loadDebates() {
+  const container = document.getElementById('debate-list');
+  container.innerHTML = '<div class="loading-msg"><span class="spinner"></span>Loading…</div>';
+  document.getElementById('list-count').textContent = '…';
+  try {
+    const data = await apiFetch('/debates');
+    const debates = data.debates || [];
+    document.getElementById('list-count').textContent = debates.length;
+    if (debates.length === 0) {
+      container.innerHTML = '<div class="empty">No debates yet. Create the first one!</div>';
+      return;
+    }
+    container.innerHTML = '';
+    debates.forEach(d => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <h3>${escHtml(d.topic)}</h3>
+        ${d.description ? `<p>${escHtml(d.description)}</p>` : ''}
+        <div class="meta">${formatDate(d.created_at)}</div>
+      `;
+      card.addEventListener('click', () => showView('detail', d.id));
+      container.appendChild(card);
+    });
+  } catch (err) {
+    container.innerHTML = '';
+    showError('Failed to load debates: ' + err.message);
+  }
+}
+
+// ── Create debate ──────────────────────────────────────────────────
+
+async function submitCreateDebate(e) {
+  e.preventDefault();
+  const topic = document.getElementById('debate-topic').value.trim();
+  const description = document.getElementById('debate-desc').value.trim();
+  const btn = document.getElementById('create-submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Creating…';
+  try {
+    const debate = await apiFetch('/debates', {
+      method: 'POST',
+      body: JSON.stringify({ topic, description }),
+    });
+    showView('detail', debate.id);
+  } catch (err) {
+    showError('Failed to create debate: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Create Debate';
+  }
+}
+
+// ── Debate detail ──────────────────────────────────────────────────
+
+async function loadDebateDetail(id) {
+  const container = document.getElementById('debate-detail-content');
+  container.innerHTML = '<div class="loading-msg"><span class="spinner"></span>Loading…</div>';
+  try {
+    const debate = await apiFetch(`/debates/${encodeURIComponent(id)}`);
+    renderDebateDetail(debate);
+  } catch (err) {
+    container.innerHTML = '';
+    showError('Failed to load debate: ' + err.message);
+  }
+}
+
+function renderDebateDetail(debate) {
+  const container = document.getElementById('debate-detail-content');
+  const args = debate.arguments || [];
+  const forArgs = args.filter(a => a.side === 'for');
+  const againstArgs = args.filter(a => a.side === 'against');
+
+  container.innerHTML = `
+    <div class="debate-header">
+      <h2>${escHtml(debate.topic)}</h2>
+      ${debate.description ? `<p>${escHtml(debate.description)}</p>` : ''}
+      <div class="meta">${formatDate(debate.created_at)}</div>
+    </div>
+
+    <div class="args-grid">
+      <div class="args-col for">
+        <h3>For (${forArgs.length})</h3>
+        ${forArgs.length === 0
+          ? '<div class="empty" style="padding:16px 0">No arguments yet.</div>'
+          : forArgs.map(a => `
+            <div class="arg-card">
+              ${escHtml(a.content)}
+              <div class="arg-meta">${formatDate(a.created_at)}</div>
+            </div>`).join('')}
+      </div>
+      <div class="args-col against">
+        <h3>Against (${againstArgs.length})</h3>
+        ${againstArgs.length === 0
+          ? '<div class="empty" style="padding:16px 0">No arguments yet.</div>'
+          : againstArgs.map(a => `
+            <div class="arg-card">
+              ${escHtml(a.content)}
+              <div class="arg-meta">${formatDate(a.created_at)}</div>
+            </div>`).join('')}
+      </div>
+    </div>
+
+    <div class="post-arg-panel">
+      <h3>Post an Argument</h3>
+      <div class="side-toggle">
+        <button class="side-btn active-for" id="side-for-btn" onclick="selectSide('for')">For</button>
+        <button class="side-btn" id="side-against-btn" onclick="selectSide('against')">Against</button>
+      </div>
+      <div class="form-group">
+        <label for="arg-content">Argument</label>
+        <textarea id="arg-content" placeholder="State your argument clearly and concisely…"></textarea>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" id="post-arg-btn" onclick="submitArgument('${escAttr(debate.id)}')">Post Argument</button>
+      </div>
+    </div>
+  `;
+
+  // Reset side toggle state
+  argSide = 'for';
+}
+
+function selectSide(side) {
+  argSide = side;
+  const forBtn = document.getElementById('side-for-btn');
+  const againstBtn = document.getElementById('side-against-btn');
+  if (side === 'for') {
+    forBtn.className = 'side-btn active-for';
+    againstBtn.className = 'side-btn';
+  } else {
+    forBtn.className = 'side-btn';
+    againstBtn.className = 'side-btn active-against';
+  }
+}
+
+async function submitArgument(debateId) {
+  const content = document.getElementById('arg-content').value.trim();
+  if (!content) {
+    showError('Argument content cannot be empty.');
+    return;
+  }
+  const btn = document.getElementById('post-arg-btn');
+  btn.disabled = true;
+  btn.textContent = 'Posting…';
+  try {
+    await apiFetch(`/debates/${encodeURIComponent(debateId)}/arguments`, {
+      method: 'POST',
+      body: JSON.stringify({ side: argSide, content }),
+    });
+    // Reload detail to show the new argument
+    await loadDebateDetail(debateId);
+  } catch (err) {
+    showError('Failed to post argument: ' + err.message);
+    btn.disabled = false;
+    btn.textContent = 'Post Argument';
+  }
+}
+
+// ── XSS helpers ────────────────────────────────────────────────────
+
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function escAttr(str) {
+  return String(str).replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+}
+
+// ── Boot ───────────────────────────────────────────────────────────
+loadDebates();
+</script>
+</body>
+</html>
