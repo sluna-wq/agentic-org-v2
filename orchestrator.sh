@@ -205,12 +205,16 @@ This cycle — do all that apply:
    - Move changes_requested tasks back to Active.
    - Flag anything blocked on human input in "Needs Human Input" section.
 
-3. ASSIGN next tasks from Planned:
+3. READ outbox.md at the repo root — always, every cycle, before deciding anything else:
+   - If it contains directions from Think: act on them (assign tasks, close PRs, etc). Clear it after reading by replacing contents with the empty template.
+   - If it is empty: continue to step 4.
+
+4. ASSIGN next tasks from Planned:
    - Pick highest-priority unblocked tasks.
    - Create lead/tasks/task-XXX/ with package.md and status.md (status: assigned).
    - Move them to Active section in backlog.
 
-4. STOP signal: if backlog is fully done and nothing to assign, write lead/NO_TASKS.
+5. STOP signal: only if outbox.md is empty AND backlog is fully done AND nothing to assign → write lead/NO_TASKS.
 
 Rules:
 - Do not commit — orchestrator handles all git operations.
