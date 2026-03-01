@@ -34,10 +34,11 @@ Restructuring the repo to a clean three-domain architecture, directed by Think v
 
 ### Active
 <!-- Format: - [task-XXX] Description | status | branch -->
-- [task-004] Restructure repo to three-domain architecture | assigned | task/004-repo-restructure
+*(none)*
 
 ### Done (recent)
 <!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
+- [task-004] Restructure repo to three-domain architecture | accepted | 2026-03-01
 - [task-003] Org Progress Dashboard (single-file HTML, GitHub API) | accepted | 2026-03-01
 - [task-002] Bookmark Manager REST API (Python/FastAPI) | accepted | 2026-03-01
 - [task-001] Node.js REST API (items CRUD) | accepted | 2026-03-01
@@ -47,6 +48,7 @@ Restructuring the repo to a clean three-domain architecture, directed by Think v
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in lead/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T22:00] task-004 ACCEPTED — all 9 criteria met; gh self-review blocked (known single-author limit), accepted via branch diff; NO_TASKS written
 - [2026-03-01T21:00] task-004 ASSIGNED — repo restructure to three-domain architecture per Think outbox.md direction; NO_TASKS cleared
 - [2026-03-01T20:00] LEAD CYCLE PASS — mandate complete, all tasks accepted, backlog empty; NO_TASKS written
 - [2026-03-01T18:00] task-003 ACCEPTED — dashboard renders mandate, task board, decisions, cycle timeline; no PR (Think-mode session); accepted via direct diff

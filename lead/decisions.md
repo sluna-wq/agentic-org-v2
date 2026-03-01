@@ -4,6 +4,12 @@ Newest first. Each entry: timestamp, task, action, what was decided and why (con
 
 ---
 
+## [2026-03-01T22:00] task-004 ACCEPTED — three-domain repo restructure
+**What:** Reviewed PR #1 (branch task/004-repo-restructure) via `git diff main...task/004-repo-restructure`. All 9 acceptance criteria verified: `logs/lead/` contains cycle-1 files; old `logs/cycle-1.*` removed; `orchestrator.sh` transcript path updated to `logs/lead/cycle-${CYCLE}.md` and `preflight()` has `mkdir -p logs/lead`; `lead/outbox.md` created with correct template; `lead/logs/build/.gitkeep` present; root `CLAUDE.md` explicitly states per-mode read/write boundaries for Think/Lead/Build; root `outbox.md` cleared to empty template. `gh pr review --approve` blocked by GitHub's self-review restriction (same single-author environment as prior tasks). Accepted via branch diff per established precedent (task-002, task-003).
+**Why:** Implementation is correct and complete. Three-domain architecture is now in place. Backlog is empty — writing NO_TASKS. Human input needed to set next mandate.
+
+---
+
 ## [2026-03-01T21:00] task-004 ASSIGNED — repo restructure to three-domain architecture
 **What:** Read `outbox.md` queued by Think. Direction: restructure repo to three-domain model with `logs/lead/` for Lead logs, `lead/outbox.md` for Lead→Think channel, `lead/logs/build/` for Build logs, updated `CLAUDE.md` write boundaries, and cleared `outbox.md`. Created task-004 with expanded write scope (root CLAUDE.md, outbox.md, orchestrator.sh, logs/, lead/ structural files). Deleted `lead/NO_TASKS` stop signal. Updated mandate in state.md.
 **Why:** Think explicitly queued this direction via outbox.md. It's a pure housekeeping task — no product changes. The three-domain separation makes write boundaries unambiguous and gives each mode a clear communication channel. Spec is tight; Build has a concrete checklist and can complete this in one pass.
