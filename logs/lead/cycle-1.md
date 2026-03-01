@@ -1,5 +1,5 @@
 # Session: lead-cycle-1
-Generated: 2026-03-01T17:17:35Z
+Generated: 2026-03-01T17:27:47Z
 
 ---
 
@@ -89,35 +89,39 @@ Generated: 2026-03-01T17:17:35Z
     27→
     28→### Planned
     29→<!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
-    30→- [task-011] BROADCAST task-A: schema.md + api.py | P1 | deps: task-010 accepted (Phase 0 complete)
-    31→- [task-012] BROADCAST task-B: ui.html | P1 | deps: task-010 accepted (Phase 0 complete)
-    32→- [task-013] BROADCAST task-C: tests/test_api.py | P1 | deps: task-010 accepted (Phase 0 complete)
-    33→
-    34→### Active
-    35→<!-- Format: - [task-XXX] Description | status | branch -->
-    36→- [task-010] Dashboard research panel | assigned | task/010-dashboard-research-panel
+    30→*(none)*
+    31→
+    32→### Active
+    33→<!-- Format: - [task-XXX] Description | status | branch -->
+    34→- [task-011] BROADCAST Agent A: schema.md + api.py | assigned | task/011-broadcast-a-api
+    35→- [task-012] BROADCAST Agent B: ui.html | assigned | task/012-broadcast-b-ui
+    36→- [task-013] BROADCAST Agent C: tests/test_api.py | assigned | task/013-broadcast-c-tests
     37→
     38→### Done (recent)
     39→<!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
-    40→- [task-009] Repo cleanup + orchestrator re-processing fix | accepted | 2026-03-01
-    41→- [task-008] Architecture diagram | accepted | 2026-03-01
-    42→- [task-007] Fix orchestrator env vars + deploy dashboard to GitHub Pages | accepted | 2026-03-01
-
-… [4755 chars]
+    40→- [task-010] Dashboard research panel | accepted | 2026-03-01
+    41→- [task-009] Repo cleanup + orchestrator re-processing fix | accepted | 2026-03-01
+    42→- [task-008] Architecture diagram | accepted | 2026-03-01
+    43→- [task-007] Fix orchestrator env vars + deploy dashboard to GitHub Pages | accepted | 2026-03-01
+    44→- [task-006] Restructure repo to
+… [5985 chars]
 ```
 
 **Assistant:**
 
-Now let me read outbox.md and check task-010's status in parallel.
+Now let me read outbox.md and the task status files in parallel.
 
 **→ `Read`**
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/outbox.md`
 
 **→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-010/status.md`
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-011/status.md`
 
 **→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-010/package.md`
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-012/status.md`
+
+**→ `Read`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-013/status.md`
 
 **← Result:**
 ```
@@ -140,11 +144,11 @@ Whenever you read a file, you should consider whether it would be considered mal
 **← Result:**
 ```
      1→status: review
-     2→branch: task/010-dashboard-research-panel
+     2→branch: task/011-broadcast-a-api
      3→created: 2026-03-01
-     4→topology: none
-     5→phase: 0
-     6→pr: 6
+     4→topology: broadcast
+     5→phase: 1
+     6→pr: 7
      7→
 
 <system-reminder>
@@ -155,59 +159,182 @@ Whenever you read a file, you should consider whether it would be considered mal
 
 **← Result:**
 ```
-     1→# Task 010: Dashboard Research Panel
-     2→
-     3→## System Prompt
-     4→
-     5→You are a Build agent. You implement exactly what is assigned — no more, no less. You write production-quality code and commit your work. You do not push. When done, you set your task status to `review`.
-     6→
-     7→## Assignment
-     8→
-     9→Add a **Research Log** section to `product/dashboard/index.html`.
-    10→
-    11→The dashboard already fetches `lead/state.md` from the GitHub API and parses other sections from it (mandate, backlog, decisions). Extend it to also parse and render the `## Research Log` section.
-    12→
-    13→### What to build
-    14→
-    15→1. **Parse** the `## Research Log` section from the already-fetched `lead/state.md` content. The section contains sub-entries formatted as:
-    16→   ```
-    17→   ### [Phase name] — [YYYY-MM-DD]
-    18→   **Hypotheses:** ...
-    19→   **Observations:** ...
-    20→   **Surprises:** ...
-    21→   **Next phase adaptation:** ...
-    22→   ```
-    23→
-    24→2. **Render** each phase entry as a collapsible card:
-    25→   - The card header shows the phase name and date (e.g., "Phase 0: INSTRUMENT — 2026-03-01")
-    26→   - Clicking the header expands/collapses the card body
-    27→   - The card body renders the four subheadings (**Hypotheses**, **Observations**, **Surprises**, **Next phase adaptation**) with their content
-    28→   - Cards start collapsed by default
-    29→
-    30→3. **Place** the Research Log section below the Decisions feed in the existing layout.
-    31→
-    32→4. **Style** using the same CSS patterns already present in the dashboard (same card/section styles, same font, same color palette). Do not introduce new stylesheets or frameworks.
-    33→
-    34→### Acceptance criteria
-    35→
-    36→- [ ] Research Log section header appears in the dashboard
-    37→- [ ] Each `### Phase X` entry renders as a collapsible card with correct header text
-    38→- [ ] Subheadings (Hypotheses, Observations, Surpris
-… [961 chars]
+     1→status: review
+     2→branch: task/012-broadcast-b-ui
+     3→created: 2026-03-01
+     4→topology: broadcast
+     5→phase: 1
+     6→pr: 8
+     7→
+
+<system-reminder>
+Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
+</system-reminder>
+
+```
+
+**← Result:**
+```
+     1→status: review
+     2→branch: task/013-broadcast-c-tests
+     3→created: 2026-03-01
+     4→topology: broadcast
+     5→phase: 1
+     6→pr: 9
+     7→
+
+<system-reminder>
+Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
+</system-reminder>
+
 ```
 
 **Assistant:**
 
-task-010 is in review with PR #6. Let me review the diff.
+All three tasks are in review. Let me read their packages and diffs simultaneously.
+
+**→ `Read`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-011/package.md`
+
+**→ `Read`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-012/package.md`
+
+**→ `Read`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-013/package.md`
+
+**← Result:**
+```
+     1→# Task 011: BROADCAST Agent A — Debate Engine schema.md + api.py
+     2→
+     3→## System Prompt
+     4→
+     5→You are a Build agent working under the BROADCAST topology in the Topology Research Program. Your team has three agents — you are Agent A (schema + API). Agents B and C are working in parallel and independently on the same Debate Engine: do not coordinate with them, do not read their output. This isolation is the controlled experimental condition.
+     6→
+     7→## Assignment
+     8→
+     9→Design and implement a **Debate Engine** FastAPI service.
+    10→
+    11→Write to `product/debate-engine/broadcast/`:
+    12→
+    13→1. `schema.md` — the API contract document. Must describe every endpoint: method, path, request body JSON shape, response JSON shape, status codes, and a one-line description. This is the source of truth for what your api.py implements.
+    14→
+    15→2. `api.py` — FastAPI implementation that exactly matches schema.md.
+    16→
+    17→### What to build
+    18→
+    19→The Debate Engine concept: a backend service where users can create debate topics, post arguments for or against each topic, and retrieve debates and arguments.
+    20→
+    21→Minimum endpoints required (you may add more if they fit naturally):
+    22→- Create a debate (topic + description)
+    23→- List all debates
+    24→- Get a single debate by ID
+    25→- Add an argument to a debate (side: "for" | "against", content)
+    26→- List arguments for a debate
+    27→
+    28→### Acceptance criteria
+    29→
+    30→- [ ] `schema.md` documents every endpoint with method, path, request/response JSON, and status codes
+    31→- [ ] `api.py` implements every endpoint in schema.md — no extras, no gaps
+    32→- [ ] Uses in-memory storage (no database, no file I/O)
+    33→- [ ] Pydantic models for all request and response bodies
+    34→- [ ] Correct HTTP status codes: 201 for creates, 200 for reads, 404 for not-found
+    35→- [ ] App runs with: `uvicorn api:app --app-dir product/deba
+… [661 chars]
+```
+
+**← Result:**
+```
+     1→# Task 012: BROADCAST Agent B — Debate Engine ui.html
+     2→
+     3→## System Prompt
+     4→
+     5→You are a Build agent working under the BROADCAST topology in the Topology Research Program. Your team has three agents — you are Agent B (UI). Agents A and C are working in parallel and independently on the same Debate Engine: do not coordinate with them. This isolation is the controlled experimental condition.
+     6→
+     7→**CRITICAL:** Do NOT read any files that may exist under `product/debate-engine/broadcast/`. Those are other agents' outputs. You must independently invent your understanding of the Debate Engine API. Your choice of routes, field names, and status codes is the research data point.
+     8→
+     9→## Assignment
+    10→
+    11→Build a **Debate Engine UI** as a single-file HTML + JS app.
+    12→
+    13→Write `product/debate-engine/broadcast/ui.html`.
+    14→
+    15→### What to build
+    16→
+    17→The Debate Engine concept: a backend service where users can create debate topics, post arguments for or against each topic, and retrieve debates and arguments. Your UI consumes a REST API at a configurable base URL (default: `http://localhost:8000`).
+    18→
+    19→Required UI capabilities:
+    20→- List all debates
+    21→- View a single debate and its arguments (for vs. against)
+    22→- Create a new debate (topic + description)
+    23→- Post an argument on a debate (side: for or against, content)
+    24→
+    25→### Acceptance criteria
+    26→
+    27→- [ ] Single self-contained file — inline CSS + JS, no npm, no bundler, no CDN scripts
+    28→- [ ] API base URL is configurable (hardcoded default `http://localhost:8000` or an input field)
+    29→- [ ] All four capabilities (list, view, create debate, post argument) are implemented
+    30→- [ ] At the top of the `<script>` section, a comment block documents the exact API routes your UI calls (method, path, request/response shape) — this is the research measurement artifact
+    31→- [ ] Errors from
+… [707 chars]
+```
+
+**← Result:**
+```
+     1→# Task 013: BROADCAST Agent C — Debate Engine tests/test_api.py
+     2→
+     3→## System Prompt
+     4→
+     5→You are a Build agent working under the BROADCAST topology in the Topology Research Program. Your team has three agents — you are Agent C (tests). Agents A and B are working in parallel and independently on the same Debate Engine: do not coordinate with them. This isolation is the controlled experimental condition.
+     6→
+     7→**CRITICAL:** Do NOT read any files that may exist under `product/debate-engine/broadcast/`. Those are other agents' outputs. You must independently invent your understanding of the Debate Engine API. Your choice of routes, field names, and status codes is the research data point.
+     8→
+     9→## Assignment
+    10→
+    11→Write pytest tests for a **Debate Engine** FastAPI API.
+    12→
+    13→Write `product/debate-engine/broadcast/tests/test_api.py`.
+    14→Also write `product/debate-engine/broadcast/tests/__init__.py` (empty file).
+    15→
+    16→### What to build
+    17→
+    18→The Debate Engine concept: a backend service where users can create debate topics, post arguments for or against each topic, and retrieve debates and arguments. You must independently invent the API contract your tests target.
+    19→
+    20→Minimum test coverage required:
+    21→- Create a debate → 201 + response body shape
+    22→- List debates → 200 + list structure
+    23→- Get a single debate by ID → 200
+    24→- Get a non-existent debate by ID → 404
+    25→- Add an argument to a debate → 201 + response body shape
+    26→- List arguments for a debate → 200 + list structure
+    27→
+    28→### Acceptance criteria
+    29→
+    30→- [ ] Uses pytest + `httpx.AsyncClient` or `starlette.testclient.TestClient`
+    31→- [ ] At the top of `test_api.py`, a comment block documents the exact API contract your tests assume (method, path, request JSON, expected response JSON, status codes) — this is the research measurement artifact
+    32→- [ ] All 6 coverag
+… [967 chars]
+```
+
+**Assistant:**
+
+Now let me get the PR diffs for all three in parallel.
 
 **→ `Bash`**
-  - **command:** `gh pr diff 6`
-  - **description:** `Review PR #6 diff for task-010`
+  - **command:** `gh pr diff 7 2>&1 | head -300`
+  - **description:** `Get PR diff for task-011 (PR #7)`
+
+**→ `Bash`**
+  - **command:** `gh pr diff 8 2>&1 | head -400`
+  - **description:** `Get PR diff for task-012 (PR #8)`
+
+**→ `Bash`**
+  - **command:** `gh pr diff 9 2>&1 | head -400`
+  - **description:** `Get PR diff for task-013 (PR #9)`
 
 **← Result:**
 ```
 <persisted-output>
-Output too large (324.1KB). Full output saved to: /home/runner/.claude/projects/-home-runner-work-agentic-org-v2-agentic-org-v2/1283bc19-aefe-41b2-9f67-473ba913e250/tool-results/bszg2tl8k.txt
+Output too large (52.9KB). Full output saved to: /home/runner/.claude/projects/-home-runner-work-agentic-org-v2-agentic-org-v2/3887f8be-6fe7-4d3f-8e21-5c764913d600/tool-results/byppke74b.txt
 
 Preview (first 2KB):
 diff --git a/lead/NO_TASKS b/lead/NO_TASKS
@@ -254,145 +381,419 @@ index fec74a8..80961c6 100644
  pr: 5
 +merged: true
 diff --git a/lead/tasks/task-010/status.md b/lead/tasks/task-010/status.md
-index 226f196..ba33213 100644
+index 35e78a4..66986c3 100644
 --- a/lead/tasks/task-010/status.md
 +++ b/lead/tasks/task-010/status.md
+@@ -4,3 +4,4 @@ created: 2026-03-01
+ topology: none
+ phase: 0
+ pr: 6
++merged: true
+diff --git a/lead/tasks/task-011/status.md b/lead/tasks/task-011/status.md
+index 7eb24a1..5379962 100644
+--- a/lead/tasks/task-011/status.md
++++ b
+… [197 chars]
+```
+
+**← Result:**
+```
+<persisted-output>
+Output too large (82.9KB). Full output saved to: /home/runner/.claude/projects/-home-runner-work-agentic-org-v2-agentic-org-v2/3887f8be-6fe7-4d3f-8e21-5c764913d600/tool-results/b62cefp95.txt
+
+Preview (first 2KB):
+diff --git a/lead/tasks/task-012/status.md b/lead/tasks/task-012/status.md
+index a61deed..042bda6 100644
+--- a/lead/tasks/task-012/status.md
++++ b/lead/tasks/task-012/status.md
 @@ -1,5 +1,6 @@
 -status: assigned
 +status: review
- branch: task/010-dashboard-research-panel
+ branch: task/012-broadcast-b-ui
  created: 2026-03-01
- topology: none
- phase: 0
-+pr: 6
-diff --git a/lead/tasks/task-010/transcript.jsonl b/lead/tasks/task-010/transcrip
-… [149 chars]
+ topology: broadcast
+ phase: 1
++pr: 8
+diff --git a/lead/tasks/task-012/transcript.jsonl b/lead/tasks/task-012/transcript.jsonl
+new file mode 100644
+index 0000000..ae84648
+--- /dev/null
++++ b/lead/tasks/task-012/transcript.jsonl
+@@ -0,0 +1,19 @@
++{"type":"system","subtype":"init","cwd":"/home/runner/work/agentic-org-v2/agentic-org-v2","session_id":"070faa9c-e86c-4277-a3a2-168a043f38bd","tools":["Agent","TaskOutput","Bash","Glob","Grep","ExitPlanMode","Read","Edit","Write","NotebookEdit","WebFetch","TodoWrite","WebSearch","TaskStop","AskUserQuestion","Skill","EnterPlanMode","EnterWorktree"],"mcp_servers":[],"model":"claude-sonnet-4-6","permissionMode":"bypassPermissions","slash_commands":["keybindings-help","debug","simplify","batch","compact","context","cost","init","pr-comments","release-notes","review","security-review","insights"],"apiKeySource":"ANTHROPIC_API_KEY","claude_code_version":"2.1.63","output_style":"default","agents":["general-purpose","statusline-setup","Explore","Plan"],"skills":["keybindings-help","debug","simplify","batch"],"plugins":[],"uuid":"73bc14f2-a628-4c5b-a749-b4128d880374","fast_mode_state":"off"}
+...
+</persisted-output>
 ```
-
-**→ `Bash`**
-  - **command:** `git diff main...task/010-dashboard-research-panel -- product/`
-  - **description:** `Review product changes for task-010`
 
 **← Result:**
 ```
-Exit code 128
-fatal: bad revision 'main...task/010-dashboard-research-panel'
+<persisted-output>
+Output too large (104.1KB). Full output saved to: /home/runner/.claude/projects/-home-runner-work-agentic-org-v2-agentic-org-v2/3887f8be-6fe7-4d3f-8e21-5c764913d600/tool-results/bsmruj1ns.txt
 
-fatal: bad revision 'main...task/010-dashboard-research-panel'
-```
-
-**→ `Bash`**
-  - **command:** `gh pr diff 6 -- product/ 2>/dev/null | head -300`
-  - **description:** `Review just product/ changes in PR #6`
-
-**→ `Bash`**
-  - **command:** `gh pr view 6 --json headRefName,baseRefName,commits | head -5`
-  - **description:** `Get PR #6 branch info`
-
-**← Result:**
-```
-{"baseRefName":"main","commits":[{"authoredDate":"2026-03-01T17:04:24Z","authors":[{"email":"orchestrator@repo.local","id":"","login":"","name":"Orchestrator"}],"committedDate":"2026-03-01T17:04:24Z","messageBody":"","messageHeadline":"task-010: mark in_progress","oid":"5c9eb8172fb789edd1fccb326970c9198bcd0dc3"},{"authoredDate":"2026-03-01T17:06:02Z","authors":[{"email":"orchestrator@repo.local","id":"","login":"","name":"Orchestrator"},{"email":"noreply@anthropic.com","id":"MDQ6VXNlcjgxODQ3","login":"claude","name":"Claude Sonnet 4.6"}],"committedDate":"2026-03-01T17:06:02Z","messageBody":"Parse the ## Research Log section from lead/state.md and render each\n### Phase entry as a collapsible card. Cards show phase name + date in\nthe header and expand to show Hypotheses / Observations / Surprises /\nNext phase adaptation rendered via marked.parse(). Falls back to \"No\nresearch log entries yet.\" when the section is absent.\n\nStyles follow the existing card/section palette; no new frameworks.\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>","messageHeadline":"task-010: add Research Log section to dashboard","oid":"9017faaf02e3b139ab942f7cfe7f8a673c914446"},{"authoredDate":"2026-03-01T17:06:22Z","authors":[{"email":"orchestrator@repo.local","id":"","login":"","name":"Orchestrator"}],"committedDate":"2026-03-01T17:06:22Z","messageBody":"","messageHeadline":"task-010: transcript + status=review","oid":"5eadede58e7d82ebb85c0741d69defc9d8fefe5e"},{"authoredDate":"2026-03-01T17:06:24Z","authors":[{"email":"orchestrator@repo.local","id":"","login":"","name":"Orchestrator"}],"committedDate":"2026-03-01T17:06:24Z","messageBody":"","messageHeadline":"task-010: record PR #6","oid":"5614d30c2f18659f69036f840080d3c2029ae845"}],"headRefName":"task/010-dashboard-research-panel"}
-```
-
-**→ `Bash`**
-  - **command:** `git fetch origin task/010-dashboard-research-panel 2>/dev/null; git diff origin/main...origin/task/010-dashboard-research-panel -- product/`
-  - **description:** `Diff product changes between main and task-010 branch`
-
-**← Result:**
-```
-diff --git a/product/dashboard/index.html b/product/dashboard/index.html
-index a920afb..f9b9700 100644
---- a/product/dashboard/index.html
-+++ b/product/dashboard/index.html
-@@ -297,6 +297,42 @@
-     .scroll-body { max-height: 420px; overflow-y: auto; padding-right: 4px; }
-     .scroll-body::-webkit-scrollbar { width: 6px; }
-     .scroll-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-+
-+    /* ── Research Log ── */
-+    .research-card {
-+      border: 1px solid var(--border);
-+      border-radius: 6px;
-+      margin-bottom: 8px;
-+      overflow: hidden;
-+    }
-+    .research-card:last-child { margin-bottom: 0; }
-+
-+    .research-card-header {
-+      display: flex;
-+      align-items: center;
-+      justify-content: space-between;
-+      padding: 10px 14px;
-+      background: var(--bg);
-+      cursor: pointer;
-+      user-select: none;
-+      gap: 8px;
-+    }
-+    .research-card-header:hover { background: #1c2128; }
-+
-+    .research-card-title { font-size: 13px; font-weight: 600; }
-+    .research-card-toggle { font-size: 11px; color: var(--muted); flex-shrink: 0; }
-+
-+    .research-card-body {
-+      display: none;
-+      padding: 14px;
-+      border-top: 1px solid var(--border);
-+      font-size: 13px;
-+      line-height: 1.6;
-+    }
-+    .research-card-body.open { display: block; }
-+    .research-card-body p { margin: 4px 0 8px; }
-+    .research-card-body p:last-child { margin-bottom: 0; }
-+    .research-card-body strong { font-weight: 600; color: var(--text); }
-   </style>
- </head>
- <body>
-@@ -380,6 +416,17 @@
-         </div>
-       </div>
- 
-+      <!-- Research Log -->
-+      <div class="section full-width">
-+        <div class="section-header">
-+          <h2>Research Log</h2>
-+          <span class="count" id="research-count">0</span>
-+        </div>
-+        <div class="section-body">
-+          <div id="research-log-body"></div>
-+        </div>
-+      </div>
-+
-     </div>
-   </main>
- 
-@@ -558,6 +605,35 @@ function parseDecisio
-… [2704 chars]
+Preview (first 2KB):
+diff --git a/lead/tasks/task-013/status.md b/lead/tasks/task-013/status.md
+index b91e518..a4fb872 100644
+--- a/lead/tasks/task-013/status.md
++++ b/lead/tasks/task-013/status.md
+@@ -1,5 +1,6 @@
+-status: assigned
++status: review
+ branch: task/013-broadcast-c-tests
+ created: 2026-03-01
+ topology: broadcast
+ phase: 1
++pr: 9
+diff --git a/lead/tasks/task-013/transcript.jsonl b/lead/tasks/task-013/transcript.jsonl
+new file mode 100644
+index 0000000..8092778
+--- /dev/null
++++ b/lead/tasks/task-013/transcript.jsonl
+@@ -0,0 +1,37 @@
++{"type":"system","subtype":"init","cwd":"/home/runner/work/agentic-org-v2/agentic-org-v2","session_id":"f9347b8b-f9c3-4184-b9d8-7b7c014a12cf","tools":["Agent","TaskOutput","Bash","Glob","Grep","ExitPlanMode","Read","Edit","Write","NotebookEdit","WebFetch","TodoWrite","WebSearch","TaskStop","AskUserQuestion","Skill","EnterPlanMode","EnterWorktree"],"mcp_servers":[],"model":"claude-sonnet-4-6","permissionMode":"bypassPermissions","slash_commands":["keybindings-help","debug","simplify","batch","compact","context","cost","init","pr-comments","release-notes","review","security-review","insights"],"apiKeySource":"ANTHROPIC_API_KEY","claude_code_version":"2.1.63","output_style":"default","agents":["general-purpose","statusline-setup","Explore","Plan"],"skills":["keybindings-help","debug","simplify","batch"],"plugins":[],"uuid":"85f380ca-af6a-4782-926d-1595cb3426bc","fast_mode_state":"off"}
+...
+</persisted-output>
 ```
 
 **Assistant:**
 
-The diff looks good. Let me verify acceptance criteria against the code:
-
-1. **Research Log section header** ✓ — `<h2>Research Log</h2>` + count badge added
-2. **Collapsible cards with correct header text** ✓ — `parseResearchLog()` extracts `### Phase X — date` entries, renders as `.research-card` with click toggle
-3. **Subheadings visually distinct** ✓ — body rendered via `marked.parse()`, bold `**headings**` → `<strong>` styled at `font-weight:600`
-4. **Clean collapse/expand** ✓ — `.open` class toggle + `▶`/`▼` indicator
-5. **Graceful absent section** ✓ — empty array → "No research log entries yet." message
-6. **No regressions** ✓ — additive only, no existing functions modified
-
-All 6 criteria met. Approving.
+Let me get focused diffs on just the product files.
 
 **→ `Bash`**
-  - **command:** `gh pr review 6 --approve --body "All 6 acceptance criteria met.
+  - **command:** `git diff main...task/011-broadcast-a-api -- product/ 2>&1`
+  - **description:** `Get product-only diff for task-011`
 
-1. Research Log section header renders with count badge.
-2. Each ### Phase entry becomes a collapsible .research-card with correct title text.
-3. Subheadings (Hypotheses, Observations, Surprises, Next phase adaptation) render bold via marked.parse() — visually distinct inside card body.
-4. Click toggles .open class + arrow indicator cleanly (▶/▼).
-5. Absent section handled gracefully with 'No research log entries yet.' fallback.
-6. Implementation is purely additive — no regressions in mandate, task board, decisions, or cycle time
-… [61 chars]`
-  - **description:** `Approve PR #6 for task-010`
+**→ `Bash`**
+  - **command:** `git diff main...task/012-broadcast-b-ui -- product/ 2>&1`
+  - **description:** `Get product-only diff for task-012`
+
+**→ `Bash`**
+  - **command:** `git diff main...task/013-broadcast-c-tests -- product/ 2>&1`
+  - **description:** `Get product-only diff for task-013`
+
+**← Result:**
+```
+Exit code 128
+fatal: bad revision 'main...task/011-broadcast-a-api'
+
+fatal: bad revision 'main...task/011-broadcast-a-api'
+```
+
+**← Result:**
+```
+Exit code 128
+fatal: bad revision 'main...task/013-broadcast-c-tests'
+
+fatal: bad revision 'main...task/013-broadcast-c-tests'
+```
+
+**← Result:**
+```
+Exit code 128
+fatal: bad revision 'main...task/012-broadcast-b-ui'
+
+fatal: bad revision 'main...task/012-broadcast-b-ui'
+```
+
+**→ `Bash`**
+  - **command:** `git branch -a | grep -E "(011|012|013)" 2>&1`
+  - **description:** `List remote branches for these tasks`
+
+**← Result:**
+```
+  remotes/origin/task/011-broadcast-a-api
+  remotes/origin/task/012-broadcast-b-ui
+  remotes/origin/task/013-broadcast-c-tests
+```
+
+**→ `Bash`**
+  - **command:** `git diff main...origin/task/011-broadcast-a-api -- product/ 2>&1`
+  - **description:** `Get product-only diff for task-011`
+
+**→ `Bash`**
+  - **command:** `git diff main...origin/task/012-broadcast-b-ui -- product/ 2>&1`
+  - **description:** `Get product-only diff for task-012`
+
+**→ `Bash`**
+  - **command:** `git diff main...origin/task/013-broadcast-c-tests -- product/ 2>&1`
+  - **description:** `Get product-only diff for task-013`
+
+**← Result:**
+```
+diff --git a/product/debate-engine/broadcast/tests/__init__.py b/product/debate-engine/broadcast/tests/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/product/debate-engine/broadcast/tests/__pycache__/__init__.cpython-312.pyc b/product/debate-engine/broadcast/tests/__pycache__/__init__.cpython-312.pyc
+new file mode 100644
+index 0000000..9a940f9
+Binary files /dev/null and b/product/debate-engine/broadcast/tests/__pycache__/__init__.cpython-312.pyc differ
+diff --git a/product/debate-engine/broadcast/tests/__pycache__/conftest.cpython-312-pytest-9.0.2.pyc b/product/debate-engine/broadcast/tests/__pycache__/conftest.cpython-312-pytest-9.0.2.pyc
+new file mode 100644
+index 0000000..a9e90f9
+Binary files /dev/null and b/product/debate-engine/broadcast/tests/__pycache__/conftest.cpython-312-pytest-9.0.2.pyc differ
+diff --git a/product/debate-engine/broadcast/tests/__pycache__/test_api.cpython-312-pytest-9.0.2.pyc b/product/debate-engine/broadcast/tests/__pycache__/test_api.cpython-312-pytest-9.0.2.pyc
+new file mode 100644
+index 0000000..be3cbff
+Binary files /dev/null and b/product/debate-engine/broadcast/tests/__pycache__/test_api.cpython-312-pytest-9.0.2.pyc differ
+diff --git a/product/debate-engine/broadcast/tests/conftest.py b/product/debate-engine/broadcast/tests/conftest.py
+new file mode 100644
+index 0000000..ece74fd
+--- /dev/null
++++ b/product/debate-engine/broadcast/tests/conftest.py
+@@ -0,0 +1,101 @@
++"""
++Stub FastAPI application that conforms to the API contract assumed by test_api.py.
++
++This file serves two purposes:
++1. Makes tests self-contained — `pytest product/debate-engine/broadcast/tests/` runs
++   without any other agent's files present.
++2. Documents a runnable reference implementation of the API contract.
++
++To run tests against a real implementation instead, replace the `app` import below
++with an import from the actual api module:
++    from product.debate_engine.broadcast.api import app
++"""
++
++import uuid
++from datetime import da
+… [12785 chars]
+```
+
+**← Result:**
+```
+diff --git a/product/debate-engine/broadcast/api.py b/product/debate-engine/broadcast/api.py
+new file mode 100644
+index 0000000..925f785
+--- /dev/null
++++ b/product/debate-engine/broadcast/api.py
+@@ -0,0 +1,90 @@
++from datetime import datetime, timezone
++from typing import Literal
++from uuid import UUID, uuid4
++
++from fastapi import FastAPI, HTTPException
++from pydantic import BaseModel
++
++app = FastAPI(title="Debate Engine")
++
++# In-memory storage
++debates: dict[str, dict] = {}
++arguments: dict[str, list[dict]] = {}
++
++
++# --- Pydantic models ---
++
++class DebateCreate(BaseModel):
++    topic: str
++    description: str
++
++
++class Debate(BaseModel):
++    id: str
++    topic: str
++    description: str
++    created_at: str
++
++
++class ArgumentCreate(BaseModel):
++    side: Literal["for", "against"]
++    content: str
++
++
++class Argument(BaseModel):
++    id: str
++    debate_id: str
++    side: Literal["for", "against"]
++    content: str
++    created_at: str
++
++
++# --- Endpoints ---
++
++@app.post("/debates", response_model=Debate, status_code=201)
++def create_debate(body: DebateCreate) -> Debate:
++    debate_id = str(uuid4())
++    debate = {
++        "id": debate_id,
++        "topic": body.topic,
++        "description": body.description,
++        "created_at": datetime.now(timezone.utc).isoformat(),
++    }
++    debates[debate_id] = debate
++    arguments[debate_id] = []
++    return Debate(**debate)
++
++
++@app.get("/debates", response_model=list[Debate], status_code=200)
++def list_debates() -> list[Debate]:
++    return [Debate(**d) for d in debates.values()]
++
++
++@app.get("/debates/{debate_id}", response_model=Debate, status_code=200)
++def get_debate(debate_id: str) -> Debate:
++    debate = debates.get(debate_id)
++    if debate is None:
++        raise HTTPException(status_code=404, detail="Debate not found")
++    return Debate(**debate)
++
++
++@app.post("/debates/{debate_id}/arguments", response_model=Argument, status_code=201)
++def add_argument(debate_id: str, body: ArgumentCreate)
+… [3580 chars]
+```
+
+**← Result:**
+```
+diff --git a/product/debate-engine/broadcast/ui.html b/product/debate-engine/broadcast/ui.html
+new file mode 100644
+index 0000000..ada81ea
+--- /dev/null
++++ b/product/debate-engine/broadcast/ui.html
+@@ -0,0 +1,827 @@
++<!DOCTYPE html>
++<html lang="en">
++<head>
++  <meta charset="UTF-8" />
++  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
++  <title>Debate Engine</title>
++  <style>
++    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
++
++    :root {
++      --bg: #0f1117;
++      --surface: #1a1d27;
++      --border: #2a2d3a;
++      --accent: #5b7fff;
++      --accent-hover: #7a96ff;
++      --against: #ff5b5b;
++      --against-hover: #ff7a7a;
++      --for: #3dd68c;
++      --text: #e2e4ee;
++      --muted: #8b8fa8;
++      --error-bg: #3a1a1a;
++      --error-border: #8b2222;
++      --radius: 8px;
++      --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
++    }
++
++    body {
++      background: var(--bg);
++      color: var(--text);
++      font-family: var(--font);
++      font-size: 15px;
++      line-height: 1.6;
++      min-height: 100vh;
++    }
++
++    /* ── Header ── */
++    header {
++      background: var(--surface);
++      border-bottom: 1px solid var(--border);
++      padding: 14px 24px;
++      display: flex;
++      align-items: center;
++      gap: 16px;
++      flex-wrap: wrap;
++    }
++
++    header h1 {
++      font-size: 1.2rem;
++      font-weight: 700;
++      letter-spacing: 0.02em;
++      color: var(--text);
++      white-space: nowrap;
++    }
++
++    header h1 span { color: var(--accent); }
++
++    #base-url-wrap {
++      display: flex;
++      align-items: center;
++      gap: 8px;
++      margin-left: auto;
++    }
++
++    #base-url-wrap label {
++      color: var(--muted);
++      font-size: 0.85rem;
++      white-space: nowrap;
++    }
++
++    #base-url-input {
++      background: var(--bg);
++      border: 1px solid var(--border);
++      border-radius: var(--radius);
++      color: var(--text);
++      font-family: monospace;
++
+… [21270 chars]
+```
+
+**Assistant:**
+
+I have all the information I need. Let me now do the research analysis and submit reviews for all three PRs simultaneously.
+
+**Research Finding (BROADCAST contract divergence):**
+- Agent A: `topic` field, `side` field, `GET /debates` → `[...]` array, separate arguments endpoint
+- Agent B: `topic` ✓, `side` ✓, but `GET /debates` → `{"debates":[...]}` (wrapped), and `GET /debates/{id}` embeds arguments (no separate `GET /debates/{id}/arguments` call)
+- Agent C: `title` ✗ (not `topic`), `position` ✗ (not `side`), `GET /debates` → `[...]` ✓, separate arguments endpoint ✓
+
+**→ `Bash`**
+  - **command:** `gh pr review 7 --approve --body "ACCEPTED.
+
+All acceptance criteria met:
+- schema.md documents all 5 endpoints with method, path, request/response JSON, status codes — clean and complete.
+- api.py exactly implements schema.md: POST /debates (201), GET /debates (200), GET /debates/{debate_id} (200/404), POST /debates/{debate_id}/arguments (201/404), GET /debates/{debate_id}/arguments (200/404). No gaps, no extras.
+- In-memory storage (plain dicts). Pydantic models on all I/O. Correct status codes throughout.
+- Runnable with: uvicorn api:app --app-dir product/debate-engine/broadcast
+
+RESEARCH AR
+… [309 chars]`
+  - **description:** `Approve PR #7 (task-011)`
+
+**→ `Bash`**
+  - **command:** `gh pr review 8 --approve --body "ACCEPTED.
+
+All acceptance criteria met:
+- Single self-contained file: inline CSS + JS, no CDN, no npm, no bundler.
+- API base URL configurable via input field in header (default http://localhost:8000).
+- All four capabilities implemented: list debates, view single debate + arguments, create debate, post argument.
+- Research comment block at top of <script> documents assumed API contract.
+- Errors displayed via error banner (showError), not silently swallowed.
+- XSS: all user content rendered via escHtml(). Attribute injection guarded by escAttr().
+
+RESEARCH ART
+… [432 chars]`
+  - **description:** `Approve PR #8 (task-012)`
+
+**→ `Bash`**
+  - **command:** `gh pr review 9 --approve --body "ACCEPTED.
+
+All acceptance criteria met:
+- Uses pytest + starlette TestClient. conftest.py provides self-contained stub implementation.
+- Research comment block at top of test_api.py documents assumed API contract.
+- All 6 coverage areas covered with thorough test classes: TestCreateDebate (5 tests), TestListDebates (4), TestGetDebate (4), TestAddArgument (6), TestListArguments (5).
+- Tests runnable standalone: pytest product/debate-engine/broadcast/tests/
+- conftest.py resets in-memory state between tests via fixture.
+
+MINOR: __pycache__ committed — fix with a 
+… [362 chars]`
+  - **description:** `Approve PR #9 (task-013)`
+
+**← Result:**
+```
+Exit code 1
+failed to create review: GraphQL: Review Can not approve your own pull request (addPullRequestReview)
+
+failed to create review: GraphQL: Review Can not approve your own pull request (addPullRequestReview)
+```
+
+**← Result:**
+```
+Exit code 1
+failed to create review: GraphQL: Review Can not approve your own pull request (addPullRequestReview)
+
+failed to create review: GraphQL: Review Can not approve your own pull request (addPullRequestReview)
+```
 
 **← Result:**
 ```
@@ -404,7 +805,56 @@ failed to create review: GraphQL: Review Can not approve your own pull request (
 
 **Assistant:**
 
-Known single-author limitation. Accepting via diff review (established pattern). Now I'll update status.md and then assign task-011/012/013.
+Single-author limitation (consistent with prior cycles). Accepting via branch diff review — setting status to accepted. Now updating all files.
+
+**→ `Write`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-011/status.md`
+  - **content:** `status: accepted
+branch: task/011-broadcast-a-api
+created: 2026-03-01
+topology: broadcast
+phase: 1
+pr: 7
+`
+
+**→ `Write`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-012/status.md`
+  - **content:** `status: accepted
+branch: task/012-broadcast-b-ui
+created: 2026-03-01
+topology: broadcast
+phase: 1
+pr: 8
+`
+
+**→ `Write`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-013/status.md`
+  - **content:** `status: accepted
+branch: task/013-broadcast-c-tests
+created: 2026-03-01
+topology: broadcast
+phase: 1
+pr: 9
+`
+
+**← Result:**
+```
+The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-011/status.md has been updated successfully.
+```
+
+**← Result:**
+```
+The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-012/status.md has been updated successfully.
+```
+
+**← Result:**
+```
+The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-013/status.md has been updated successfully.
+```
+
+**Assistant:**
+
+Now create Phase 2 PIPELINE tasks and read decisions.md to prepend to it.
 
 **→ `Read`**
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/decisions.md`
@@ -418,262 +868,49 @@ Known single-author limitation. Accepting via diff review (established pattern).
      4→
      5→---
      6→
-     7→## [2026-03-01T26:00] MANDATE CHANGED — Topology Research Program v1; Phase 0 started
-     8→**What:** Read outbox.md from Think. New 40-cycle research mandate: study whether different AI agent coordination topologies produce measurably different empirical outcomes on the same task (Debate Engine: FastAPI + UI + tests). Five phases: 0 (Instrument), 1 (Broadcast), 2 (Pipeline), 3 (Adversarial), 4 (Specialist), 5 (Synthesis).
-     9→
-    10→Phase 0 Lead-direct actions completed:
-    11→1. Added `## Research Log` section to `lead/state.md` with Phase 0 entry.
-    12→2. Added `topology:` and `phase:` fields to `status.md` template in `lead/CLAUDE.md`.
-    13→
-    14→Phase 0 build task assigned: task-010 (dashboard research panel — add collapsible Research Log section to `product/dashboard/index.html`, parsing `## Research Log` from state.md via GitHub API, same styling as existing sections).
+     7→## [2026-03-01T27:00] task-010 ACCEPTED — dashboard research panel
+     8→**What:** Reviewed PR #6 via branch diff (gh self-review blocked, single-author repo). All 6 acceptance criteria met:
+     9→1. Research Log section header renders with entry count badge.
+    10→2. Each `### Phase X — date` entry becomes a collapsible `.research-card` with correct title.
+    11→3. Subheadings (Hypotheses, Observations, Surprises, Next phase adaptation) rendered bold via `marked.parse()` — visually distinct.
+    12→4. Click toggles `.open` class and `▶`/`▼` arrow indicator cleanly.
+    13→5. Absent `## Research Log` section handled gracefully: "No research log entries yet." fallback.
+    14→6. Purely additive changes — no regressions in mandate, task board, decisions, or cycle timeline.
     15→
-    16→Phase 1 BROADCAST tasks (task-011/012/013) planned in backlog — to be assigned simultaneously in the cycle after task-010 is accepted.
+    16→Phase 0 instrumentation complete.
     17→
-    18→Cleared outbox.md after reading.
+    18→**Why:** Implementation is clean, follows existing CSS variable system, uses `escHtml()` for XSS safety on card titles. One minor style note: hover background `#1c2128` is hardcoded rather than a CSS variable, but this matches the existing GitHub dark palette and is not a blocker.
     19→
-    20→**Why:** Mandate direction was explicit and complete. Phase 0 instrumentation must land before Phase 1 begins so research data is visible in the dashboard from the first BROADCAST cycle. BROADCAST tasks pre-planned to avoid a dead cycle after task-010 merges.
+    20→---
     21→
-    22→---
-    23→
-    24→## [2026-03-01T25:00] task-007, task-008, task-009 ACCEPTED — production hardening complete
-    25→**What:** Reviewed all three via branch diff (gh self-review blocked, single-author repo).
-    26→- task-007 (task/007-orchestrator-pages, no PR — agent set status=review but never pushed): all 4 criteria met. Env vars renamed in orchestrator.yml (LEAD_MAX_TURNS, BUILD_MAX_TURNS), deploy-pages job added with correct permissions/step
-… [964 chars]
+    22→## [2026-03-01T27:00] task-011/012/013 ASSIGNED — Phase 1 BROADCAST begins
+    23→**What:** Assigned all three BROADCAST agents simultaneously:
+    24→- task-011 (Agent A): `schema.md` + `api.py` — owns the API contract and implementation. Branch: `task/011-broadcast-a-api`.
+    25→- task-012 (Agent B): `ui.html` — must independently invent the API contract. Branch: `task/012-broadcast-b-ui`.
+    26→- task-013 (Agent C): `tests/test_api.py` — must independently invent the API contract. Branch: `task/013-broadcast-c-tests`.
+    27→
+    28→All three write to `product/debate-engine/broadcast/`. Agents B and C are explicitly instructed not to read Agent A's output — isol
+… [884 chars]
 ```
-
-**Assistant:**
-
-Now I'll update task-010 status, log the decision, and assign task-011/012/013 all in parallel where possible.
-
-**→ `Glob`**
-  - **pattern:** `lead/tasks/task-01*/`
-
-**← Result:**
-```
-No files found
-```
-
-**→ `Glob`**
-  - **pattern:** `lead/tasks/*/`
-
-**← Result:**
-```
-No files found
-```
-
-**→ `Bash`**
-  - **command:** `ls lead/tasks/`
-  - **description:** `List task directories`
-
-**← Result:**
-```
-archive
-task-005
-task-006
-task-007
-task-008
-task-009
-task-010
-```
-
-**→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/product/debate-engine/broadcast/schema.md`
-
-**→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/product/debate-engine/broadcast`
-
-**← Result:**
-```
-File does not exist. Note: your current working directory is /home/runner/work/agentic-org-v2/agentic-org-v2.
-```
-
-**← Result:**
-```
-File does not exist. Note: your current working directory is /home/runner/work/agentic-org-v2/agentic-org-v2.
-```
-
-**→ `Bash`**
-  - **command:** `ls product/`
-  - **description:** `List product directory`
-
-**← Result:**
-```
-CLAUDE.md
-dashboard
-```
-
-**→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/product/CLAUDE.md`
-
-**← Result:**
-```
-     1→# Product
-     2→
-     3→**Current product:** Org Progress Dashboard — a browser-based UI for monitoring the agentic org.
-     4→
-     5→## Layout
-     6→
-     7→```
-     8→product/
-     9→  dashboard/
-    10→    index.html   ← single-file app (HTML + CSS + JS inline, no build)
-    11→    README.md    ← setup instructions
-    12→```
-    13→
-    14→The old bookmark manager (Python/FastAPI) was the prior mandate and is now superseded.
-    15→
-    16→## Notes for Task Agents
-    17→
-    18→- Read this file before writing any code.
-    19→- All dashboard code lives in `product/dashboard/`.
-    20→- The app is a single self-contained HTML file — no build step, no npm, no bundler.
-    21→- It reads live data from the GitHub API (git blobs + Actions runs).
-    22→- Config (owner/repo, PAT) is stored in `localStorage`.
-    23→- To test locally: `open product/dashboard/index.html` or `python3 -m http.server 8080 --directory product/dashboard`.
-    24→- `marked.min.js` is loaded from CDN — no local copy needed.
-    25→
-
-<system-reminder>
-Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
-</system-reminder>
-
-```
-
-**Assistant:**
-
-Now I have all the context. Let me execute all changes: accept task-010, log the decision, create task-011/012/013.
-
-**→ `Edit`**
-  - **replace_all:** `false`
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-010/status.md`
-  - **old_string:** `status: review`
-  - **new_string:** `status: accepted`
-
-**→ `Bash`**
-  - **command:** `mkdir -p lead/tasks/task-011 lead/tasks/task-012 lead/tasks/task-013`
-  - **description:** `Create task directories for 011/012/013`
-
-**← Result:**
-```
-The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-010/status.md has been updated successfully.
-```
-
-**Assistant:**
-
-Now write the task packages and status files for all three BROADCAST tasks in parallel:
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-011/package.md`
-  - **content:** `# Task 011: BROADCAST Agent A — Debate Engine schema.md + api.py
-
-## System Prompt
-
-You are a Build agent working under the BROADCAST topology in the Topology Research Program. Your team has three agents — you are Agent A (schema + API). Agents B and C are working in parallel and independently on the same Debate Engine: do not coordinate with them, do not read their output. This isolation is the controlled experimental condition.
-
-## Assignment
-
-Design and implement a **Debate Engine** FastAPI service.
-
-Write to `product/debate-engine/broadcast/`:
-
-1. `schema.md` — the API contract document. M
-… [1427 chars]`
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-012/package.md`
-  - **content:** `# Task 012: BROADCAST Agent B — Debate Engine ui.html
-
-## System Prompt
-
-You are a Build agent working under the BROADCAST topology in the Topology Research Program. Your team has three agents — you are Agent B (UI). Agents A and C are working in parallel and independently on the same Debate Engine: do not coordinate with them. This isolation is the controlled experimental condition.
-
-**CRITICAL:** Do NOT read any files that may exist under `product/debate-engine/broadcast/`. Those are other agents' outputs. You must independently invent your understanding of the Debate Engine API. Your choice
-… [1501 chars]`
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-013/package.md`
-  - **content:** `# Task 013: BROADCAST Agent C — Debate Engine tests/test_api.py
-
-## System Prompt
-
-You are a Build agent working under the BROADCAST topology in the Topology Research Program. Your team has three agents — you are Agent C (tests). Agents A and B are working in parallel and independently on the same Debate Engine: do not coordinate with them. This isolation is the controlled experimental condition.
-
-**CRITICAL:** Do NOT read any files that may exist under `product/debate-engine/broadcast/`. Those are other agents' outputs. You must independently invent your understanding of the Debate Engine API
-… [1740 chars]`
-
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-011/package.md
-```
-
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-012/package.md
-```
-
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-013/package.md
-```
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-011/status.md`
-  - **content:** `status: assigned
-branch: task/011-broadcast-a-api
-created: 2026-03-01
-topology: broadcast
-phase: 1
-`
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-012/status.md`
-  - **content:** `status: assigned
-branch: task/012-broadcast-b-ui
-created: 2026-03-01
-topology: broadcast
-phase: 1
-`
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-013/status.md`
-  - **content:** `status: assigned
-branch: task/013-broadcast-c-tests
-created: 2026-03-01
-topology: broadcast
-phase: 1
-`
-
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-011/status.md
-```
-
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-012/status.md
-```
-
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-013/status.md
-```
-
-**Assistant:**
-
-Now update decisions.md (prepend) and state.md:
 
 **→ `Edit`**
   - **replace_all:** `false`
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/decisions.md`
-  - **old_string:** `## [2026-03-01T26:00] MANDATE CHANGED — Topology Research Program v1; Phase 0 started`
-  - **new_string:** `## [2026-03-01T27:00] task-010 ACCEPTED — dashboard research panel
-**What:** Reviewed PR #6 via branch diff (gh self-review blocked, single-author repo). All 6 acceptance criteria met:
-1. Research Log section header renders with entry count badge.
-2. Each `### Phase X — date` entry becomes a collapsible `.research-card` with correct title.
-3. Subheadings (Hypotheses, Observations, Surprises, Next phase adaptation) rendered bold via `marked.parse()` — visually distinct.
-4. Click toggles `.open` class and `▶`/`▼` arrow indicator cleanly.
-5. Absent `## Research Log` section handled gracefully: "N
-… [1716 chars]`
+  - **old_string:** `---
+
+## [2026-03-01T27:00] task-010 ACCEPTED — dashboard research panel`
+  - **new_string:** `---
+
+## [2026-03-01T28:00] task-011/012/013 ACCEPTED — Phase 1 BROADCAST complete; contracts compared
+**What:** All three BROADCAST agents reviewed via branch diff (gh self-review blocked, single-author repo). All acceptance criteria met for all three.
+
+**Research measurement — BROADCAST contract divergence:**
+| Aspect | Agent A (schema.md) | Agent B (ui.html) | Agent C (test_api.py) |
+|--------|--------------------|--------------------|----------------------|
+| Debate topic field | `topic` | `topic` ✓ | `title` ✗ |
+| Argument side field | `side` | `side` ✓ | `position` ✗ |
+| GET /debates form
+… [1703 chars]`
 
 **← Result:**
 ```
@@ -682,60 +919,153 @@ The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/decisions.md has b
 
 **Assistant:**
 
-Now update state.md — backlog, recent decisions, and research log:
+Now create the Phase 2 task packages. Task-014 gets assigned now; 015 and 016 go to Planned.
 
-**→ `Edit`**
-  - **replace_all:** `false`
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
-  - **old_string:** `### Planned
-<!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
-- [task-011] BROADCAST task-A: schema.md + api.py | P1 | deps: task-010 accepted (Phase 0 complete)
-- [task-012] BROADCAST task-B: ui.html | P1 | deps: task-010 accepted (Phase 0 complete)
-- [task-013] BROADCAST task-C: tests/test_api.py | P1 | deps: task-010 accepted (Phase 0 complete)
+**→ `Bash`**
+  - **command:** `mkdir -p /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-014 /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-015 /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-016`
+  - **description:** `Create task directories for Phase 2 PIPELINE tasks`
 
-### Active
-<!-- Format: - [task-XXX] Description | status | branch -->
-- [task-010] Dashboard research panel | assigned | task/010-dashboard-research-panel`
-  - **new_string:** `### Planned
-<!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
-*(none)*
+**→ `Write`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-014/package.md`
+  - **content:** `# Task 014: PIPELINE Agent A — Debate Engine schema.md
 
-### Active
-<!-- Format: - [task-XXX] Description | status | branch -->
-- [task-011] BROADCAST Agent A: schema.md + api.py | assigned | task/011-broadcast-a-api
-- [task-012] BROADCAST Agent B: ui.html | assigned | task/012-broadcast-b-ui
-- [task-013] BROADCAST Agent C: tests/test_api.py | assigned | task/013-broadcast-c-tests`
+## System Prompt
 
-**← Result:**
-```
-The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md has been updated successfully.
-```
+You are a Build agent working under the PIPELINE topology in the Topology Research Program. You are Agent A — the first link in the pipeline. Agents B and C will receive your output and build on it sequentially. Write a clear, precise API contract: they depend on it directly.
 
-**→ `Edit`**
-  - **replace_all:** `false`
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
-  - **old_string:** `### Done (recent)
-<!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
-- [task-009] Repo cleanup + orchestrator re-processing fix | accepted | 2026-03-01`
-  - **new_string:** `### Done (recent)
-<!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
-- [task-010] Dashboard research panel | accepted | 2026-03-01
-- [task-009] Repo cleanup + orchestrator re-processing fix | accepted | 2026-03-01`
+## Assignment
+
+Design the **Debate Engine** API contract.
+
+Write `product/debate-engine/pipeline/schema.md`.
+
+### What to build
+
+The Debate Engine concept: a backend service where users can create debate topics, post arguments for or against each t
+… [1221 chars]`
+
+**→ `Write`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-014/status.md`
+  - **content:** `status: assigned
+branch: task/014-pipeline-a-schema
+created: 2026-03-01
+topology: pipeline
+phase: 2
+`
 
 **← Result:**
 ```
-The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md has been updated successfully.
+File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-014/package.md
 ```
 
-**→ `Edit`**
-  - **replace_all:** `false`
+**← Result:**
+```
+File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-014/status.md
+```
+
+**→ `Write`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-015/package.md`
+  - **content:** `# Task 015: PIPELINE Agent B — Debate Engine api.py
+
+## System Prompt
+
+You are a Build agent working under the PIPELINE topology in the Topology Research Program. You are Agent B — the second link in the pipeline. Agent A has written a schema.md that defines the API contract. Your job is to implement it faithfully.
+
+## Assignment
+
+Implement the **Debate Engine** FastAPI service against the schema Agent A defined.
+
+Write `product/debate-engine/pipeline/api.py`.
+
+### What to build
+
+Read `product/debate-engine/pipeline/schema.md` first. Implement every endpoint it defines — no extras, no gaps.
+
+#
+… [790 chars]`
+
+**→ `Write`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-015/status.md`
+  - **content:** `status: planned
+branch: task/015-pipeline-b-api
+created: 2026-03-01
+topology: pipeline
+phase: 2
+deps: task-014
+`
+
+**← Result:**
+```
+File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-015/package.md
+```
+
+**← Result:**
+```
+File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-015/status.md
+```
+
+**→ `Write`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-016/package.md`
+  - **content:** `# Task 016: PIPELINE Agent C — Debate Engine tests/test_api.py
+
+## System Prompt
+
+You are a Build agent working under the PIPELINE topology in the Topology Research Program. You are Agent C — the final link in the pipeline. Agents A and B have already produced a schema.md and api.py. You have full access to both. Write tests that verify the implementation matches the schema.
+
+## Assignment
+
+Write pytest tests for the **Debate Engine** FastAPI API.
+
+Write `product/debate-engine/pipeline/tests/test_api.py`.
+Also write `product/debate-engine/pipeline/tests/__init__.py` (empty file).
+Also write `p
+… [1375 chars]`
+
+**→ `Write`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-016/status.md`
+  - **content:** `status: planned
+branch: task/016-pipeline-c-tests
+created: 2026-03-01
+topology: pipeline
+phase: 2
+deps: task-014,task-015
+`
+
+**← Result:**
+```
+File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-016/package.md
+```
+
+**← Result:**
+```
+File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-016/status.md
+```
+
+**Assistant:**
+
+Now update state.md with all changes — moving tasks to Done, updating Active/Planned, updating Research Log, and adding recent decisions.
+
+**→ `Write`**
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
-  - **old_string:** `<!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
-- [2026-03-01T26:00] MANDATE CHANGED — Topology Research Program v1; Phase 0 started; task-010 assigned (dashboard research panel); BROADCAST tasks planned`
-  - **new_string:** `<!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
-- [2026-03-01T27:00] task-011/012/013 ASSIGNED — Phase 1 BROADCAST begins; all 3 agents simultaneous, isolated, writing to product/debate-engine/broadcast/
-- [2026-03-01T27:00] task-010 ACCEPTED — all 6 criteria met; Phase 0 instrumentation complete; gh self-review blocked (single-author)
-- [2026-03-01T26:00] MANDATE CHANGED — Topology Research Program v1; Phase 0 started; task-010 assigned (dashboard research panel); BROADCAST tasks planned`
+  - **content:** `# Lead State
+
+Dynamic working memory. Updated by Lead each cycle.
+Full decisions log: `lead/decisions.md` (newest first).
+
+---
+
+## Mandate
+
+**Current focus: Topology Research Program v1**
+
+Research question: Do different AI agent coordination topologies produce measurably different empirical outcomes when given an identical task?
+
+Controlled task: **Debate Engine** (FastAPI + UI + tests) — built independently under each topology into its own subdirectory.
+
+Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) → 4 (Specialist) → 5 (Synthesis). 40+ cycles. Do not rush.
+
+**Prior
+… [7052 chars]`
 
 **← Result:**
 ```
@@ -744,77 +1074,79 @@ The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md has been 
 
 **Assistant:**
 
-Finally, update the Research Log in state.md to record Phase 1 start:
-
-**→ `Edit`**
-  - **replace_all:** `false`
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
-  - **old_string:** `### Phase 0: INSTRUMENT — 2026-03-01
-**Hypotheses:** All 5 hypotheses (H1–H5) established. H1 and H2 will be tested in Phases 1 and 2. No empirical data yet.
-**Observations:** Infrastructure setup cycle. Lead-direct actions completed: (1) Research Log section added to state.md, (2) topology/phase fields added to status.md template in lead/CLAUDE.md. Dashboard research panel task (task-010) assigned.
-**Surprises:** None yet — Phase 0 is instrumentation only.
-**Next phase adaptation:** Phase 1 BROADCAST (task-011/012/013) will be assigned simultaneously in the cycle after task-010 is accepted. K
-… [148 chars]`
-  - **new_string:** `### Phase 1: BROADCAST — 2026-03-01
-**Hypotheses:** H1 under test: independent agents given identical context will converge on similar API contracts (field names, paths, status codes). H2 (pipeline will show tighter coupling) is the comparison baseline for next phase.
-**Observations:** task-011/012/013 assigned simultaneously. Agents B (ui) and C (tests) explicitly instructed not to read Agent A's output. Each must document assumed API contract in a comment block — this is the primary measurement artifact. Product target: `product/debate-engine/broadcast/`.
-**Surprises:** None yet — tasks just
-… [1071 chars]`
-
-**← Result:**
-```
-The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md has been updated successfully.
-```
-
-**Assistant:**
-
-Cycle complete. Here's what was done:
+Cycle complete. Here's the summary:
 
 ---
 
-**REVIEWED**
-- **task-010** (PR #6) → **ACCEPTED** via branch diff (gh self-review blocked, single-author). All 6 criteria met: Research Log section header, collapsible phase cards, bold subheadings via marked.parse(), clean expand/collapse, graceful empty-state fallback, no regressions.
+## Cycle Summary
 
----
+### Reviews (3 tasks)
 
-**ASSIGNED — Phase 1 BROADCAST begins**
+**task-011 (PR #7) — ACCEPTED** — schema.md + api.py: all 5 criteria met. Clean FastAPI, Pydantic models, correct status codes, in-memory storage. Gh self-review blocked (single-author), accepted via branch diff.
 
-Three agents assigned simultaneously, all writing to `product/debate-engine/broadcast/`. Agents B and C are explicitly isolated — they must invent the API contract independently:
+**task-012 (PR #8) — ACCEPTED** — ui.html: all 5 criteria met. Self-contained file, configurable base URL, all 4 capabilities, XSS-escaped via escHtml()/escAttr(), errors surfaced. Research comment block present.
 
-| Task | Agent | Deliverable | Branch |
-|------|-------|-------------|--------|
-| task-011 | A | `schema.md` + `api.py` | `task/011-broadcast-a-api` |
-| task-012 | B | `ui.html` | `task/012-broadcast-b-ui` |
-| task-013 | C | `tests/test_api.py` | `task/013-broadcast-c-tests` |
+**task-013 (PR #9) — ACCEPTED** — tests/test_api.py: all 5 criteria met. 20+ tests across 6 coverage areas, self-contained stub in conftest.py, research comment block present. Minor: __pycache__ committed (noted for task-016).
 
-The research measurement artifact: each of B and C's files must include a comment block documenting their assumed API contract. After all three are accepted, the Lead will diff those assumed contracts against schema.md to measure convergence (H1 test).
+### Research Finding — Phase 1 BROADCAST: H1 PARTIALLY REFUTED
+
+| Dimension | Agent A | Agent B | Agent C |
+|-----------|---------|---------|---------|
+| Debate topic field | `topic` | `topic` ✓ | `title` ✗ |
+| Argument side field | `side` | `side` ✓ | `position` ✗ |
+| GET /debates format | array | `{"debates":[]}` ✗ | array ✓ |
+| GET /debates/{id} | debate only | debate+args embedded ✗ | debate only ✓ |
+| Separate GET /arguments | yes | not called ✗ | yes ✓ |
+
+B scored 2/5, C scored 2/5 — but on *different* dimensions. Independent agents diverged rather than converged.
+
+### Assigned (Phase 2 PIPELINE)
+
+- **task-014** — PIPELINE Agent A: writes `schema.md` for `product/debate-engine/pipeline/`. Active now.
+- **task-015** — PIPELINE Agent B: reads task-014's schema, writes `api.py`. Planned (deps: 014).
+- **task-016** — PIPELINE Agent C: reads 014+015, writes tests. Planned (deps: 014, 015).
+
+Pipeline is sequential — each agent has full upstream visibility. H2 predicts alignment scores will exceed BROADCAST's 2/5 baseline.
 
 ---
 
 ## Final Output
 
-Cycle complete. Here's what was done:
+Cycle complete. Here's the summary:
 
 ---
 
-**REVIEWED**
-- **task-010** (PR #6) → **ACCEPTED** via branch diff (gh self-review blocked, single-author). All 6 criteria met: Research Log section header, collapsible phase cards, bold subheadings via marked.parse(), clean expand/collapse, graceful empty-state fallback, no regressions.
+## Cycle Summary
+
+### Reviews (3 tasks)
+
+**task-011 (PR #7) — ACCEPTED** — schema.md + api.py: all 5 criteria met. Clean FastAPI, Pydantic models, correct status codes, in-memory storage. Gh self-review blocked (single-author), accepted via branch diff.
+
+**task-012 (PR #8) — ACCEPTED** — ui.html: all 5 criteria met. Self-contained file, configurable base URL, all 4 capabilities, XSS-escaped via escHtml()/escAttr(), errors surfaced. Research comment block present.
+
+**task-013 (PR #9) — ACCEPTED** — tests/test_api.py: all 5 criteria met. 20+ tests across 6 coverage areas, self-contained stub in conftest.py, research comment block present. Minor: __pycache__ committed (noted for task-016).
+
+### Research Finding — Phase 1 BROADCAST: H1 PARTIALLY REFUTED
+
+| Dimension | Agent A | Agent B | Agent C |
+|-----------|---------|---------|---------|
+| Debate topic field | `topic` | `topic` ✓ | `title` ✗ |
+| Argument side field | `side` | `side` ✓ | `position` ✗ |
+| GET /debates format | array | `{"debates":[]}` ✗ | array ✓ |
+| GET /debates/{id} | debate only | debate+args embedded ✗ | debate only ✓ |
+| Separate GET /arguments | yes | not called ✗ | yes ✓ |
+
+B scored 2/5, C scored 2/5 — but on *different* dimensions. Independent agents diverged rather than converged.
+
+### Assigned (Phase 2 PIPELINE)
+
+- **task-014** — PIPELINE Agent A: writes `schema.md` for `product/debate-engine/pipeline/`. Active now.
+- **task-015** — PIPELINE Agent B: reads task-014's schema, writes `api.py`. Planned (deps: 014).
+- **task-016** — PIPELINE Agent C: reads 014+015, writes tests. Planned (deps: 014, 015).
+
+Pipeline is sequential — each agent has full upstream visibility. H2 predicts alignment scores will exceed BROADCAST's 2/5 baseline.
 
 ---
 
-**ASSIGNED — Phase 1 BROADCAST begins**
-
-Three agents assigned simultaneously, all writing to `product/debate-engine/broadcast/`. Agents B and C are explicitly isolated — they must invent the API contract independently:
-
-| Task | Agent | Deliverable | Branch |
-|------|-------|-------------|--------|
-| task-011 | A | `schema.md` + `api.py` | `task/011-broadcast-a-api` |
-| task-012 | B | `ui.html` | `task/012-broadcast-b-ui` |
-| task-013 | C | `tests/test_api.py` | `task/013-broadcast-c-tests` |
-
-The research measurement artifact: each of B and C's files must include a comment block documenting their assumed API contract. After all three are accepted, the Lead will diff those assumed contracts against schema.md to measure convergence (H1 test).
-
----
-
-**Turns:** 33 | **Duration:** 213.9s | **Status:** success
+**Turns:** 36 | **Duration:** 244.2s | **Status:** success
 

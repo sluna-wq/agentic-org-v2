@@ -27,16 +27,18 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 
 ### Planned
 <!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
-*(none)*
+- [task-015] PIPELINE Agent B: api.py (reads schema from task-014) | P1 | deps: task-014
+- [task-016] PIPELINE Agent C: tests/test_api.py (reads schema + api from task-014/015) | P1 | deps: task-014, task-015
 
 ### Active
 <!-- Format: - [task-XXX] Description | status | branch -->
-- [task-011] BROADCAST Agent A: schema.md + api.py | assigned | task/011-broadcast-a-api
-- [task-012] BROADCAST Agent B: ui.html | assigned | task/012-broadcast-b-ui
-- [task-013] BROADCAST Agent C: tests/test_api.py | assigned | task/013-broadcast-c-tests
+- [task-014] PIPELINE Agent A: schema.md | assigned | task/014-pipeline-a-schema
 
 ### Done (recent)
 <!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
+- [task-013] BROADCAST Agent C: tests/test_api.py | accepted | 2026-03-01
+- [task-012] BROADCAST Agent B: ui.html | accepted | 2026-03-01
+- [task-011] BROADCAST Agent A: schema.md + api.py | accepted | 2026-03-01
 - [task-010] Dashboard research panel | accepted | 2026-03-01
 - [task-009] Repo cleanup + orchestrator re-processing fix | accepted | 2026-03-01
 - [task-008] Architecture diagram | accepted | 2026-03-01
@@ -44,15 +46,14 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 - [task-006] Restructure repo to three-domain architecture | accepted | 2026-03-01
 - [task-005] Fix orchestrator merge gate (remove reviewDecision check) | accepted | 2026-03-01
 - [task-004] Restructure repo to three-domain architecture | discarded (PR #1 closed, merge conflicts) | 2026-03-01
-- [task-003] Org Progress Dashboard (single-file HTML, GitHub API) | accepted | 2026-03-01
-- [task-002] Bookmark Manager REST API (Python/FastAPI) | accepted | 2026-03-01
-- [task-001] Node.js REST API (items CRUD) | accepted | 2026-03-01
 
 ---
 
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in lead/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T28:00] task-014/015/016 ASSIGNED — Phase 2 PIPELINE; task-014 active, 015/016 planned (sequential deps)
+- [2026-03-01T28:00] task-011/012/013 ACCEPTED — Phase 1 BROADCAST complete; H1 PARTIALLY REFUTED: B+C each diverged 2/5 dimensions but in different dimensions
 - [2026-03-01T27:00] task-011/012/013 ASSIGNED — Phase 1 BROADCAST begins; all 3 agents simultaneous, isolated, writing to product/debate-engine/broadcast/
 - [2026-03-01T27:00] task-010 ACCEPTED — all 6 criteria met; Phase 0 instrumentation complete; gh self-review blocked (single-author)
 - [2026-03-01T26:00] MANDATE CHANGED — Topology Research Program v1; Phase 0 started; task-010 assigned (dashboard research panel); BROADCAST tasks planned
@@ -71,20 +72,25 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 - [2026-03-01T20:00] LEAD CYCLE PASS — mandate complete, all tasks accepted, backlog empty; NO_TASKS written
 - [2026-03-01T18:00] task-003 ACCEPTED — dashboard renders mandate, task board, decisions, cycle timeline; no PR (Think-mode session); accepted via direct diff
 - [2026-02-28T12:00] MANDATE CHANGED — new mandate: Org Progress Dashboard (single-file HTML, GitHub API reads)
-- [2026-02-28T12:00] task-003 ASSIGNED — build dashboard: mandate panel, task board, decisions feed, cycle timeline
-- [2026-03-01T15:00] task-002 ACCEPTED — all 5 endpoints correct, AnyHttpUrl validation, tag filtering, pinned requirements.txt, README with curl examples; mandate complete
-- [2026-03-01T13:00] task-002 ASSIGNED — implement Python/FastAPI bookmark manager (mandate not yet built)
-- [2026-03-01T00:00] task-001 ASSIGNED — first task: bootstrap product context + implement full REST API (Express, in-memory)
 
 ---
 
 ## Research Log
 
+### Phase 2: PIPELINE — 2026-03-01
+**Hypotheses:** H2 under test: when agents read upstream output, they produce tighter contract coupling (higher alignment with the authoritative schema). Comparison baseline: BROADCAST alignment scores (B=2/5, C=2/5).
+**Observations:** task-014 assigned (Agent A writes schema.md). task-015 and task-016 planned sequentially — 015 reads 014, 016 reads 014+015. This is the key controlled difference from BROADCAST: full upstream visibility.
+**Surprises:** None yet — Phase 2 just assigned.
+**Next phase adaptation:** After all three accepted, compare task-015's comment block and task-016's comment block against task-014's schema.md on the same 5 dimensions used in Phase 1. Score and compare to BROADCAST baseline.
+
 ### Phase 1: BROADCAST — 2026-03-01
-**Hypotheses:** H1 under test: independent agents given identical context will converge on similar API contracts (field names, paths, status codes). H2 (pipeline will show tighter coupling) is the comparison baseline for next phase.
-**Observations:** task-011/012/013 assigned simultaneously. Agents B (ui) and C (tests) explicitly instructed not to read Agent A's output. Each must document assumed API contract in a comment block — this is the primary measurement artifact. Product target: `product/debate-engine/broadcast/`.
-**Surprises:** None yet — tasks just assigned.
-**Next phase adaptation:** After all three are accepted, compare the three assumed API contracts: (1) schema.md vs. ui.html comment block — count matching endpoint paths, field names, status codes. (2) schema.md vs. test_api.py comment block — same comparison. Record alignment score. High alignment supports H1; low alignment refutes it.
+**Hypotheses:** H1 under test: independent agents given identical context will converge on similar API contracts. RESULT: PARTIALLY REFUTED.
+**Observations:** Contract divergence measured across 5 dimensions:
+- Agent B (ui): matched field names (`topic`, `side`) but diverged on shapes (wrapped array, embedded arguments). Score: 2/5.
+- Agent C (tests): matched shapes (bare array, separate endpoint) but diverged on field names (`title` not `topic`, `position` not `side`). Score: 2/5.
+- B and C diverged from A in *complementary* dimensions — neither matched the other's pattern of error.
+**Surprises:** B and C each scored identically (2/5) but diverged on *different* dimensions. This suggests field names and response shapes are independently variable — agents may anchor on different aspects of the same conceptual description. The description "side: for or against" was interpreted as `side` by B but `position` by C.
+**Next phase adaptation:** Phase 2 PIPELINE will test H2 (upstream visibility → tighter coupling). Measurement: same 5 dimensions, same scoring.
 
 ### Phase 0: INSTRUMENT — 2026-03-01
 **Hypotheses:** All 5 hypotheses (H1–H5) established. H1 and H2 will be tested in Phases 1 and 2. No empirical data yet.

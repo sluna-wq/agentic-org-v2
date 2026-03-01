@@ -4,6 +4,40 @@ Newest first. Each entry: timestamp, task, action, what was decided and why (con
 
 ---
 
+## [2026-03-01T28:00] task-011/012/013 ACCEPTED — Phase 1 BROADCAST complete; contracts compared
+**What:** All three BROADCAST agents reviewed via branch diff (gh self-review blocked, single-author repo). All acceptance criteria met for all three.
+
+**Research measurement — BROADCAST contract divergence:**
+| Aspect | Agent A (schema.md) | Agent B (ui.html) | Agent C (test_api.py) |
+|--------|--------------------|--------------------|----------------------|
+| Debate topic field | `topic` | `topic` ✓ | `title` ✗ |
+| Argument side field | `side` | `side` ✓ | `position` ✗ |
+| GET /debates format | bare `[...]` array | `{"debates":[...]}` ✗ | bare `[...]` ✓ |
+| GET /debates/{id} | debate only | debate+args embedded ✗ | debate only ✓ |
+| Separate GET /arguments | yes | not called ✗ | yes ✓ |
+
+**Alignment scores vs. Agent A:**
+- Agent B: 2/5 points ✓ (field names match, response shapes diverge)
+- Agent C: 2/5 points ✓ (response shapes match, field names diverge)
+
+**H1 assessment:** PARTIALLY REFUTED. Agents did not converge. Both B and C diverged from A on at least 2 of 5 contract dimensions, but in *different dimensions* — B matched field names and diverged on shapes; C matched shapes and diverged on field names. No pair fully agreed. This suggests independent agents produce systematically different but partially overlapping contracts.
+
+**Why accepted:** Clean implementations, all criteria met. task-013 committed __pycache__ — minor; add .gitignore task.
+
+---
+
+## [2026-03-01T28:00] task-014/015/016 ASSIGNED — Phase 2 PIPELINE begins
+**What:** Assigned three PIPELINE agents sequentially:
+- task-014 (Agent A): writes `schema.md` for pipeline topology. No upstream to read.
+- task-015 (Agent B): reads task-014's `schema.md` and writes `api.py` against it.
+- task-016 (Agent C): reads task-014's `schema.md` + task-015's `api.py` and writes `tests/test_api.py`.
+
+Only task-014 assigned now; task-015 and task-016 are Planned (blocked on prior).
+
+**Why:** Phase 2 PIPELINE hypothesis (H2): when agents can read upstream output, they produce tighter contract coupling. Measurement: compare task-015 and task-016 contract documents against task-014's schema.md. Expected higher alignment scores than BROADCAST.
+
+---
+
 ## [2026-03-01T27:00] task-010 ACCEPTED — dashboard research panel
 **What:** Reviewed PR #6 via branch diff (gh self-review blocked, single-author repo). All 6 acceptance criteria met:
 1. Research Log section header renders with entry count badge.
