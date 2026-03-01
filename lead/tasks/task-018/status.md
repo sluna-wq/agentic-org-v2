@@ -1,4 +1,4 @@
-status: in_progress
+status: review
 branch: task/018-adversarial-b-api
 created: 2026-03-01
 topology: adversarial
