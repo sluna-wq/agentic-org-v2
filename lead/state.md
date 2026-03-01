@@ -27,16 +27,17 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 
 ### Planned
 <!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
-- [task-011] BROADCAST task-A: schema.md + api.py | P1 | deps: task-010 accepted (Phase 0 complete)
-- [task-012] BROADCAST task-B: ui.html | P1 | deps: task-010 accepted (Phase 0 complete)
-- [task-013] BROADCAST task-C: tests/test_api.py | P1 | deps: task-010 accepted (Phase 0 complete)
+*(none)*
 
 ### Active
 <!-- Format: - [task-XXX] Description | status | branch -->
-- [task-010] Dashboard research panel | assigned | task/010-dashboard-research-panel
+- [task-011] BROADCAST Agent A: schema.md + api.py | assigned | task/011-broadcast-a-api
+- [task-012] BROADCAST Agent B: ui.html | assigned | task/012-broadcast-b-ui
+- [task-013] BROADCAST Agent C: tests/test_api.py | assigned | task/013-broadcast-c-tests
 
 ### Done (recent)
 <!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
+- [task-010] Dashboard research panel | accepted | 2026-03-01
 - [task-009] Repo cleanup + orchestrator re-processing fix | accepted | 2026-03-01
 - [task-008] Architecture diagram | accepted | 2026-03-01
 - [task-007] Fix orchestrator env vars + deploy dashboard to GitHub Pages | accepted | 2026-03-01
@@ -52,6 +53,8 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in lead/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T27:00] task-011/012/013 ASSIGNED — Phase 1 BROADCAST begins; all 3 agents simultaneous, isolated, writing to product/debate-engine/broadcast/
+- [2026-03-01T27:00] task-010 ACCEPTED — all 6 criteria met; Phase 0 instrumentation complete; gh self-review blocked (single-author)
 - [2026-03-01T26:00] MANDATE CHANGED — Topology Research Program v1; Phase 0 started; task-010 assigned (dashboard research panel); BROADCAST tasks planned
 - [2026-03-01T25:00] task-007/008/009 ACCEPTED — all production hardening criteria met; accepted via branch diff (single-author)
 - [2026-03-01T24:00] task-009 UPDATED — Problem 4 added to package.md: NO_TASKS robustness safeguard in orchestrator.sh main loop
@@ -77,8 +80,14 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 
 ## Research Log
 
+### Phase 1: BROADCAST — 2026-03-01
+**Hypotheses:** H1 under test: independent agents given identical context will converge on similar API contracts (field names, paths, status codes). H2 (pipeline will show tighter coupling) is the comparison baseline for next phase.
+**Observations:** task-011/012/013 assigned simultaneously. Agents B (ui) and C (tests) explicitly instructed not to read Agent A's output. Each must document assumed API contract in a comment block — this is the primary measurement artifact. Product target: `product/debate-engine/broadcast/`.
+**Surprises:** None yet — tasks just assigned.
+**Next phase adaptation:** After all three are accepted, compare the three assumed API contracts: (1) schema.md vs. ui.html comment block — count matching endpoint paths, field names, status codes. (2) schema.md vs. test_api.py comment block — same comparison. Record alignment score. High alignment supports H1; low alignment refutes it.
+
 ### Phase 0: INSTRUMENT — 2026-03-01
 **Hypotheses:** All 5 hypotheses (H1–H5) established. H1 and H2 will be tested in Phases 1 and 2. No empirical data yet.
-**Observations:** Infrastructure setup cycle. Lead-direct actions completed: (1) Research Log section added to state.md, (2) topology/phase fields added to status.md template in lead/CLAUDE.md. Dashboard research panel task (task-010) assigned.
-**Surprises:** None yet — Phase 0 is instrumentation only.
-**Next phase adaptation:** Phase 1 BROADCAST (task-011/012/013) will be assigned simultaneously in the cycle after task-010 is accepted. Key watch: do task-012 (ui.html) and task-013 (tests) correctly predict task-011's API contract? Record specific field name / status code mismatches.
+**Observations:** Infrastructure setup cycle. Lead-direct actions completed: (1) Research Log section added to state.md, (2) topology/phase fields added to status.md template in lead/CLAUDE.md. Dashboard research panel task (task-010) assigned and accepted.
+**Surprises:** None — Phase 0 is instrumentation only.
+**Next phase adaptation:** Phase 1 BROADCAST (task-011/012/013) assigned simultaneously this cycle. Key watch: do task-012 (ui.html) and task-013 (tests) correctly predict task-011's API contract? Record specific field name / status code mismatches.

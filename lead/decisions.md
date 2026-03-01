@@ -4,6 +4,33 @@ Newest first. Each entry: timestamp, task, action, what was decided and why (con
 
 ---
 
+## [2026-03-01T27:00] task-010 ACCEPTED — dashboard research panel
+**What:** Reviewed PR #6 via branch diff (gh self-review blocked, single-author repo). All 6 acceptance criteria met:
+1. Research Log section header renders with entry count badge.
+2. Each `### Phase X — date` entry becomes a collapsible `.research-card` with correct title.
+3. Subheadings (Hypotheses, Observations, Surprises, Next phase adaptation) rendered bold via `marked.parse()` — visually distinct.
+4. Click toggles `.open` class and `▶`/`▼` arrow indicator cleanly.
+5. Absent `## Research Log` section handled gracefully: "No research log entries yet." fallback.
+6. Purely additive changes — no regressions in mandate, task board, decisions, or cycle timeline.
+
+Phase 0 instrumentation complete.
+
+**Why:** Implementation is clean, follows existing CSS variable system, uses `escHtml()` for XSS safety on card titles. One minor style note: hover background `#1c2128` is hardcoded rather than a CSS variable, but this matches the existing GitHub dark palette and is not a blocker.
+
+---
+
+## [2026-03-01T27:00] task-011/012/013 ASSIGNED — Phase 1 BROADCAST begins
+**What:** Assigned all three BROADCAST agents simultaneously:
+- task-011 (Agent A): `schema.md` + `api.py` — owns the API contract and implementation. Branch: `task/011-broadcast-a-api`.
+- task-012 (Agent B): `ui.html` — must independently invent the API contract. Branch: `task/012-broadcast-b-ui`.
+- task-013 (Agent C): `tests/test_api.py` — must independently invent the API contract. Branch: `task/013-broadcast-c-tests`.
+
+All three write to `product/debate-engine/broadcast/`. Agents B and C are explicitly instructed not to read Agent A's output — isolation is the controlled condition. Each must document their assumed API contract in a comment block at the top of their output file.
+
+**Why:** Phase 1 BROADCAST hypothesis (H1): independent agents given identical context will converge on similar API contracts. The comment-block API documentation in ui.html and test_api.py is the primary measurement artifact. After all three are accepted, the Lead will diff the three assumed contracts against schema.md and record field-name matches, path mismatches, and status-code alignment.
+
+---
+
 ## [2026-03-01T26:00] MANDATE CHANGED — Topology Research Program v1; Phase 0 started
 **What:** Read outbox.md from Think. New 40-cycle research mandate: study whether different AI agent coordination topologies produce measurably different empirical outcomes on the same task (Debate Engine: FastAPI + UI + tests). Five phases: 0 (Instrument), 1 (Broadcast), 2 (Pipeline), 3 (Adversarial), 4 (Specialist), 5 (Synthesis).
 
