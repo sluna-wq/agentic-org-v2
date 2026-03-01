@@ -57,23 +57,23 @@ Status flow: `assigned` → `in_progress` → `review` → `accepted` | `changes
 
 ## Mandate
 
-We are building a simple REST API in Node.js (Express).
+We are building a **bookmark manager REST API** in Python using FastAPI.
 
-**What to build:**
-- `GET /health` — returns `{ status: "ok" }`
-- `GET /items` — returns list of items
-- `POST /items` — creates an item `{ name: string }`
-- `GET /items/:id` — get one item
-- `DELETE /items/:id` — delete an item
-- In-memory storage is fine for now (no database)
+**Endpoints:**
+- `GET /health` → `{"status": "ok"}`
+- `POST /bookmarks` → create bookmark: `{url, title, tags: []}` — returns 201 with `{id, url, title, tags}`
+- `GET /bookmarks` → list all bookmarks; supports `?tag=xxx` to filter by tag (exact match within tags list)
+- `GET /bookmarks/{id}` → get one, 404 if not found
+- `DELETE /bookmarks/{id}` → delete, return deleted bookmark, 404 if not found
 
-**Quality bar:**
-- Code must run: `node index.js` starts the server on port 3000
-- Each endpoint must work correctly
-- Meaningful error handling (404 for missing items, 400 for bad input)
-- Clean, readable code — no unnecessary complexity
+**Quality bar — all must pass before accepting:**
+1. URL validation: `url` field must be a valid http/https URL. Use Pydantic's `AnyHttpUrl`. Bare strings like `"not-a-url"` must be rejected with 422.
+2. Tag filtering: `GET /bookmarks?tag=python` must return only bookmarks where `"python"` is in their `tags` list. No tag param = return all.
+3. `requirements.txt` must exist in `product/` with pinned versions (e.g. `fastapi==0.x.x`).
+4. `README.md` must exist in `product/` with a working curl example for every endpoint.
+5. Server starts with: `uvicorn main:app --port 8000`
 
-**Done means:** all 5 endpoints work, server starts without errors, code is in `product/`.
+**Done means:** all 5 endpoints work, URL validation rejects bad input, tag filtering works, requirements.txt and README.md are present.
 
 ---
 
@@ -93,7 +93,7 @@ We are building a simple REST API in Node.js (Express).
 
 ### Done (recent)
 <!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
-- [task-001] Bootstrap product/CLAUDE.md + implement REST API | accepted | 2026-03-01
+- [task-001] Node.js REST API (items CRUD) | accepted | 2026-03-01
 
 ---
 
