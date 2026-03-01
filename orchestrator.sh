@@ -344,30 +344,32 @@ PROMPT
     # Open or update the PR
     pr_number=$(get_field "$task_dir" "pr")
     if [ -z "$pr_number" ]; then
-      # New PR
-      local pr_title
+      # New PR — use --body-file to avoid shell escaping issues with markdown content
+      local pr_title pr_url
       pr_title=$(head -1 "$package_file" | sed 's/^# //')
-      local pr_url
       pr_url=$(gh pr create \
         --title "$pr_title" \
-        --body "$(cat "$package_file")" \
+        --body-file "$package_file" \
         --base main \
-        --head "$branch" \
-        2>&1) || true
+        --head "$branch" 2>&1) && {
+        # gh pr create prints the PR URL on success — extract number from it
+        pr_number=$(echo "$pr_url" | grep -oE '[0-9]+$' || echo "")
+      } || {
+        log "WARNING: gh pr create failed for $task_id — $pr_url"
+        pr_url=""
+      }
 
-      pr_number=$(gh pr view "$branch" --json number --jq '.number' 2>/dev/null || echo "")
       if [ -n "$pr_number" ]; then
-        # Store PR number in status.md (on task branch, then we'll also update main)
         set_field "$task_dir" "pr" "$pr_number"
         git add -A
         git diff --cached --quiet || git commit -m "$task_id: record PR #$pr_number"
         push_branch "$branch"
-        log "$task_id: opened PR #$pr_number — $pr_url"
+        log "$task_id: opened PR #$pr_number"
       else
-        log "WARNING: could not determine PR number for $task_id"
+        log "WARNING: no PR number for $task_id — CTO will review via branch diff"
       fi
     else
-      # Existing PR (revision) — just push; PR already open
+      # Revision — PR already open, push is enough
       log "$task_id: pushed revision to existing PR #$pr_number"
     fi
 
@@ -409,9 +411,8 @@ main() {
     log "══════ Cycle $CYCLE ══════"
 
     run_cto_phase
-    should_stop && { log "Stopping."; break; }
-
-    process_cto_decisions   # merge/close PRs from this cycle's CTO decisions
+    # Always process decisions — merges/closes must happen even if this is the last cycle
+    process_cto_decisions
     should_stop && { log "Stopping."; break; }
 
     run_task_phase

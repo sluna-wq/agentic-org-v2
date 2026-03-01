@@ -1,18 +1,20 @@
 # Product
 
-> **PLACEHOLDER** — This file should be filled in with the actual product details before any task agents are assigned work. The CTO's first task batch may include a task to scaffold this file.
+A simple REST API for managing a list of items. Built with Node.js and Express, using in-memory storage. No database required.
 
 ---
 
 ## What This Is
 
-*(Describe the product here — one paragraph. What problem does it solve? Who uses it?)*
+A minimal CRUD REST API that lets clients create, read, and delete named items. Items are stored in memory — data resets on restart. Intended as a clean, dependency-light backend service.
 
 ---
 
 ## Tech Stack
 
-*(List the languages, frameworks, databases, and tools in use.)*
+- **Runtime:** Node.js (CommonJS)
+- **Framework:** Express
+- **Storage:** In-memory array (no database)
 
 ---
 
@@ -20,23 +22,21 @@
 
 ```bash
 # Install dependencies
-# (fill in)
+npm install
 
-# Start development server
-# (fill in)
-
-# Run tests
-# (fill in)
-
-# Build for production
-# (fill in)
+# Start server (runs on port 3000)
+node index.js
 ```
 
 ---
 
 ## Code Conventions
 
-*(Fill in project-specific conventions: naming, file structure, patterns to follow, patterns to avoid.)*
+- CommonJS (`require`/`module.exports`) — no ESM
+- Single entry point: `index.js`
+- No TypeScript, no test frameworks, no build step
+- Keep logic inline — no separate route files for a project this size
+- IDs are auto-incrementing integers
 
 ---
 
@@ -44,7 +44,9 @@
 
 ```
 product/
-└── (fill in as the project grows)
+├── index.js       — Express app and all route handlers
+├── package.json   — Dependencies (express only)
+└── CLAUDE.md      — This file
 ```
 
 ---
