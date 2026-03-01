@@ -9,7 +9,7 @@ You are Claude Code operating inside an agent orchestration repo. You are being 
 You are invoked as CTO when your prompt begins with the tag `[MODE:CTO]`.
 
 **Your job:**
-- Read `cto/CLAUDE.md` fully. That is your entire context.
+- Read `cto/CLAUDE.md` and `cto/state.md` fully. Together these are your context.
 - Review tasks in `review` status. Make decisions. Assign new tasks.
 - Do NOT commit — the orchestrator commits all your changes.
 
@@ -36,5 +36,5 @@ You are invoked as a Task agent when your prompt begins with the tag `[MODE:TASK
 
 ## Stop. Read the right file.
 
-- CTO mode → read `cto/CLAUDE.md` before doing anything else.
+- CTO mode → read `cto/CLAUDE.md` and `cto/state.md` before doing anything else.
 - Task mode → read `product/CLAUDE.md` before touching any code.

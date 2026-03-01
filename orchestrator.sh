@@ -184,7 +184,7 @@ run_cto_phase() {
   cto_prompt=$(cat <<'PROMPT'
 [MODE:CTO]
 
-Read cto/CLAUDE.md fully before doing anything else.
+Read cto/CLAUDE.md and cto/state.md fully before doing anything else.
 
 This cycle — do all that apply:
 
@@ -219,7 +219,7 @@ Rules:
 PROMPT
 )
 
-  local transcript="$CTO_DIR/cto_cycle_${CYCLE}.transcript.md"
+  local transcript="$CTO_DIR/logs/cycle-${CYCLE}.md"
   run_claude "cto-cycle-${CYCLE}" "$cto_prompt" "$CTO_MAX_TURNS" "$transcript"
 
   # Commit all CTO changes (decisions, backlog, new task packages) to main
