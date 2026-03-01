@@ -1,4 +1,4 @@
-status: assigned
+status: in_progress
 branch: task/022-specialist-c-evaluation-tests
 created: 2026-03-01
 topology: specialist
