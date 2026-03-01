@@ -1,3 +1,3 @@
-status: in_progress
+status: review
 branch: task/004-repo-restructure
 created: 2026-03-01
