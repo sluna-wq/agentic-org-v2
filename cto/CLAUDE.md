@@ -100,6 +100,7 @@ We are building a **bookmark manager REST API** in Python using FastAPI.
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in cto/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T14:00] CTO CYCLE PASS — no review action; task-002 assigned, task agent not yet run
 - [2026-03-01T13:00] task-002 ASSIGNED — implement Python/FastAPI bookmark manager (mandate not yet built)
 - [2026-03-01T12:00] task-001 ACCEPTED — all 5 endpoints correct, clean 42-line implementation, no PR found so accepted via branch diff
 - [2026-03-01T00:00] task-001 ASSIGNED — first task: bootstrap product context + implement full REST API (Express, in-memory)
