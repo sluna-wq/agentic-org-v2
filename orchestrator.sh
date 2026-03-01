@@ -62,6 +62,8 @@ preflight() {
   fi
   git checkout main
 
+  mkdir -p "$REPO_ROOT/logs/lead"
+
   log "Pre-flight OK. Max turns: Lead=$LEAD_MAX_TURNS Task=$BUILD_MAX_TURNS"
 }
 
@@ -223,7 +225,7 @@ Rules:
 PROMPT
 )
 
-  local transcript="$REPO_ROOT/logs/cycle-${CYCLE}.md"
+  local transcript="$REPO_ROOT/logs/lead/cycle-${CYCLE}.md"
   run_claude "lead-cycle-${CYCLE}" "$lead_prompt" "$LEAD_MAX_TURNS" "$transcript"
 
   # Commit all Lead changes (decisions, backlog, new task packages) to main
