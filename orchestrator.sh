@@ -248,6 +248,13 @@ process_lead_decisions() {
     branch=$(get_field "$task_dir" "branch")
     pr_number=$(get_field "$task_dir" "pr")
 
+    local merged
+    merged=$(get_field "$task_dir" "merged")
+    if [[ "$merged" == "true" ]]; then
+      log "  task $task_id already merged, skipping"
+      continue
+    fi
+
     if [ -z "$pr_number" ]; then
       log "$task_id: accepted but no PR number recorded — skipping merge"
       continue
@@ -257,6 +264,7 @@ process_lead_decisions() {
     gh pr merge "$pr_number" --squash --delete-branch \
       --subject "$task_id: $(head -1 "$task_dir/package.md" | sed 's/^# //')" \
       2>&1 || log "WARNING: could not merge PR #$pr_number (may already be merged)"
+    set_field "$task_dir" "merged" "true"
   done < <(tasks_with_status "accepted")
 
   # Close discarded PRs
@@ -458,6 +466,11 @@ main() {
     log "══════ Cycle $CYCLE ══════"
 
     run_lead_phase
+    # Safety: if Lead assigned tasks but forgot to remove NO_TASKS, clear it
+    if [ -n "$(tasks_with_status "assigned"; tasks_with_status "changes_requested")" ]; then
+      rm -f "$LEAD_DIR/NO_TASKS" "$LEAD_DIR/NO_TASKS.md"
+      log "Safety: removed stale NO_TASKS (runnable tasks exist)"
+    fi
     # Always process decisions — merges/closes must happen even if this is the last cycle
     process_lead_decisions
     should_stop && { log "Stopping."; break; }
