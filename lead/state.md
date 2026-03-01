@@ -7,13 +7,13 @@ Full decisions log: `lead/decisions.md` (newest first).
 
 ## Mandate
 
-**Current focus: Orchestrator fix (infrastructure/housekeeping)**
+**Current focus: Awaiting next mandate**
 
-Fix merge gate in `orchestrator.sh`: remove GitHub `reviewDecision` check; merge on `status.md: accepted` alone. Direction queued by Think via root `outbox.md`.
+Orchestrator fix complete (task-005 accepted 2026-03-01). Merge gate now trusts `status.md: accepted` as sole authority — no GitHub reviewDecision gate.
 
 **Prior focus (complete):** Repo restructuring to three-domain architecture (task-004 accepted 2026-03-01).
 
-**Next:** Human to set next product mandate after orchestrator fix completes.
+**Next:** Human to set next product mandate.
 
 ---
 
@@ -29,10 +29,11 @@ Fix merge gate in `orchestrator.sh`: remove GitHub `reviewDecision` check; merge
 
 ### Active
 <!-- Format: - [task-XXX] Description | status | branch -->
-- [task-005] Fix orchestrator merge gate (remove reviewDecision check) | assigned | task/005-fix-merge-gate
+*(none)*
 
 ### Done (recent)
 <!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
+- [task-005] Fix orchestrator merge gate (remove reviewDecision check) | accepted | 2026-03-01
 - [task-004] Restructure repo to three-domain architecture | accepted | 2026-03-01
 - [task-003] Org Progress Dashboard (single-file HTML, GitHub API) | accepted | 2026-03-01
 - [task-002] Bookmark Manager REST API (Python/FastAPI) | accepted | 2026-03-01
@@ -43,6 +44,7 @@ Fix merge gate in `orchestrator.sh`: remove GitHub `reviewDecision` check; merge
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in lead/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T23:30] task-005 ACCEPTED — all 6 criteria met; gh self-review blocked (known single-author limit), accepted via branch diff; NO_TASKS written
 - [2026-03-01T23:00] task-005 ASSIGNED — fix orchestrator merge gate; remove reviewDecision check from orchestrator.sh; read from outbox.md direction
 - [2026-03-01T22:00] task-004 ACCEPTED — all 9 criteria met; gh self-review blocked (known single-author limit), accepted via branch diff; NO_TASKS written
 - [2026-03-01T21:00] task-004 ASSIGNED — repo restructure to three-domain architecture per Think outbox.md direction; NO_TASKS cleared
