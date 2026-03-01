@@ -95,6 +95,7 @@ run_claude() {
     --max-turns "$max_turns" \
     -p "$prompt" \
     --output-format stream-json \
+    --verbose \
     2>&1 \
     | tee "$out_jsonl" \
     | jsonl_to_md "$label" \
