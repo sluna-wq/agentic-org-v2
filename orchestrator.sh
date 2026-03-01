@@ -106,7 +106,7 @@ run_claude() {
 # Used for revision context — we inject the summary, not the full tool log.
 extract_final_output() {
   local jsonl="$1"
-  [ -f "$jsonl" ] || return
+  [ -f "$jsonl" ] || return 0
   python3 -c "
 import sys, json
 for line in open(sys.argv[1]):
