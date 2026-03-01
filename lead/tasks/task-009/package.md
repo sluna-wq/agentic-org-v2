@@ -58,16 +58,35 @@ git rm lead/logs/build/.gitkeep
 ```
 Then commit without the directory (git will remove the empty dir automatically).
 
+### Problem 4 — orchestrator NO_TASKS robustness
+
+After `run_lead_phase()`, if Lead forgets to delete `lead/NO_TASKS` while having assigned tasks, the orchestrator stops early (as just happened with task-007/008/009).
+
+**Fix in `orchestrator.sh`:** In the main loop, between the `run_lead_phase` call and `should_stop()`, add a safeguard that deletes `lead/NO_TASKS` if any tasks have status `assigned` or `changes_requested`:
+
+```bash
+# Safety: if Lead assigned tasks but forgot to remove NO_TASKS, clear it
+if [ -n "$(tasks_with_status "assigned"; tasks_with_status "changes_requested")" ]; then
+  rm -f "$LEAD_DIR/NO_TASKS" "$LEAD_DIR/NO_TASKS.md"
+  log "Safety: removed stale NO_TASKS (runnable tasks exist)"
+fi
+```
+
+Read the main loop in `orchestrator.sh` carefully to find the correct insertion point.
+
+Also add `orchestrator.sh` to the **Expanded write access** list above.
+
 ### Acceptance criteria
 - [ ] `lead/tasks/archive/` contains task-001, task-002, task-003, task-004 (moved via git mv)
 - [ ] `lead/tasks/task-005` and `lead/tasks/task-006` remain at `lead/tasks/`
 - [ ] `orchestrator.sh` `process_lead_decisions()` checks `merged: true` before attempting PR merge
 - [ ] After successful merge, `merged: true` is written to status.md via `set_field`
 - [ ] `lead/logs/build/` directory removed
+- [ ] `orchestrator.sh` main loop: stale NO_TASKS removed when runnable tasks (`assigned` or `changes_requested`) exist
 
 ## Relevant Files
 
-- `orchestrator.sh` — read `process_lead_decisions()` function carefully before editing
+- `orchestrator.sh` — read `process_lead_decisions()` and the main loop before editing
 - `lead/tasks/task-001/` through `task-004/` — archive these
 - `lead/tasks/task-005/`, `lead/tasks/task-006/` — leave these in place
 - `lead/logs/build/.gitkeep` — remove this file

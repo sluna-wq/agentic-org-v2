@@ -4,6 +4,12 @@ Newest first. Each entry: timestamp, task, action, what was decided and why (con
 
 ---
 
+## [2026-03-01T24:00] task-009 UPDATED — added Problem 4 (NO_TASKS robustness) to package.md
+**What:** Read Think outbox.md with addendum to task-009. Added Problem 4: orchestrator NO_TASKS robustness safeguard — in the main loop, after `run_lead_phase()` and before `should_stop()`, delete `lead/NO_TASKS` if any tasks have status `assigned` or `changes_requested`. Added corresponding acceptance criterion. Cleared outbox.
+**Why:** This exact failure just occurred (task-007/008/009 assigned but NO_TASKS left in place; orchestrator stopped early). Fix prevents future recurrence.
+
+---
+
 ## [2026-03-01T23:59] task-007, task-008, task-009 ASSIGNED — production-quality hardening
 **What:** Read Think outbox.md with new mandate: three parallel tasks targeting different files. Assigned all three simultaneously:
 - task-007 (task/007-orchestrator-pages): Fix env var name mismatch in orchestrator.yml (CTO_MAX_TURNS→LEAD_MAX_TURNS, TASK_MAX_TURNS→BUILD_MAX_TURNS), add deploy-pages job for GitHub Pages, set dashboard defaults (owner=sluna-wq, repo=agentic-org-v2), add Pages URL to README.

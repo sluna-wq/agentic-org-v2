@@ -1,5 +1,5 @@
 # Session: lead-cycle-1
-Generated: 2026-03-01T15:41:03Z
+Generated: 2026-03-01T15:49:00Z
 
 ---
 
@@ -69,11 +69,11 @@ Generated: 2026-03-01T15:41:03Z
      7→
      8→## Mandate
      9→
-    10→**Current focus: Repo restructure to three-domain architecture**
+    10→**Current focus: Production-quality hardening**
     11→
-    12→Re-running task-004 from scratch as task-006. PR #1 (task-004) was closed with merge conflicts; structural changes never landed on main. task-005 (merge gate fix) is now on main — clean base for the restructure.
+    12→Four deliverables: fix orchestrator env var bug + GitHub Pages deploy (task-007), architecture diagram (task-008), repo cleanup + orchestrator re-processing fix (task-009). All three assigned in parallel — no conflicts.
     13→
-    14→**Prior focus (complete):** Orchestrator merge gate fix (task-005 accepted 2026-03-01).
+    14→**Prior focus (complete):** Repo restructure to three-domain architecture (task-006 accepted 2026-03-01).
     15→
     16→---
     17→
@@ -89,35 +89,36 @@ Generated: 2026-03-01T15:41:03Z
     27→
     28→### Active
     29→<!-- Format: - [task-XXX] Description | status | branch -->
-    30→*(none)*
-    31→
-    32→### Done (recent)
-    33→<!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
-    34→- [task-006] Restructure repo to three-domain architecture | accepted | 2026-03-01
-    35→- [task-005] Fix orchestrator merge gate (remove reviewDecision check) | accepted | 2026-03-01
-    36→- [task-004] Restructure repo to three-domain architecture | discarded (PR #1 closed, merge conflicts) | 2026-03-01
-    37→- [task-003] Org Progress Dashboard (single-file HTML, GitHub API) | accepted | 2026-03-01
-    38→- [task-002] Bookmark Manager REST API (Python/FastAPI) | accepted | 2026-03-01
-    39→- [task-001] Node.js REST API (items CRUD) | accepted | 2026-03-01
-    40→
-    41→---
-    42→
-    43→## Recent Decisions
-    44→<!-- Top 20 only — one line each. Full log in lead/decisions.md -->
-    45→<!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
-    46→- [2026-03-01T23:55] task-006 ACCEPTED — all 8 criteria met; g
-… [2504 chars]
+    30→- [task-007] Fix orchestrator env vars + deploy dashboard to GitHub Pages | assigned | task/007-orchestrator-pages
+    31→- [task-008] Architecture diagram | assigned | task/008-architecture-diagram
+    32→- [task-009] Repo cleanup + orchestrator re-processing fix | assigned | task/009-cleanup-orchestrator
+    33→
+    34→### Done (recent)
+    35→<!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
+    36→- [task-006] Restructure repo to three-domain architecture | accepted | 2026-03-01
+    37→- [task-005] Fix orchestrator merge gate (remove reviewDecision check) | accepted | 2026-03-01
+    38→- [task-004] Restructure repo to three-domain architecture | discarded (PR #1 closed, merge conflicts) | 2026-03-01
+    39→- [task-003] Org Progress Dashboard (single-file HTML, GitHub API) | accepted | 2026-03-01
+    40→- [task-002] Bookmark Manager REST API (Python/FastAPI) | accepted | 2026-03-01
+    41→- [task-001] Node.js REST
+… [3194 chars]
 ```
 
 **Assistant:**
 
-Now let me read the outbox.md and check for any tasks in review status.
+Now let me read outbox.md and the task status files in parallel.
 
 **→ `Read`**
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/outbox.md`
 
-**→ `Glob`**
-  - **pattern:** `lead/tasks/*/status.md`
+**→ `Read`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-007/status.md`
+
+**→ `Read`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-008/status.md`
+
+**→ `Read`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-009/status.md`
 
 **← Result:**
 ```
@@ -126,351 +127,164 @@ Now let me read the outbox.md and check for any tasks in review status.
      3→<!-- Think writes directions here for Lead to read and act on. -->
      4→<!-- Lead clears this file after reading. -->
      5→
-     6→## New Mandate — 2026-03-01
+     6→## Addendum to task-009 — 2026-03-01
      7→
-     8→**Goal:** Four deliverables that make this org production-quality. Assign as three parallel-safe tasks (different files, no conflicts).
+     8→Add the following fix to task-009's package.md scope before the Build agent runs it:
      9→
-    10→---
+    10→**Problem 4 — orchestrator NO_TASKS robustness:** After `run_lead_phase()`, if Lead forgets to delete `lead/NO_TASKS` while having assigned tasks, the orchestrator stops early. Fix in `orchestrator.sh`: after `run_lead_phase()` and before `should_stop()`, add a safeguard that deletes `lead/NO_TASKS` if any tasks have status `assigned` or `changes_requested`.
     11→
-    12→### task-007: Fix orchestrator + deploy dashboard to GitHub Pages
-    13→
-    14→**Problem 1 — env var bug:** `.github/workflows/orchestrator.yml` passes `CTO_MAX_TURNS` and `TASK_MAX_TURNS` as env vars, but `orchestrator.sh` reads `LEAD_MAX_TURNS` and `BUILD_MAX_TURNS`. Fix both names to match: rename workflow inputs and env vars to `lead_max_turns` / `build_max_turns` (matching orchestrator.sh exactly).
-    15→
-    16→**Problem 2 — no native dashboard access:** Deploy `product/dashboard/index.html` to GitHub Pages so it's accessible at `https://sluna-wq.github.io/agentic-org-v2/`.
-    17→
-    18→Implementation:
-    19→1. Fix env var names in `.github/workflows/orchestrator.yml` (CTO_MAX_TURNS→LEAD_MAX_TURNS, TASK_MAX_TURNS→BUILD_MAX_TURNS in both `inputs:` section and `env:` block).
-    20→2. Add a second job `deploy-pages` to the workflow (runs after `run` job succeeds):
-    21→   - Needs permissions: `pages: write` and `id-token: write` (add to top-level permissions block)
-    22→   - Steps: `actions/checkout@v4` → copy `product/dashboard/index.html` to a staging dir → `actions/upload-pages-artifact@v3` → `actions/deploy-pages@v4`
-    23→3. In `product/dashboard/index.html`, set the default config values: `owner = 'sluna-wq'`, `repo = 'agentic-org-v2'` so the dashboard works immediately when loaded from Pages without any configuration. Find the localStorage config load / default section in the JS and set these defaults.
-    24→4. In `product/dashboard/README.md`, add the Pages URL prominently at top: `https://sluna-wq.github.io/agentic-org-v2/`
-    25→
-    26→Acceptance criteri
-… [4196 chars]
+    12→Add to `orchestrator.sh` in the main loop between `run_lead_phase` and `process_lead_decisions`:
+    13→```bash
+    14→# Safety: if Lead assigned tasks but forgot to remove NO_TASKS, clear it
+    15→if [ -n "$(tasks_with_status "assigned"; tasks_with_status "changes_requested")" ]; then
+    16→  rm -f "$LEAD_DIR/NO_TASKS" "$LEAD_DIR/NO_TASKS.md"
+    17→  log "Safety: removed stale NO_TASKS (runnable tasks exist)"
+    18→fi
+    19→```
+    20→
+    21→This just caused a real stop: Lead assigned task-007/008/009 but left NO_TASKS in place — Build never ran.
+    22→
+    23→Otherwise tasks proceed as specified. Read, update task-009's package.md, clear this outbox, proceed.
+    24→
+
+<system-reminder>
+Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
+</system-reminder>
+
 ```
 
 **← Result:**
 ```
-/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-002/status.md
-/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-003/status.md
-/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-004/status.md
-/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-005/status.md
-/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-006/status.md
+     1→status: assigned
+     2→branch: task/007-orchestrator-pages
+     3→created: 2026-03-01
+     4→
+
+<system-reminder>
+Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
+</system-reminder>
+
 ```
-
-**Assistant:**
-
-Let me check if any tasks are in "review" status before proceeding.
-
-**→ `Bash`**
-  - **command:** `grep -l "status: review" /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/*/status.md 2>/dev/null || echo "none"`
-  - **description:** `Find tasks with review status`
 
 **← Result:**
 ```
-none
+     1→status: assigned
+     2→branch: task/009-cleanup-orchestrator
+     3→created: 2026-03-01
+     4→
+
+<system-reminder>
+Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
+</system-reminder>
+
+```
+
+**← Result:**
+```
+     1→status: assigned
+     2→branch: task/008-architecture-diagram
+     3→created: 2026-03-01
+     4→
+
+<system-reminder>
+Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
+</system-reminder>
+
 ```
 
 **Assistant:**
 
-No tasks in review. Outbox has new mandate: assign tasks 007, 008, 009. Let me create all three task packages now.
-
-**→ `Bash`**
-  - **command:** `ls /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/`
-  - **description:** `List existing task directories`
+Outbox has directions — I need to update task-009's package.md. Let me read it first.
 
 **→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-006/package.md`
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-009/package.md`
 
 **← Result:**
 ```
-     1→# Task 006: Restructure repo to three-domain architecture
+     1→# Task 009: Repo cleanup + orchestrator re-processing fix
      2→
      3→## System Prompt
      4→
-     5→You are a Build agent performing a structural infrastructure change to this agentic repo. This is NOT a product task — you are restructuring the repo's own orchestration layout. You will be modifying root-level files, log directories, CLAUDE.md, and orchestrator.sh.
+     5→You are a Build agent performing cleanup and bug fixes on this agentic repo's infrastructure. You will archive stale task directories, fix a re-processing bug in orchestrator.sh, and remove an unused directory.
      6→
      7→**Expanded write access for this task only (explicitly authorized by Lead):**
-     8→- Root directory: `CLAUDE.md`, `orchestrator.sh`
-     9→- `logs/` directory (move/reorganize files)
-    10→- `lead/outbox.md` (new file to create)
-    11→- `lead/logs/build/` (new directory to create)
-    12→- Your own `lead/tasks/task-006/status.md`
-    13→
-    14→## Assignment
-    15→
-    16→Restructure the repository to a clean three-domain model with clear separation of channels and log directories by domain.
-    17→
-    18→### Changes required
-    19→
-    20→**1. Reorganize `logs/` into `logs/lead/`**
-    21→- Create `logs/lead/` directory
-    22→- Move all `logs/cycle-*.md` and `logs/cycle-*.jsonl` files → `logs/lead/` (currently: cycle-1.md, cycle-1.jsonl, cycle-2.md, cycle-2.jsonl)
-    23→- Leave `logs/.gitkeep` in place at `logs/`
-    24→
-    25→**2. Update `orchestrator.sh` to write future Lead transcripts to `logs/lead/`**
-    26→- Find the line: `local transcript="$REPO_ROOT/logs/cycle-${CYCLE}.md"`
-    27→  (around line 222)
-    28→- Change it to: `local transcript="$REPO_ROOT/logs/lead/cycle-${CYCLE}.md"`
-    29→- Also add a `mkdir -p "$REPO_ROOT/logs/lead"` in the `preflight()` function so the directory always exists when the orchestrator starts.
-    30→
-    31→**3. Create `lead/outbox.md`** — Lead's channel back to Think:
-    32→```markdown
-    33→# Lead → Think Outbox
-    34→
-    35→<!-- Lead writes proposals, flags, and status updates here for Think to read. -->
-    36→<!-- Think reads and clears this file each session. -->
-    37→
-    38→*(empty)*
-    39→```
-    40→
-    41→**4.
-… [2004 chars]
-```
-
-**← Result:**
-```
-task-002
-task-003
-task-004
-task-005
-task-006
-```
-
-**→ `TodoWrite`**
-  - **todos:** `[{"content": "Create task-007 package and status files", "status": "in_progress", "activeForm": "Creating task-007 package"}, {"content": "Create task-008 package and status files", "status": "pending", "activeForm": "Creating task-008 package"}, {"content": "Create task-009 package and status files", "status": "pending", "activeForm": "Creating task-009 package"}, {"content": "Update lead/state.md backlog", "status": "pending", "activeForm": "Updating lead/state.md"}, {"content": "Clear outbox.md", "status": "pending", "activeForm": "Clearing outbox.md"}, {"content": "Log decisions to lead/de
-… [69 chars]`
-
-**← Result:**
-```
-Todos have been modified successfully. Ensure that you continue to use the todo list to track your progress. Please proceed with the current tasks if applicable
-```
-
-**→ `Bash`**
-  - **command:** `mkdir -p /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-007 /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-008 /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-009`
-  - **description:** `Create task directories for 007, 008, 009`
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-007/package.md`
-  - **content:** `# Task 007: Fix orchestrator env vars + deploy dashboard to GitHub Pages
-
-## System Prompt
-
-You are a Build agent making infrastructure changes to this agentic repo. You will fix a variable name mismatch in the GitHub Actions workflow and add a GitHub Pages deployment job, plus update the dashboard HTML defaults so it works out of the box.
-
-**Expanded write access for this task only (explicitly authorized by Lead):**
-- `.github/workflows/orchestrator.yml`
-- `product/dashboard/index.html`
-- `product/dashboard/README.md`
-- Your own `lead/tasks/task-007/status.md`
-
-## Assignment
-
-### Problem 1 — 
-… [2377 chars]`
-
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-007/package.md
-```
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-007/status.md`
-  - **content:** `status: assigned
-branch: task/007-orchestrator-pages
-created: 2026-03-01
-`
-
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-007/status.md
-```
-
-**→ `TodoWrite`**
-  - **todos:** `[{"content": "Create task-007 package and status files", "status": "completed", "activeForm": "Creating task-007 package"}, {"content": "Create task-008 package and status files", "status": "in_progress", "activeForm": "Creating task-008 package"}, {"content": "Create task-009 package and status files", "status": "pending", "activeForm": "Creating task-009 package"}, {"content": "Update lead/state.md backlog", "status": "pending", "activeForm": "Updating lead/state.md"}, {"content": "Clear outbox.md", "status": "pending", "activeForm": "Clearing outbox.md"}, {"content": "Log decisions to lead/
-… [71 chars]`
-
-**← Result:**
-```
-Todos have been modified successfully. Ensure that you continue to use the todo list to track your progress. Please proceed with the current tasks if applicable
-```
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-008/package.md`
-  - **content:** `# Task 008: Architecture diagram
-
-## System Prompt
-
-You are a Build agent creating documentation for this agentic repo. You will create a single crisp architecture document at the repo root showing the full system flow and domain map.
-
-**Write access for this task:**
-- `ARCHITECTURE.md` (create at repo root)
-- Your own `lead/tasks/task-008/status.md`
-
-## Assignment
-
-Create `ARCHITECTURE.md` at the repo root. One page, crisp ASCII art. Max 80 chars wide. No prose paragraphs beyond one-liners. Under 120 lines total.
-
-### Required sections
-
-**1. Flow diagram** — ASCII showing the full cycle:
-```
-
-… [1384 chars]`
-
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-008/package.md
-```
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-008/status.md`
-  - **content:** `status: assigned
-branch: task/008-architecture-diagram
-created: 2026-03-01
-`
-
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-008/status.md
-```
-
-**→ `TodoWrite`**
-  - **todos:** `[{"content": "Create task-007 package and status files", "status": "completed", "activeForm": "Creating task-007 package"}, {"content": "Create task-008 package and status files", "status": "completed", "activeForm": "Creating task-008 package"}, {"content": "Create task-009 package and status files", "status": "in_progress", "activeForm": "Creating task-009 package"}, {"content": "Update lead/state.md backlog", "status": "pending", "activeForm": "Updating lead/state.md"}, {"content": "Clear outbox.md", "status": "pending", "activeForm": "Clearing outbox.md"}, {"content": "Log decisions to lea
-… [73 chars]`
-
-**← Result:**
-```
-Todos have been modified successfully. Ensure that you continue to use the todo list to track your progress. Please proceed with the current tasks if applicable
-```
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-009/package.md`
-  - **content:** `# Task 009: Repo cleanup + orchestrator re-processing fix
-
-## System Prompt
-
-You are a Build agent performing cleanup and bug fixes on this agentic repo's infrastructure. You will archive stale task directories, fix a re-processing bug in orchestrator.sh, and remove an unused directory.
-
-**Expanded write access for this task only (explicitly authorized by Lead):**
-- `lead/tasks/` — archive task-001 through task-004 via git mv
-- `orchestrator.sh` — fix process_lead_decisions() function
-- `lead/logs/build/` — remove directory
-- Your own `lead/tasks/task-009/status.md`
-
-## Assignment
-
-### Problem
-… [2413 chars]`
-
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-009/package.md
-```
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-009/status.md`
-  - **content:** `status: assigned
-branch: task/009-cleanup-orchestrator
-created: 2026-03-01
-`
-
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-009/status.md
-```
-
-**→ `TodoWrite`**
-  - **todos:** `[{"content": "Create task-007 package and status files", "status": "completed", "activeForm": "Creating task-007 package"}, {"content": "Create task-008 package and status files", "status": "completed", "activeForm": "Creating task-008 package"}, {"content": "Create task-009 package and status files", "status": "completed", "activeForm": "Creating task-009 package"}, {"content": "Update lead/state.md backlog", "status": "in_progress", "activeForm": "Updating lead/state.md"}, {"content": "Clear outbox.md", "status": "pending", "activeForm": "Clearing outbox.md"}, {"content": "Log decisions to l
-… [75 chars]`
-
-**← Result:**
-```
-Todos have been modified successfully. Ensure that you continue to use the todo list to track your progress. Please proceed with the current tasks if applicable
+     8→- `lead/tasks/` — archive task-001 through task-004 via git mv
+     9→- `orchestrator.sh` — fix process_lead_decisions() function
+    10→- `lead/logs/build/` — remove directory
+    11→- Your own `lead/tasks/task-009/status.md`
+    12→
+    13→## Assignment
+    14→
+    15→### Problem 1 — stale task directories
+    16→
+    17→`lead/tasks/task-001` through `lead/tasks/task-004` are from obsolete mandates (Node.js REST API, Python bookmark manager, org dashboard, failed restructure). They add noise and confuse the Lead agent.
+    18→
+    19→**Fix:** Archive them using `git mv`:
+    20→```bash
+    21→mkdir -p lead/tasks/archive
+    22→git mv lead/tasks/task-001 lead/tasks/archive/task-001
+    23→git mv lead/tasks/task-002 lead/tasks/archive/task-002
+    24→git mv lead/tasks/task-003 lead/tasks/archive/task-003
+    25→git mv lead/tasks/task-004 lead/tasks/archive/task-004
+    26→```
+    27→
+    28→Keep `lead/tasks/task-005` and `lead/tasks/task-006` in place.
+    29→
+    30→### Problem 2 — re-processing accepted/merged tasks
+    31→
+    32→Every cycle, `process_lead_decisions()` in `orchestrator.sh` iterates over ALL tasks with `status=accepted` and tries to merge their PRs again (most already merged). This wastes API calls and causes noise.
+    33→
+    34→**Fix in `orchestrator.sh`:**
+    35→
+    36→1. In the merge loop inside `process_lead_decisions()`, before attempting to merge, check:
+    37→   ```bash
+    38→   local merged
+    39→   merged=$(get_field "$task_dir" "merged")
+    40→   if [[ "$merged" == "true" ]]; then
+    41→     log "  task $task_id a
+… [1871 chars]
 ```
 
 **Assistant:**
 
-Now update lead/state.md with the new active tasks:
+Now I'll update task-009's package.md with Problem 4 and then clear outbox.md.
 
 **→ `Edit`**
   - **replace_all:** `false`
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
-  - **old_string:** `## Mandate
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-009/package.md`
+  - **old_string:** `### Acceptance criteria
+- [ ] `lead/tasks/archive/` contains task-001, task-002, task-003, task-004 (moved via git mv)
+- [ ] `lead/tasks/task-005` and `lead/tasks/task-006` remain at `lead/tasks/`
+- [ ] `orchestrator.sh` `process_lead_decisions()` checks `merged: true` before attempting PR merge
+- [ ] After successful merge, `merged: true` is written to status.md via `set_field`
+- [ ] `lead/logs/build/` directory removed
 
-**Current focus: Repo restructure to three-domain architecture**
+## Relevant Files
 
-Re-running task-004 from scratch as task-006. PR #1 (task-004) was closed with merge conflicts; structural changes never landed on main. task-005 (merge gate fix) is now on main — clean base for the restructure.
+- `orchestrator.sh` — read `process_lead_decisions()` function carefully before editing
+- `lead/tasks/task-001/` through `task-004/` — archive these
+- `lea
+… [113 chars]`
+  - **new_string:** `### Problem 4 — orchestrator NO_TASKS robustness
 
-**Prior focus (complete):** Orchestrator merge gate fix (task-005 accepted 2026-03-01).`
-  - **new_string:** `## Mandate
+After `run_lead_phase()`, if Lead forgets to delete `lead/NO_TASKS` while having assigned tasks, the orchestrator stops early (as just happened with task-007/008/009).
 
-**Current focus: Production-quality hardening**
+**Fix in `orchestrator.sh`:** In the main loop, between the `run_lead_phase` call and `should_stop()`, add a safeguard that deletes `lead/NO_TASKS` if any tasks have status `assigned` or `changes_requested`:
 
-Four deliverables: fix orchestrator env var bug + GitHub Pages deploy (task-007), architecture diagram (task-008), repo cleanup + orchestrator re-processing fix (task-009). All three assigned in parallel — no conflicts.
-
-**Prior focus (complete):** Repo restructure to three-domain architecture (task-006 accepted 2026-03-01).`
-
-**← Result:**
-```
-The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md has been updated successfully.
-```
-
-**→ `Edit`**
-  - **replace_all:** `false`
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
-  - **old_string:** `### Planned
-<!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
-*(none)*
-
-### Active
-<!-- Format: - [task-XXX] Description | status | branch -->
-*(none)*`
-  - **new_string:** `### Planned
-<!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
-*(none)*
-
-### Active
-<!-- Format: - [task-XXX] Description | status | branch -->
-- [task-007] Fix orchestrator env vars + deploy dashboard to GitHub Pages | assigned | task/007-orchestrator-pages
-- [task-008] Architecture diagram | assigned | task/008-architecture-diagram
-- [task-009] Repo cleanup + orchestrator re-processing fix | assigned | task/009-cleanup-orchestrator`
+```bash
+# Safety: if Lead assigned tasks but forgot to remove NO_TASKS, clear it
+if [ -n "$(tasks_with_status "assigned"; tasks_with_status "changes_requested")" ]; then
+  
+… [1114 chars]`
 
 **← Result:**
 ```
-The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md has been updated successfully.
+The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-009/package.md has been updated successfully.
 ```
 
-**→ `Edit`**
-  - **replace_all:** `false`
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
-  - **old_string:** `## Recent Decisions
-<!-- Top 20 only — one line each. Full log in lead/decisions.md -->
-<!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
-- [2026-03-01T23:55] task-006 ACCEPTED — all 8 criteria met; gh self-review blocked (single-author), accepted via branch diff; NO_TASKS written`
-  - **new_string:** `## Recent Decisions
-<!-- Top 20 only — one line each. Full log in lead/decisions.md -->
-<!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
-- [2026-03-01T23:59] task-009 ASSIGNED — repo cleanup: archive task-001–004, fix orchestrator re-processing, remove lead/logs/build/
-- [2026-03-01T23:59] task-008 ASSIGNED — create ARCHITECTURE.md with ASCII flow diagram and domain map
-- [2026-03-01T23:59] task-007 ASSIGNED — fix orchestrator env var names, add GitHub Pages deploy job, set dashboard defaults
-- [2026-03-01T23:55] task-006 ACCEPTED — all 8 criteria met; gh self-review blocked (singl
-… [53 chars]`
+**Assistant:**
 
-**← Result:**
-```
-The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md has been updated successfully.
-```
-
-**→ `TodoWrite`**
-  - **todos:** `[{"content": "Create task-007 package and status files", "status": "completed", "activeForm": "Creating task-007 package"}, {"content": "Create task-008 package and status files", "status": "completed", "activeForm": "Creating task-008 package"}, {"content": "Create task-009 package and status files", "status": "completed", "activeForm": "Creating task-009 package"}, {"content": "Update lead/state.md backlog", "status": "completed", "activeForm": "Updating lead/state.md"}, {"content": "Clear outbox.md", "status": "in_progress", "activeForm": "Clearing outbox.md"}, {"content": "Log decisions to
-… [77 chars]`
-
-**← Result:**
-```
-Todos have been modified successfully. Ensure that you continue to use the todo list to track your progress. Please proceed with the current tasks if applicable
-```
+Good — `orchestrator.sh` was already in the write access list. Now clear outbox.md.
 
 **→ `Write`**
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/outbox.md`
@@ -478,8 +292,6 @@ Todos have been modified successfully. Ensure that you continue to use the todo 
 
 <!-- Think writes directions here for Lead to read and act on. -->
 <!-- Lead clears this file after reading. -->
-
-*(empty)*
 `
 
 **← Result:**
@@ -489,7 +301,7 @@ The file /home/runner/work/agentic-org-v2/agentic-org-v2/outbox.md has been upda
 
 **Assistant:**
 
-Now log the decisions to lead/decisions.md:
+Now log the decision to decisions.md and update state.md.
 
 **→ `Read`**
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/decisions.md`
@@ -503,97 +315,94 @@ Now log the decisions to lead/decisions.md:
      4→
      5→---
      6→
-     7→## [2026-03-01T23:55] task-006 ACCEPTED — three-domain repo restructure complete
-     8→**What:** Reviewed PR #3 (branch task/006-repo-restructure) via branch diff. All 8 acceptance criteria met: (1) logs/lead/ created with all four cycle logs moved via git rename; (2) no cycle-*.md/jsonl remain at logs/ root; (3) orchestrator.sh transcript path → logs/lead/cycle-${CYCLE}.md; (4) preflight() now mkdir -p logs/lead; (5) lead/outbox.md created with empty template; (6) lead/logs/build/.gitkeep created; (7) CLAUDE.md write boundaries clarified for all three modes; (8) all committed to task/006-repo-restructure. gh self-review blocked (single-author GitHub env, established precedent); accepted via branch diff.
-     9→**Why:** Clean, minimal implementation. Every structural change required by the three-domain architecture spec was delivered correctly. Backlog now empty; NO_TASKS written.
-    10→
-    11→---
-    12→
-    13→## [2026-03-01T23:50] task-006 ASSIGNED — repo restructure (re-run from main)
-    14→**What:** Read outbox.md direction from Think: PR #1 (task-004) was already closed (confirmed CLOSED via gh); structural changes never landed on main. Confirmed: `logs/lead/` missing, `lead/outbox.md` missing, cycle logs still at `logs/` root. Created task-006 with same spec as task-004, updated to include cycle-2 files and correct branch `task/006-repo-restructure`. Cleared outbox.md. Removed NO_TASKS stop signal. Deleted `lead/NO_TASKS` and `lead/NO_TASKS.md`.
-    15→**Why:** Think explicitly directed re-assignment after PR #1 conflict. Fresh branch from current main (which has task-005 merge gate fix) avoids the original conflict.
-    16→
-    17→---
-    18→
-    19→## [2026-03-01T23:45] LEAD CYCLE PASS — backlog empty, awaiting mandate
-    20→**What:** Full cycle run. No tasks in `review` status (all are `accepted
-… [502 chars]
+     7→## [2026-03-01T23:59] task-007, task-008, task-009 ASSIGNED — production-quality hardening
+     8→**What:** Read Think outbox.md with new mandate: three parallel tasks targeting different files. Assigned all three simultaneously:
+     9→- task-007 (task/007-orchestrator-pages): Fix env var name mismatch in orchestrator.yml (CTO_MAX_TURNS→LEAD_MAX_TURNS, TASK_MAX_TURNS→BUILD_MAX_TURNS), add deploy-pages job for GitHub Pages, set dashboard defaults (owner=sluna-wq, repo=agentic-org-v2), add Pages URL to README.
+    10→- task-008 (task/008-architecture-diagram): Create ARCHITECTURE.md at repo root with ASCII flow diagram, three-domain map, and one-sentence agent role descriptions. Under 120 lines, 80-char wide.
+    11→- task-009 (task/009-cleanup-orchestrator): Archive task-001–004 via git mv, fix process_lead_decisions() to check merged:true before re-attempting PR merges, remove unused lead/logs/build/ directory.
+    12→**Why:** Outbox explicitly directed parallel assignment — all three tasks touch different files with no conflicts. Cleared outbox after reading.
+    13→
+    14→---
+    15→
+    16→## [2026-03-01T23:55] task-006 ACCEPTED — three-domain repo restructure complete
+    17→**What:** Reviewed PR #3 (branch task/006-repo-restructure) via branch diff. All 8 acceptance criteria met: (1) logs/lead/ created with all four cycle logs moved via git rename; (2) no cycle-*.md/jsonl remain at logs/ root; (3) orchestrator.sh transcript path → logs/lead/cycle-${CYCLE}.md; (4) preflight() now mkdir -p logs/lead; (5) lead/outbox.md created with empty template; (6) lead/logs/build/.gitkeep created; (7) CLAUDE.md write boundaries clarified for all three modes; (8) all committed to task/006-repo-restructure. gh self-review blocked (single-author GitHub env, established precedent); accepted via branch diff.
+    18→**Why:*
+… [524 chars]
 ```
 
 **→ `Edit`**
   - **replace_all:** `false`
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/decisions.md`
-  - **old_string:** `# Decisions Log
+  - **old_string:** `---
 
-Newest first. Each entry: timestamp, task, action, what was decided and why (concise).
+## [2026-03-01T23:59] task-007, task-008, task-009 ASSIGNED — production-quality hardening`
+  - **new_string:** `---
 
----
-
-## [2026-03-01T23:55] task-006 ACCEPTED — three-domain repo restructure complete`
-  - **new_string:** `# Decisions Log
-
-Newest first. Each entry: timestamp, task, action, what was decided and why (concise).
+## [2026-03-01T24:00] task-009 UPDATED — added Problem 4 (NO_TASKS robustness) to package.md
+**What:** Read Think outbox.md with addendum to task-009. Added Problem 4: orchestrator NO_TASKS robustness safeguard — in the main loop, after `run_lead_phase()` and before `should_stop()`, delete `lead/NO_TASKS` if any tasks have status `assigned` or `changes_requested`. Added corresponding acceptance criterion. Cleared outbox.
+**Why:** This exact failure just occurred (task-007/008/009 assigned but NO_TASKS left in place; orchestrator stopped early). Fix prevents future recurrence.
 
 ---
 
-## [2026-03-01T23:59] task-007, task-008, task-009 ASSIGNED — production-quality hardening
-**What:** Read Think outbox.md with new mandate: three parallel tasks targeting different files. Assigned all three simultaneously:
-- task-007 (task/007-orchestrator-pages): Fix env var name mismatch in orchestrator.yml (CTO_MAX_TURNS→LEAD_MAX_TURNS, TASK_MAX_TURNS→BUILD_MAX_TURNS), add deploy-pages job for GitHub Pages, set dashboard defaults (owner=sluna-wq, repo=agentic-org-v2), add Pages URL 
-… [639 chars]`
+## [20
+… [84 chars]`
 
 **← Result:**
 ```
 The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/decisions.md has been updated successfully.
 ```
 
-**→ `TodoWrite`**
-  - **todos:** `[{"content": "Create task-007 package and status files", "status": "completed", "activeForm": "Creating task-007 package"}, {"content": "Create task-008 package and status files", "status": "completed", "activeForm": "Creating task-008 package"}, {"content": "Create task-009 package and status files", "status": "completed", "activeForm": "Creating task-009 package"}, {"content": "Update lead/state.md backlog", "status": "completed", "activeForm": "Updating lead/state.md"}, {"content": "Clear outbox.md", "status": "completed", "activeForm": "Clearing outbox.md"}, {"content": "Log decisions to l
-… [77 chars]`
+**Assistant:**
+
+Now update the Recent Decisions in state.md.
+
+**→ `Edit`**
+  - **replace_all:** `false`
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
+  - **old_string:** `- [2026-03-01T23:59] task-009 ASSIGNED — repo cleanup: archive task-001–004, fix orchestrator re-processing, remove lead/logs/build/`
+  - **new_string:** `- [2026-03-01T24:00] task-009 UPDATED — Problem 4 added to package.md: NO_TASKS robustness safeguard in orchestrator.sh main loop
+- [2026-03-01T23:59] task-009 ASSIGNED — repo cleanup: archive task-001–004, fix orchestrator re-processing, remove lead/logs/build/`
 
 **← Result:**
 ```
-Todos have been modified successfully. Ensure that you continue to use the todo list to track your progress. Please proceed with the current tasks if applicable
+The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md has been updated successfully.
 ```
 
 **Assistant:**
 
-Cycle complete. Summary:
+Cycle complete. Here's what happened:
 
-**No tasks in review** — nothing to evaluate.
+**Outbox action (outbox.md → cleared):**
+- Read Think's addendum to task-009
+- Updated `lead/tasks/task-009/package.md` with **Problem 4** — NO_TASKS robustness safeguard in `orchestrator.sh` main loop (delete stale `lead/NO_TASKS` if `assigned` or `changes_requested` tasks exist after `run_lead_phase()`)
+- Added matching acceptance criterion
+- Cleared outbox
 
-**Outbox read and cleared** — Think directed three parallel tasks for production-quality hardening.
+**No reviews this cycle** — task-007, task-008, task-009 are all `assigned` (Build agents haven't run yet).
 
-**Three tasks assigned:**
+**No new assignments** — backlog Planned is empty; three tasks already active.
 
-| Task | Branch | What |
-|------|--------|------|
-| task-007 | `task/007-orchestrator-pages` | Fix orchestrator env var names (`CTO_MAX_TURNS`→`LEAD_MAX_TURNS`, `TASK_MAX_TURNS`→`BUILD_MAX_TURNS`), add GitHub Pages deploy job, set dashboard defaults |
-| task-008 | `task/008-architecture-diagram` | Create `ARCHITECTURE.md` with ASCII flow diagram, three-domain map, agent role descriptions |
-| task-009 | `task/009-cleanup-orchestrator` | Archive task-001–004, fix orchestrator re-processing loop (`merged: true` check), remove unused `lead/logs/build/` |
-
-All three touch different files — safe for parallel execution. `lead/state.md`, `lead/decisions.md`, and `outbox.md` updated.
+**No NO_TASKS** — active assigned tasks remain (007, 008, 009).
 
 ---
 
 ## Final Output
 
-Cycle complete. Summary:
+Cycle complete. Here's what happened:
 
-**No tasks in review** — nothing to evaluate.
+**Outbox action (outbox.md → cleared):**
+- Read Think's addendum to task-009
+- Updated `lead/tasks/task-009/package.md` with **Problem 4** — NO_TASKS robustness safeguard in `orchestrator.sh` main loop (delete stale `lead/NO_TASKS` if `assigned` or `changes_requested` tasks exist after `run_lead_phase()`)
+- Added matching acceptance criterion
+- Cleared outbox
 
-**Outbox read and cleared** — Think directed three parallel tasks for production-quality hardening.
+**No reviews this cycle** — task-007, task-008, task-009 are all `assigned` (Build agents haven't run yet).
 
-**Three tasks assigned:**
+**No new assignments** — backlog Planned is empty; three tasks already active.
 
-| Task | Branch | What |
-|------|--------|------|
-| task-007 | `task/007-orchestrator-pages` | Fix orchestrator env var names (`CTO_MAX_TURNS`→`LEAD_MAX_TURNS`, `TASK_MAX_TURNS`→`BUILD_MAX_TURNS`), add GitHub Pages deploy job, set dashboard defaults |
-| task-008 | `task/008-architecture-diagram` | Create `ARCHITECTURE.md` with ASCII flow diagram, three-domain map, agent role descriptions |
-| task-009 | `task/009-cleanup-orchestrator` | Archive task-001–004, fix orchestrator re-processing loop (`merged: true` check), remove unused `lead/logs/build/` |
-
-All three touch different files — safe for parallel execution. `lead/state.md`, `lead/decisions.md`, and `outbox.md` updated.
+**No NO_TASKS** — active assigned tasks remain (007, 008, 009).
 
 ---
 
-**Turns:** 27 | **Duration:** 158.4s | **Status:** success
+**Turns:** 13 | **Duration:** 56.5s | **Status:** success
 
