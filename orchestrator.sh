@@ -2,23 +2,23 @@
 set -euo pipefail
 
 # ─────────────────────────────────────────────────────────────────
-# CTO-Repo Orchestrator
+# Orchestrator
 #
 # Commit strategy (explicit):
 #   Task agents   → commit code to their branch as they work
 #   Orchestrator  → pushes branch, opens PR when task completes
-#   Orchestrator  → squash-merges PR when CTO accepts
-#   Orchestrator  → closes + deletes branch when CTO discards
-#   Orchestrator  → commits cto/ changes directly to main
+#   Orchestrator  → squash-merges PR when Lead accepts
+#   Orchestrator  → closes + deletes branch when Lead discards
+#   Orchestrator  → commits lead/ changes directly to main
 #
 # Main branch only ever receives accepted, squash-merged PRs.
 # ─────────────────────────────────────────────────────────────────
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CTO_DIR="$REPO_ROOT/cto"
-TASKS_DIR="$CTO_DIR/tasks"
+LEAD_DIR="$REPO_ROOT/lead"
+TASKS_DIR="$LEAD_DIR/tasks"
 MAX_CYCLES="${MAX_CYCLES:-999}"
-CTO_MAX_TURNS="${CTO_MAX_TURNS:-40}"
+LEAD_MAX_TURNS="${LEAD_MAX_TURNS:-40}"
 TASK_MAX_TURNS="${TASK_MAX_TURNS:-60}"
 CYCLE=0
 
@@ -44,9 +44,9 @@ preflight() {
 
   # Set git identity if not configured (needed for unattended runs)
   [ -n "$(git config user.email 2>/dev/null || true)" ] || \
-    git config user.email "orchestrator@cto-repo.local"
+    git config user.email "orchestrator@repo.local"
   [ -n "$(git config user.name  2>/dev/null || true)" ] || \
-    git config user.name "CTO Orchestrator"
+    git config user.name "Orchestrator"
 
   # Init git repo if needed
   cd "$REPO_ROOT"
@@ -62,7 +62,7 @@ preflight() {
   fi
   git checkout main
 
-  log "Pre-flight OK. Claude max-turns: CTO=$CTO_MAX_TURNS Task=$TASK_MAX_TURNS"
+  log "Pre-flight OK. Max turns: Lead=$LEAD_MAX_TURNS Task=$TASK_MAX_TURNS"
 }
 
 # ── Helpers ───────────────────────────────────────────────────────
@@ -173,18 +173,18 @@ set_field() {
   fi
 }
 
-# ── Phase 1a: CTO reviews and assigns ─────────────────────────────
+# ── Phase 1a: Lead reviews and assigns ────────────────────────────
 
-run_cto_phase() {
+run_lead_phase() {
   log "=== Phase 1: Lead (cycle $CYCLE) ==="
   cd "$REPO_ROOT"
   git checkout main
 
-  local cto_prompt
-  cto_prompt=$(cat <<'PROMPT'
+  local lead_prompt
+  lead_prompt=$(cat <<'PROMPT'
 [MODE:LEAD]
 
-Read cto/CLAUDE.md and cto/state.md fully before doing anything else.
+Read lead/CLAUDE.md and lead/state.md fully before doing anything else.
 
 This cycle — do all that apply:
 
@@ -196,45 +196,45 @@ This cycle — do all that apply:
      * Changes → `gh pr review PR_NUMBER --request-changes --body "numbered list of what must change"`; set status: changes_requested in status.md
      * Discard → set status: discarded in status.md with reason (orchestrator closes the PR)
    - Your GitHub review body is what the next agent sees. Write feedback clearly and specifically.
-   - Log every decision to cto/decisions.md (prepend, newest first):
+   - Log every decision to lead/decisions.md (prepend, newest first):
      Format: ## [TIMESTAMP] task-XXX ACTION\n**What:** ...\n**Why:** ...
-   - Add one-liner to "Recent Decisions" in cto/state.md (keep top 20 only).
+   - Add one-liner to "Recent Decisions" in lead/state.md (keep top 20 only).
 
-2. UPDATE the backlog in cto/state.md:
+2. UPDATE the backlog in lead/state.md:
    - Move accepted/discarded tasks to Done section.
    - Move changes_requested tasks back to Active.
    - Flag anything blocked on human input in "Needs Human Input" section.
 
 3. ASSIGN next tasks from Planned:
    - Pick highest-priority unblocked tasks.
-   - Create cto/tasks/task-XXX/ with package.md and status.md (status: assigned).
+   - Create lead/tasks/task-XXX/ with package.md and status.md (status: assigned).
    - Move them to Active section in backlog.
 
-4. STOP signal: if backlog is fully done and nothing to assign, write cto/NO_TASKS.
+4. STOP signal: if backlog is fully done and nothing to assign, write lead/NO_TASKS.
 
 Rules:
 - Do not commit — orchestrator handles all git operations.
 - Do not write to product/.
-- Be concise. cto/state.md is your working memory, keep it clean.
+- Be concise. lead/state.md is your working memory, keep it clean.
 PROMPT
 )
 
   local transcript="$REPO_ROOT/logs/cycle-${CYCLE}.md"
-  run_claude "lead-cycle-${CYCLE}" "$cto_prompt" "$CTO_MAX_TURNS" "$transcript"
+  run_claude "lead-cycle-${CYCLE}" "$lead_prompt" "$LEAD_MAX_TURNS" "$transcript"
 
   # Commit all Lead changes (decisions, backlog, new task packages) to main
   commit_all "lead: cycle $CYCLE — review + assign"
   push_branch main
 }
 
-# ── Phase 1b: Merge or close PRs based on CTO decisions ──────────
+# ── Phase 1b: Merge or close PRs based on Lead decisions ──────────
 
-process_cto_decisions() {
-  log "=== Phase 1b: Processing CTO decisions ==="
+process_lead_decisions() {
+  log "=== Phase 1b: Processing Lead decisions ==="
   cd "$REPO_ROOT"
   git checkout main
 
-  # Merge accepted PRs — only if CTO has approved them on GitHub
+  # Merge accepted PRs — only if Lead has approved them on GitHub
   while IFS= read -r task_dir; do
     [ -d "$task_dir" ] || continue
     local task_id branch pr_number review_decision
@@ -247,7 +247,7 @@ process_cto_decisions() {
       continue
     fi
 
-    # Verify the CTO actually approved on GitHub (this is the real gate)
+    # Verify the Lead actually approved on GitHub (this is the real gate)
     review_decision=$(gh pr view "$pr_number" \
       --json reviewDecision --jq '.reviewDecision' 2>/dev/null || echo "")
 
@@ -258,7 +258,7 @@ process_cto_decisions() {
         2>&1 || log "WARNING: could not merge PR #$pr_number (may already be merged)"
     else
       log "BLOCKED: $task_id PR #$pr_number status.md=accepted but GitHub reviewDecision=$review_decision"
-      log "  → CTO must run: gh pr review $pr_number --approve"
+      log "  → Lead must run: gh pr review $pr_number --approve"
     fi
   done < <(tasks_with_status "accepted")
 
@@ -272,7 +272,7 @@ process_cto_decisions() {
 
     if [ -n "$pr_number" ] && [ "$pr_number" != "" ]; then
       log "$task_id: closing PR #$pr_number (discarded)"
-      gh pr close "$pr_number" --comment "Discarded by CTO. See cto/tasks/$task_id/status.md." \
+      gh pr close "$pr_number" --comment "Discarded by Lead. See lead/tasks/$task_id/status.md." \
         --delete-branch 2>&1 || log "WARNING: could not close PR #$pr_number"
     fi
   done < <(tasks_with_status "discarded")
@@ -317,27 +317,26 @@ run_task_phase() {
 
     # Mark in_progress and commit to main bookkeeping
     set_field "$task_dir" "status" "in_progress"
-    # We need to commit status change — but we're on the task branch.
-    # Keep cto/ status updates on the task branch too; orchestrator will
+    # Keep lead/ status updates on the task branch too; orchestrator will
     # commit them after merging or on cleanup.
     git add -A
     git diff --cached --quiet || git commit -m "$task_id: mark in_progress"
 
     # Build the task prompt
-    # For revisions: pull CTO's feedback from the GitHub PR review (that's the source of truth)
+    # For revisions: pull Lead's feedback from the GitHub PR review (source of truth)
     local revision_context=""
     local current_task_status
     current_task_status=$(get_field "$task_dir" "status")
     pr_number=$(get_field "$task_dir" "pr")
 
     if [ "$current_task_status" = "changes_requested" ] && [ -n "$pr_number" ]; then
-      local cto_feedback
-      cto_feedback=$(gh pr view "$pr_number" --json reviews \
+      local lead_feedback
+      lead_feedback=$(gh pr view "$pr_number" --json reviews \
         --jq '[.reviews[] | select(.state=="CHANGES_REQUESTED")] | last | .body' \
         2>/dev/null || echo "")
-      if [ -n "$cto_feedback" ]; then
-        revision_context=$(printf '\n\n---\n\n## CTO Review Feedback (from GitHub PR #%s)\n\n%s' \
-          "$pr_number" "$cto_feedback")
+      if [ -n "$lead_feedback" ]; then
+        revision_context=$(printf '\n\n---\n\n## Lead Review Feedback (from GitHub PR #%s)\n\n%s' \
+          "$pr_number" "$lead_feedback")
       fi
     fi
 
@@ -369,7 +368,7 @@ Instructions:
 - Write all code changes to product/.
 - Commit your work to this branch as you go (git add + git commit with clear messages).
   Do NOT push — the orchestrator handles push and PR creation.
-- When done, set the status field in cto/tasks/$task_id/status.md to: review
+- When done, set the status field in lead/tasks/$task_id/status.md to: review
   (just update that one field — the orchestrator will commit it with the rest)
 PROMPT
 )
@@ -417,7 +416,7 @@ PROMPT
         push_branch "$branch"
         log "$task_id: opened PR #$pr_number"
       else
-        log "WARNING: no PR number for $task_id — CTO will review via branch diff"
+        log "WARNING: no PR number for $task_id — Lead will review via branch diff"
       fi
     else
       # Revision — PR already open, push is enough
@@ -427,8 +426,8 @@ PROMPT
     # Return to main
     git checkout main
 
-    # Sync the status.md update back to main so the CTO sees it next cycle
-    git checkout "$branch" -- "cto/tasks/$task_id/status.md" 2>/dev/null || true
+    # Sync the status.md update back to main so Lead sees it next cycle
+    git checkout "$branch" -- "lead/tasks/$task_id/status.md" 2>/dev/null || true
     git add -A
     git diff --cached --quiet || git commit -m "$task_id: sync status=review to main"
     push_branch main
@@ -440,8 +439,8 @@ PROMPT
 # ── Stop condition ────────────────────────────────────────────────
 
 should_stop() {
-  if [ -f "$CTO_DIR/NO_TASKS" ]; then
-    log "CTO signaled done: $(cat "$CTO_DIR/NO_TASKS")"
+  if [ -f "$LEAD_DIR/NO_TASKS" ]; then
+    log "Lead signaled done: $(cat "$LEAD_DIR/NO_TASKS")"
     return 0
   fi
   if [ "$CYCLE" -ge "$MAX_CYCLES" ]; then
@@ -461,9 +460,9 @@ main() {
     CYCLE=$((CYCLE + 1))
     log "══════ Cycle $CYCLE ══════"
 
-    run_cto_phase
+    run_lead_phase
     # Always process decisions — merges/closes must happen even if this is the last cycle
-    process_cto_decisions
+    process_lead_decisions
     should_stop && { log "Stopping."; break; }
 
     run_task_phase

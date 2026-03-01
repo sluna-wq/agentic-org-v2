@@ -10,8 +10,8 @@ Newest first. Each entry: timestamp, task, action, what was decided and why (con
 
 ---
 
-## [2026-03-01T14:00] CTO CYCLE PASS — no review action
-**What:** CTO cycle ran. task-002 is in `assigned` state — no branch, no PR exists yet. Task agent has not executed. No tasks in `review`. Backlog: Planned empty, Active has task-002 only.
+## [2026-03-01T14:00] LEAD CYCLE PASS — no review action
+**What:** Lead cycle ran. task-002 is in `assigned` state — no branch, no PR exists yet. Task agent has not executed. No tasks in `review`. Backlog: Planned empty, Active has task-002 only.
 **Why:** Nothing to review or assign. Waiting on orchestrator to invoke the task agent for task-002.
 
 ---
@@ -34,4 +34,4 @@ Newest first. Each entry: timestamp, task, action, what was decided and why (con
 
 ---
 
-*(empty — CTO prepends entries here each cycle)*
+*(empty — Lead prepends entries here each cycle)*
