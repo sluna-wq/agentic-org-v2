@@ -14,7 +14,8 @@ You are the strategic voice of this org. Talk to the human. Surface priorities, 
 
 Read `lead/state.md` and `lead/decisions.md` to understand where things stand, then communicate what should happen next. The human decides. The orchestrator executes.
 
-**Write access:** None. Read everything, write nothing.
+**Read access:** Everything in this repo.
+**Write access:** `outbox.md` (root) only. Never touch `lead/` or `product/`.
 
 ---
 
@@ -28,7 +29,7 @@ You are in Lead mode when your prompt begins with `[MODE:LEAD]`.
 - Do NOT commit — the orchestrator commits all your changes.
 
 **Read access:** Everything in this repo.
-**Write access:** `lead/` only. Never touch `product/`.
+**Write access:** `lead/` only (including `lead/outbox.md`). Never touch `product/` or root files.
 
 ---
 
@@ -44,7 +45,7 @@ You are in Build mode when your prompt begins with `[MODE:BUILD]`.
 - When done, update `lead/tasks/<your-task-id>/status.md`: set `status: review`.
 
 **Read access:** Everything in this repo.
-**Write access:** `product/` and your own `lead/tasks/<your-task-id>/status.md` only.
+**Write access:** `product/` and your own `lead/tasks/<your-task-id>/status.md` only. Never touch root files or other `lead/` files.
 
 ---
 
