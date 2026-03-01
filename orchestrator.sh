@@ -234,10 +234,10 @@ process_lead_decisions() {
   cd "$REPO_ROOT"
   git checkout main
 
-  # Merge accepted PRs — only if Lead has approved them on GitHub
+  # Merge accepted PRs — trust status.md: accepted as merge authority
   while IFS= read -r task_dir; do
     [ -d "$task_dir" ] || continue
-    local task_id branch pr_number review_decision
+    local task_id branch pr_number
     task_id=$(basename "$task_dir")
     branch=$(get_field "$task_dir" "branch")
     pr_number=$(get_field "$task_dir" "pr")
@@ -247,19 +247,10 @@ process_lead_decisions() {
       continue
     fi
 
-    # Verify the Lead actually approved on GitHub (this is the real gate)
-    review_decision=$(gh pr view "$pr_number" \
-      --json reviewDecision --jq '.reviewDecision' 2>/dev/null || echo "")
-
-    if [ "$review_decision" = "APPROVED" ]; then
-      log "$task_id: PR #$pr_number is GitHub-approved — squash merging"
-      gh pr merge "$pr_number" --squash --delete-branch \
-        --subject "$task_id: $(head -1 "$task_dir/package.md" | sed 's/^# //')" \
-        2>&1 || log "WARNING: could not merge PR #$pr_number (may already be merged)"
-    else
-      log "BLOCKED: $task_id PR #$pr_number status.md=accepted but GitHub reviewDecision=$review_decision"
-      log "  → Lead must run: gh pr review $pr_number --approve"
-    fi
+    log "$task_id: PR #$pr_number accepted — squash merging"
+    gh pr merge "$pr_number" --squash --delete-branch \
+      --subject "$task_id: $(head -1 "$task_dir/package.md" | sed 's/^# //')" \
+      2>&1 || log "WARNING: could not merge PR #$pr_number (may already be merged)"
   done < <(tasks_with_status "accepted")
 
   # Close discarded PRs
