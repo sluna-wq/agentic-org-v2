@@ -1,4 +1,4 @@
-status: in_progress
+status: review
 branch: task/013-broadcast-c-tests
 created: 2026-03-01
 topology: broadcast
