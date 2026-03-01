@@ -27,10 +27,11 @@ Re-running task-004 from scratch as task-006. PR #1 (task-004) was closed with m
 
 ### Active
 <!-- Format: - [task-XXX] Description | status | branch -->
-- [task-006] Restructure repo to three-domain architecture | assigned | task/006-repo-restructure
+*(none)*
 
 ### Done (recent)
 <!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
+- [task-006] Restructure repo to three-domain architecture | accepted | 2026-03-01
 - [task-005] Fix orchestrator merge gate (remove reviewDecision check) | accepted | 2026-03-01
 - [task-004] Restructure repo to three-domain architecture | discarded (PR #1 closed, merge conflicts) | 2026-03-01
 - [task-003] Org Progress Dashboard (single-file HTML, GitHub API) | accepted | 2026-03-01
@@ -42,6 +43,7 @@ Re-running task-004 from scratch as task-006. PR #1 (task-004) was closed with m
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in lead/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T23:55] task-006 ACCEPTED — all 8 criteria met; gh self-review blocked (single-author), accepted via branch diff; NO_TASKS written
 - [2026-03-01T23:50] task-006 ASSIGNED — repo restructure re-run from main; PR #1 already closed, changes never landed
 - [2026-03-01T23:45] LEAD CYCLE PASS — no tasks in review, backlog empty, NO_TASKS confirmed; awaiting next mandate
 - [2026-03-01T23:30] task-005 ACCEPTED — all 6 criteria met; gh self-review blocked (known single-author limit), accepted via branch diff; NO_TASKS written

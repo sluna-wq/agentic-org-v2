@@ -4,6 +4,12 @@ Newest first. Each entry: timestamp, task, action, what was decided and why (con
 
 ---
 
+## [2026-03-01T23:55] task-006 ACCEPTED — three-domain repo restructure complete
+**What:** Reviewed PR #3 (branch task/006-repo-restructure) via branch diff. All 8 acceptance criteria met: (1) logs/lead/ created with all four cycle logs moved via git rename; (2) no cycle-*.md/jsonl remain at logs/ root; (3) orchestrator.sh transcript path → logs/lead/cycle-${CYCLE}.md; (4) preflight() now mkdir -p logs/lead; (5) lead/outbox.md created with empty template; (6) lead/logs/build/.gitkeep created; (7) CLAUDE.md write boundaries clarified for all three modes; (8) all committed to task/006-repo-restructure. gh self-review blocked (single-author GitHub env, established precedent); accepted via branch diff.
+**Why:** Clean, minimal implementation. Every structural change required by the three-domain architecture spec was delivered correctly. Backlog now empty; NO_TASKS written.
+
+---
+
 ## [2026-03-01T23:50] task-006 ASSIGNED — repo restructure (re-run from main)
 **What:** Read outbox.md direction from Think: PR #1 (task-004) was already closed (confirmed CLOSED via gh); structural changes never landed on main. Confirmed: `logs/lead/` missing, `lead/outbox.md` missing, cycle logs still at `logs/` root. Created task-006 with same spec as task-004, updated to include cycle-2 files and correct branch `task/006-repo-restructure`. Cleared outbox.md. Removed NO_TASKS stop signal. Deleted `lead/NO_TASKS` and `lead/NO_TASKS.md`.
 **Why:** Think explicitly directed re-assignment after PR #1 conflict. Fresh branch from current main (which has task-005 merge gate fix) avoids the original conflict.
