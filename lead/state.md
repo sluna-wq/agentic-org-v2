@@ -27,14 +27,15 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 
 ### Active
 <!-- Format: - [task-XXX] Description | status | branch -->
-- [task-023] SYNTHESIS: final cross-topology report | assigned | task/023-synthesis-report
+*(none)*
 
 ### Planned
 <!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
-*(none — Phase 5 Synthesis is single task)*
+*(none — Topology Research Program v1 complete)*
 
 ### Done (recent)
 <!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
+- [task-023] SYNTHESIS: final cross-topology report | accepted | 2026-03-01
 - [task-022] SPECIALIST Agent C: evaluation.md + tests/test_api.py | accepted | 2026-03-01
 - [task-021] SPECIALIST Agent B: api.py | accepted | 2026-03-01
 - [task-020] SPECIALIST Agent A: schema.md | accepted | 2026-03-01
@@ -51,6 +52,7 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in lead/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T34:00] task-023 ACCEPTED — Phase 5 Synthesis: all 8 criteria met; 6 emergent findings; agent corrected Lead's PIPELINE test count (29→33); Topology Research Program v1 COMPLETE
 - [2026-03-01T33:00] task-020/021/022 ACCEPTED — SPECIALIST 4/5 (422 deviation is assignment-conflict artifact); 71 tests > ADVERSARIAL 61 > PIPELINE 29; H4: specialist framing produced qualitatively richer schema + idiomatic patterns; task-023 ASSIGNED — Phase 5 SYNTHESIS
 - [2026-03-01T32:00] task-017/018/019 ACCEPTED — ADVERSARIAL 5/5 across all agents; 61 tests vs PIPELINE 29; H3: adversarial framing ~2x tests even with 0 deviations; task-020/021/022 ASSIGNED — Phase 4 SPECIALIST
 - [2026-03-01T31:00] task-016 ACCEPTED — PIPELINE tests: Agent C 5/5 (H2 fully supported across full pipeline); task-017/018/019 ASSIGNED — Phase 3 ADVERSARIAL
@@ -76,11 +78,16 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 
 ## Research Log
 
-### Phase 5: SYNTHESIS — 2026-03-01
+### Phase 5: SYNTHESIS — 2026-03-01 ✅ COMPLETE
 **Hypotheses:** H1–H4 all resolved. Phase 5 is the write-up — no new hypotheses under test.
 **Design:** Single agent reads all 4 topology outputs (schema.md, api.py, critique/evaluation.md, tests/test_api.py) and writes a cross-topology comparison report. Covers: 5 research dimensions, hypothesis verdicts, emergent findings, methodology notes, conclusions, future research suggestions.
 **Measurement:** Quality of synthesis — does the agent correctly aggregate findings from 4 topologies and 12 individual outputs? Does the report surface non-obvious cross-topology patterns?
-**Observations:** task-023 active.
+**Observations:**
+- task-023 accepted. report.md written to product/debate-engine/synthesis/. All 8 acceptance criteria met.
+- Agent identified and corrected Lead observation error: state.md logged PIPELINE at 29 tests; actual file count is 33. Agent cited file as authoritative — correct.
+- 6 emergent findings, all non-obvious: field name vocabulary drift (topic/content → title/body at ADVERSARIAL); test count monotonically increasing with framing intensity (24→33→61→71); specialist identity induced argument_count+total fields unprompted; complementary divergence pattern in BROADCAST; constraint count vs. compliance non-monotonic; 422 envelope hardest dimension across all phases.
+- 5 specific conclusions; 5 future research experiments with question/design/measurement.
+**Result:** Report is the strongest deliverable in the program. Topology Research Program v1 fully complete.
 
 ### Phase 4: SPECIALIST — 2026-03-01 ✅ COMPLETE
 **Hypotheses:** H4 under test: when agents are explicitly framed as domain specialists (Senior REST API Designer, Senior FastAPI Engineer, QA Contract Testing Specialist), do they make measurably different design decisions vs PIPELINE agents given the same structural topology?
