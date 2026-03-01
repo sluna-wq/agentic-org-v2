@@ -27,15 +27,17 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 
 ### Active
 <!-- Format: - [task-XXX] Description | status | branch -->
-- [task-020] SPECIALIST Agent A: schema.md | assigned | task/020-specialist-a-schema
+- [task-023] SYNTHESIS: final cross-topology report | assigned | task/023-synthesis-report
 
 ### Planned
 <!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
-- [task-021] SPECIALIST Agent B: api.py | P1 | deps: task-020
-- [task-022] SPECIALIST Agent C: evaluation.md + tests/test_api.py | P1 | deps: task-020,task-021
+*(none — Phase 5 Synthesis is single task)*
 
 ### Done (recent)
 <!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
+- [task-022] SPECIALIST Agent C: evaluation.md + tests/test_api.py | accepted | 2026-03-01
+- [task-021] SPECIALIST Agent B: api.py | accepted | 2026-03-01
+- [task-020] SPECIALIST Agent A: schema.md | accepted | 2026-03-01
 - [task-019] ADVERSARIAL Agent C: critique.md + tests/test_api.py | accepted | 2026-03-01
 - [task-018] ADVERSARIAL Agent B: api.py | accepted | 2026-03-01
 - [task-017] ADVERSARIAL Agent A: schema.md | accepted | 2026-03-01
@@ -43,15 +45,13 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 - [task-015] PIPELINE Agent B: api.py | accepted | 2026-03-01
 - [task-014] PIPELINE Agent A: schema.md | accepted | 2026-03-01
 - [task-013] BROADCAST Agent C: tests/test_api.py | accepted | 2026-03-01
-- [task-012] BROADCAST Agent B: ui.html | accepted | 2026-03-01
-- [task-011] BROADCAST Agent A: schema.md + api.py | accepted | 2026-03-01
-- [task-010] Dashboard research panel | accepted | 2026-03-01
 
 ---
 
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in lead/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T33:00] task-020/021/022 ACCEPTED — SPECIALIST 4/5 (422 deviation is assignment-conflict artifact); 71 tests > ADVERSARIAL 61 > PIPELINE 29; H4: specialist framing produced qualitatively richer schema + idiomatic patterns; task-023 ASSIGNED — Phase 5 SYNTHESIS
 - [2026-03-01T32:00] task-017/018/019 ACCEPTED — ADVERSARIAL 5/5 across all agents; 61 tests vs PIPELINE 29; H3: adversarial framing ~2x tests even with 0 deviations; task-020/021/022 ASSIGNED — Phase 4 SPECIALIST
 - [2026-03-01T31:00] task-016 ACCEPTED — PIPELINE tests: Agent C 5/5 (H2 fully supported across full pipeline); task-017/018/019 ASSIGNED — Phase 3 ADVERSARIAL
 - [2026-03-01T30:00] task-015 ACCEPTED — PIPELINE api.py: 5/5 score vs BROADCAST B 2/5 (H2 strongly supported); task-016 ASSIGNED
@@ -71,18 +71,26 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 - [2026-03-01T23:45] LEAD CYCLE PASS — no tasks in review, backlog empty, NO_TASKS confirmed; awaiting next mandate
 - [2026-03-01T23:30] task-005 ACCEPTED — all 6 criteria met; gh self-review blocked (known single-author limit), accepted via branch diff; NO_TASKS written
 - [2026-03-01T23:00] task-005 ASSIGNED — fix orchestrator merge gate; remove reviewDecision check from orchestrator.sh; read from outbox.md direction
-- [2026-03-01T22:00] task-004 ACCEPTED — all 9 criteria met; gh self-review blocked (known single-author limit), accepted via branch diff; NO_TASKS written
-- [2026-03-01T21:00] task-004 ASSIGNED — repo restructure to three-domain architecture per Think outbox.md direction; NO_TASKS cleared
 
 ---
 
 ## Research Log
 
-### Phase 4: SPECIALIST — 2026-03-01
-**Hypotheses:** H4 under test: when agents are explicitly framed as domain specialists (Senior REST API Designer, Senior FastAPI Engineer, QA Contract Testing Specialist), do they make measurably different design decisions vs PIPELINE agents given the same structural topology? Does specialist framing produce qualitatively different schema choices, implementation patterns, or test strategies?
-**Design:** Same pipeline structure as Phase 2 (Agent B reads A's schema; Agent C reads both). Key additions: Agent A adds "Design Rationale" section; Agent B adds "Implementation Notes"; Agent C adds "Specialist Observations" per dimension + "Specialist Verdict". Measurement: compare field name choices, schema structure, test count, and design decisions to PIPELINE equivalents.
-**Measurement:** Schema field names vs PIPELINE/ADVERSARIAL; test count vs PIPELINE (29) and ADVERSARIAL (61); any qualitative design divergence in Design Rationale / Implementation Notes.
-**Observations:** In progress — task-020 active, task-021/022 planned.
+### Phase 5: SYNTHESIS — 2026-03-01
+**Hypotheses:** H1–H4 all resolved. Phase 5 is the write-up — no new hypotheses under test.
+**Design:** Single agent reads all 4 topology outputs (schema.md, api.py, critique/evaluation.md, tests/test_api.py) and writes a cross-topology comparison report. Covers: 5 research dimensions, hypothesis verdicts, emergent findings, methodology notes, conclusions, future research suggestions.
+**Measurement:** Quality of synthesis — does the agent correctly aggregate findings from 4 topologies and 12 individual outputs? Does the report surface non-obvious cross-topology patterns?
+**Observations:** task-023 active.
+
+### Phase 4: SPECIALIST — 2026-03-01 ✅ COMPLETE
+**Hypotheses:** H4 under test: when agents are explicitly framed as domain specialists (Senior REST API Designer, Senior FastAPI Engineer, QA Contract Testing Specialist), do they make measurably different design decisions vs PIPELINE agents given the same structural topology?
+**Design:** Same pipeline structure as Phase 2 (Agent B reads A's schema; Agent C reads both). Key additions: Agent A adds "Design Rationale" section; Agent B adds "Implementation Notes"; Agent C adds "Specialist Observations" per dimension + "Specialist Verdict".
+**Observations:**
+- task-020 (Agent A schema): All criteria met. 5 Design Rationale items. Notes for Agent B most exhaustive in program. New fields introduced: argument_count (denormalized counter), total in list envelopes. Field names: title/description, side/body (same as ADVERSARIAL).
+- task-021 (Agent B api.py): All package criteria met. Used Literal["for","against"] for side validation (idiomatic Pydantic v2), dynamic argument_count computation (derived, not stored). 422 deviation: package said {"error": "..."}, schema said FastAPI native — Agent B followed explicit criterion. Score: 4/5 (confound: assignment conflict).
+- task-022 (Agent C evaluation + tests): 71 tests in 5 classes vs ADVERSARIAL 61 vs PIPELINE 29. Score 4/5 correctly identified. Specialist Observations noted argument_count consistency edge cases, 422-before-404 ordering, set-equality field assertions (DEBATE_FIELDS, ARGUMENT_FIELDS constants), UUID v4 + ISO 8601 regex validation.
+**Result: H4 PARTIALLY SUPPORTED.** Specialist framing produced qualitatively richer schema (more constraints, more explicit rationale, new fields not present in other topologies). Test count (71) exceeded both ADVERSARIAL (61) and PIPELINE (29). The 4/5 implementation score is confounded by conflicting assignment signals on 422, not specialist framing. Key finding: specialist identity caused Agent A to introduce argument_count and total fields that no other topology included — distinct design decisions, not just execution differences.
+**Surprises:** argument_count and envelope total fields emerged only in SPECIALIST — not prompted by assignment, emerged from specialist identity. Agent B's dynamic argument_count computation (derived on read vs. mutable counter) was also a specialist-motivated decision not seen in other topologies.
 
 ### Phase 3: ADVERSARIAL — 2026-03-01 ✅ COMPLETE
 **Hypotheses:** H3 under test: when Agent C is explicitly framed as an adversary (red-team reviewer), does it produce a more rigorous critique and test suite than a neutral PIPELINE Agent C? Does adversarial framing cause Agent C to find deviations that a neutral tester would miss?
@@ -103,19 +111,15 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 - task-016 (Agent C tests): **score 5/5**. Contract comment block correct, all 6 coverage areas, explicit field-name + envelope + filter assertions, UUID/ISO format validation. 29 tests. vs BROADCAST C: 2/5.
 **Result: H2 FULLY SUPPORTED.** PIPELINE topology produced 5/5 across all 3 agents. BROADCAST produced 2/5 for B and C independently. Mechanism: explicit Notes section in Agent A's schema leaves no room for downstream agents to anchor on the wrong dimension.
 **Surprises:** B and C in PIPELINE both hit 5/5 with no prompting beyond reading Agent A's schema. The schema quality (explicit Notes) appears to be the decisive factor, not just the pipeline structure itself.
-**Next phase adaptation:** Phase 3 ADVERSARIAL will test whether adversarial framing of Agent C changes output quality. Measurement: same 5 dimensions + critique.md depth + test assertion rigor.
 
-### Phase 1: BROADCAST — 2026-03-01
+### Phase 1: BROADCAST — 2026-03-01 ✅ COMPLETE
 **Hypotheses:** H1 under test: independent agents given identical context will converge on similar API contracts. RESULT: PARTIALLY REFUTED.
 **Observations:** Contract divergence measured across 5 dimensions:
 - Agent B (ui): matched field names (`topic`, `side`) but diverged on shapes (wrapped array, embedded arguments). Score: 2/5.
 - Agent C (tests): matched shapes (bare array, separate endpoint) but diverged on field names (`title` not `topic`, `position` not `side`). Score: 2/5.
 - B and C diverged from A in *complementary* dimensions — neither matched the other's pattern of error.
-**Surprises:** B and C each scored identically (2/5) but diverged on *different* dimensions. This suggests field names and response shapes are independently variable — agents may anchor on different aspects of the same conceptual description. The description "side: for or against" was interpreted as `side` by B but `position` by C.
-**Next phase adaptation:** Phase 2 PIPELINE will test H2 (upstream visibility → tighter coupling). Measurement: same 5 dimensions, same scoring.
+**Surprises:** B and C each scored identically (2/5) but diverged on *different* dimensions. This suggests field names and response shapes are independently variable — agents may anchor on different aspects of the same conceptual description.
 
-### Phase 0: INSTRUMENT — 2026-03-01
+### Phase 0: INSTRUMENT — 2026-03-01 ✅ COMPLETE
 **Hypotheses:** All 5 hypotheses (H1–H5) established. H1 and H2 will be tested in Phases 1 and 2. No empirical data yet.
 **Observations:** Infrastructure setup cycle. Lead-direct actions completed: (1) Research Log section added to state.md, (2) topology/phase fields added to status.md template in lead/CLAUDE.md. Dashboard research panel task (task-010) assigned and accepted.
-**Surprises:** None — Phase 0 is instrumentation only.
-**Next phase adaptation:** Phase 1 BROADCAST (task-011/012/013) assigned simultaneously this cycle. Key watch: do task-012 (ui.html) and task-013 (tests) correctly predict task-011's API contract? Record specific field name / status code mismatches.

@@ -1,5 +1,5 @@
 # Session: lead-cycle-1
-Generated: 2026-03-01T18:12:53Z
+Generated: 2026-03-01T18:51:29Z
 
 ---
 
@@ -89,39 +89,39 @@ Generated: 2026-03-01T18:12:53Z
     27→
     28→### Active
     29→<!-- Format: - [task-XXX] Description | status | branch -->
-    30→- [task-017] ADVERSARIAL Agent A: schema.md | assigned | task/017-adversarial-a-schema
+    30→- [task-020] SPECIALIST Agent A: schema.md | assigned | task/020-specialist-a-schema
     31→
     32→### Planned
     33→<!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
-    34→- [task-018] ADVERSARIAL Agent B: api.py | P1 | deps: task-017
-    35→- [task-019] ADVERSARIAL Agent C: critique.md + tests/test_api.py | P1 | deps: task-017,task-018
+    34→- [task-021] SPECIALIST Agent B: api.py | P1 | deps: task-020
+    35→- [task-022] SPECIALIST Agent C: evaluation.md + tests/test_api.py | P1 | deps: task-020,task-021
     36→
     37→### Done (recent)
     38→<!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
-    39→- [task-016] PIPELINE Agent C: tests/test_api.py | accepted | 2026-03-01
-    40→- [task-015] PIPELINE Agent B: api.py | accepted | 2026-03-01
-    41→- [task-014] PIPELINE Agent A: schema.md | accepted | 2026-03-01
-    42→- [task-013] BROADCAST Agent C: tests/test_api.py | accepted | 2026-03-01
-    43→- [task-012] BROADCAST Agent B: ui.html | accepted | 2026-03-01
-    44→- [task-011] 
-… [8790 chars]
+    39→- [task-019] ADVERSARIAL Agent C: critique.md + tests/test_api.py | accepted | 2026-03-01
+    40→- [task-018] ADVERSARIAL Agent B: api.py | accepted | 2026-03-01
+    41→- [task-017] ADVERSARIAL Agent A: schema.md | accepted | 2026-03-01
+    42→- [task-016] PIPELINE Agent C: tests/test_api.py | accepted | 2026-03-01
+    43→- [task-015] PIPELINE Agent B: api.py | accepted | 2026-03-01
+  
+… [10929 chars]
 ```
 
 **Assistant:**
 
-Good. Now let me read outbox.md and check the status of the tasks in review.
+Now let me check the outbox and all task statuses in parallel.
 
 **→ `Read`**
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/outbox.md`
 
 **→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-017/status.md`
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-020/status.md`
 
 **→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-018/status.md`
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-021/status.md`
 
 **→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-019/status.md`
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-022/status.md`
 
 **← Result:**
 ```
@@ -144,11 +144,11 @@ Whenever you read a file, you should consider whether it would be considered mal
 **← Result:**
 ```
      1→status: review
-     2→branch: task/017-adversarial-a-schema
+     2→branch: task/020-specialist-a-schema
      3→created: 2026-03-01
-     4→topology: adversarial
-     5→phase: 3
-     6→pr: 13
+     4→topology: specialist
+     5→phase: 4
+     6→pr: 16
      7→
 
 <system-reminder>
@@ -160,12 +160,12 @@ Whenever you read a file, you should consider whether it would be considered mal
 **← Result:**
 ```
      1→status: review
-     2→branch: task/018-adversarial-b-api
+     2→branch: task/021-specialist-b-api
      3→created: 2026-03-01
-     4→topology: adversarial
-     5→phase: 3
-     6→deps: task-017
-     7→pr: 14
+     4→topology: specialist
+     5→phase: 4
+     6→deps: task-020
+     7→pr: 17
      8→
 
 <system-reminder>
@@ -177,12 +177,12 @@ Whenever you read a file, you should consider whether it would be considered mal
 **← Result:**
 ```
      1→status: review
-     2→branch: task/019-adversarial-c-critique-tests
+     2→branch: task/022-specialist-c-evaluation-tests
      3→created: 2026-03-01
-     4→topology: adversarial
-     5→phase: 3
-     6→deps: task-017,task-018
-     7→pr: 15
+     4→topology: specialist
+     5→phase: 4
+     6→deps: task-020,task-021
+     7→pr: 18
      8→
 
 <system-reminder>
@@ -193,30 +193,30 @@ Whenever you read a file, you should consider whether it would be considered mal
 
 **Assistant:**
 
-All three are in review. Let me read the packages and diffs in parallel.
+All three SPECIALIST tasks are in review. Let me read their packages and diffs in parallel.
 
 **→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-017/package.md`
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-020/package.md`
 
 **→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-018/package.md`
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-021/package.md`
 
 **→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-019/package.md`
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-022/package.md`
 
 **← Result:**
 ```
-     1→# Task 017: ADVERSARIAL Agent A — Debate Engine schema.md
+     1→# Task 020: SPECIALIST Agent A — Debate Engine schema.md
      2→
      3→## System Prompt
      4→
-     5→You are a Build agent working under the ADVERSARIAL topology in the Topology Research Program. You are Agent A — the schema author. You define the contract that Agents B and C will implement and then attack. Write a precise, explicit schema that leaves no room for ambiguity; an adversarial reviewer will try to find deviations in any implementation, so your schema must be the ground truth.
+     5→You are a Build agent working under the SPECIALIST topology in the Topology Research Program. You are Agent A — a Senior REST API Designer. Your specialization is contract design: versioning, resource modelling, constraint specification, and error handling. You apply REST principles deliberately, not just by convention. You think carefully about what makes a schema unambiguous and implementable. Write the schema that you, as a specialist, believe is the highest-quality contract for this API.
      6→
      7→## Assignment
      8→
      9→Write the API schema for the **Debate Engine** FastAPI API.
     10→
-    11→Write `product/debate-engine/adversarial/schema.md`.
+    11→Write `product/debate-engine/specialist/schema.md`.
     12→
     13→### What to build
     14→
@@ -228,38 +228,35 @@ All three are in review. Let me read the packages and diffs in parallel.
     20→- `POST /api/v1/debates/{debate_id}/arguments` — add an argument
     21→- `GET /api/v1/debates/{debate_id}/arguments` — list arguments (with optional `?side=` filter)
     22→
-    23→### Acceptance criteria
+    23→Apply your expertise as a REST API designer. Make deliberate choices about field names, constraints, and error handling. Document the reasoning behind any non-obvious design decisions.
     24→
-    25→- [ ] All 5 endpoints documented with: method, path, request body, response body (with example JSON), status codes
-    26→- [ ] Data models defined explicitly (Debate, Argument) with all field names, types, and constraints
-    27→- [ ] All status codes covered: 200, 201, 404, 422
-    28→- [ ] Error response shape defined: `{"error": "string"}`
-    29→- [ ] A "Notes for Agents B and C" section that explicitly enumerates constraints (field names, allowed values, server-generated fields, ordering rules, filter behavior) — this is the adversarial anchor that Agent C will use to find deviations
-    30→- [ ] Do NOT write api.py or any test files
-    31→
-    32→## Relevant Files
-    33→
-    34→- `product/CLAUDE.md` — read first for 
-… [586 chars]
+    25→### Acceptance criteria
+    26→
+    27→- [ ] All 5 endpoints documented with: method, path, request body, response body (with example JSON), status codes
+    28→- [ ] Data models defined explicitly (Debate, Argument) with all field names, types, and constraints
+    29→- [ ] All status codes covered: 200, 201, 404, 422
+    30→- [ ] Error response shape defined: `{"error": "string"}`
+    31→- [ ] A "Notes for Agent B" section that enumerates constraints Agent B must im
+… [1192 chars]
 ```
 
 **← Result:**
 ```
-     1→# Task 018: ADVERSARIAL Agent B — Debate Engine api.py
+     1→# Task 021: SPECIALIST Agent B — Debate Engine api.py
      2→
      3→## System Prompt
      4→
-     5→You are a Build agent working under the ADVERSARIAL topology in the Topology Research Program. You are Agent B — the implementer. Agent A has defined a schema. An adversarial Agent C will review your implementation against that schema and try to find every deviation. Implement faithfully — your job is to give Agent C as little ammunition as possible.
+     5→You are a Build agent working under the SPECIALIST topology in the Topology Research Program. You are Agent B — a Senior FastAPI Engineer. Your specialization is Python API implementation: Pydantic modelling, async FastAPI patterns, exception handling, and code quality. You care about idiomatic, readable, correct code. Read Agent A's schema as your contract, then implement it with the care and craft of a specialist engineer.
      6→
      7→## Assignment
      8→
      9→Write the FastAPI implementation for the **Debate Engine** API.
     10→
-    11→Write `product/debate-engine/adversarial/api.py`.
+    11→Write `product/debate-engine/specialist/api.py`.
     12→
     13→### What to build
     14→
-    15→Read `product/debate-engine/adversarial/schema.md` (Agent A's contract) before writing any code. Implement all 5 endpoints exactly as specified:
+    15→Read `product/debate-engine/specialist/schema.md` (Agent A's contract) before writing any code. Implement all 5 endpoints exactly as specified:
     16→
     17→- `POST /api/v1/debates` → 201
     18→- `GET /api/v1/debates` → 200
@@ -269,78 +266,107 @@ All three are in review. Let me read the packages and diffs in parallel.
     22→
     23→Use in-memory storage (dicts). Use Pydantic models. Handle validation errors → 422 with `{"error": "..."}`.
     24→
-    25→### Acceptance criteria
+    25→Apply your specialist judgment on implementation quality: use idiomatic FastAPI patterns, clean Pydantic validation, and clear code structure. If you see a cleaner way to implement something within the schema contract, use it.
     26→
-    27→- [ ] All 5 endpoints implemented, returning exact status codes from schema
-    28→- [ ] All field names exactly match schema (topic, description, side, content — not aliases)
-    29→- [ ] Response envelopes exactly match schema (`{"debates": [...]}`, `{"arguments": [...]}`)
-    30→- [ ] `?side=` filter implemented correctly
-    31→- [ ] 422 handler returns `{"error": "string"}`
-    32→- [ ] A comment block at the top of api.py states the schema commit/source and lists all 5 endpoints (research artifact)
-    33→- [ ] Do NOT write schema.md or test files
-    34→- [ ] Do NOT commit __pycache__ files
-    35→
-    36→## Relevant Files
-    37→
-    38→- `product/CLAUDE.md` — read first for product con
-… [474 chars]
+    27→### Acceptance criteria
+    28→
+    29→- [ ] All 5 endpoints implemented, returning exact status codes from schema
+    30→- [ ] All field names exactly match schema (no aliases)
+    31→- [ ] Response envelopes exactly match schema
+    32→- [ ] `?side=` filter implemented correctly
+    33→- [ ] 422 handler returns `{"error": "string"}`
+    34→- [ ] A comment block at the top of api.py states the schema commit/source and list
+… [914 chars]
 ```
 
 **← Result:**
 ```
-     1→# Task 019: ADVERSARIAL Agent C — Debate Engine critique.md + tests/test_api.py
+     1→# Task 022: SPECIALIST Agent C — Debate Engine evaluation.md + tests/test_api.py
      2→
      3→## System Prompt
      4→
-     5→You are a Build agent working under the ADVERSARIAL topology in the Topology Research Program. You are Agent C — the adversary. Agent A wrote a schema and Agent B implemented it. Your job is NOT to assume the implementation is correct. Your job is to find every deviation between the schema and the implementation. Write a critique document first, then write tests designed to expose each deviation you found. Think like a red-teamer: assume the implementation is wrong and prove it.
+     5→You are a Build agent working under the SPECIALIST topology in the Topology Research Program. You are Agent C — a QA Engineer specializing in API contract testing. Your specialization is contract verification: you design tests that are maximally sensitive to contract violations. You think in terms of what assumptions the test makes and what deviations it would catch. Read Agent A's schema and Agent B's implementation. Write a structured evaluation and a test suite that reflects your specialist testing craft.
      6→
      7→## Assignment
      8→
-     9→Review Agent B's api.py against Agent A's schema.md. Write a critique document and a test suite.
+     9→Review Agent B's api.py against Agent A's schema.md. Write an evaluation document and a test suite.
     10→
-    11→Write `product/debate-engine/adversarial/critique.md`.
-    12→Write `product/debate-engine/adversarial/tests/test_api.py`.
-    13→Also write `product/debate-engine/adversarial/tests/__init__.py` (empty file).
-    14→Also write `product/debate-engine/adversarial/tests/conftest.py` — import the real app from `product/debate-engine/adversarial/api.py`.
+    11→Write `product/debate-engine/specialist/evaluation.md`.
+    12→Write `product/debate-engine/specialist/tests/test_api.py`.
+    13→Also write `product/debate-engine/specialist/tests/__init__.py` (empty file).
+    14→Also write `product/debate-engine/specialist/tests/conftest.py` — import the real app from `product/debate-engine/specialist/api.py`.
     15→
     16→### What to build
     17→
-    18→**Step 1 — Adversarial review:** Read schema.md and api.py carefully. For each endpoint and each field, check:
-    19→- Does the field name exactly match the schema? (e.g., `topic` vs `title`, `side` vs `position`)
-    20→- Does the response envelope exactly match? (`{"debates":[...]}` not `[...]`)
-    21→- Are all status codes correct? (201 not 200 on POST, 404 not 400 on missing)
-    22→- Is the `?side=` filter implemented and returning the right results?
-    23→- Is the 422 handler returning `{"error": "string"}` not the default FastAPI 422 body?
-    24→
-    25→**Step 2 — Write `critique.md`:** Document every deviation found (or confirm "no deviation found" per dimension). Use the 5 research dimensions as headers:
-    26→1. Field names
-    27→2. Response envelopes
-    28→3. Status codes
-    29→4. ?side= filter
- 
-… [2076 chars]
+    18→**Step 1 — Specialist evaluation:** Read schema.md and api.py. For each of the 5 research dimensions, evaluate the implementation's contract compliance. Apply your specialist judgment: note not just deviations but also any design decisions in the implementation that are worth flagging even if technically compliant.
+    19→
+    20→**Step 2 — Write `evaluation.md`:** Use the 5 research dimensions as headers:
+    21→1. Field names
+    22→2. Response envelopes
+    23→3. Status codes
+    24→4. ?side= filter
+    25→5. 422 error envelope
+    26→
+    27→For each dimension: state what the schema requires, what the implementation does, and whether they match. Add a "Specialist Observations" subsection for each dimension noting anything noteworthy beyond pass/fail (e.g., implementation quality, 
+… [2097 chars]
 ```
 
 **Assistant:**
 
-Now let me pull the actual diffs for all three PRs.
+Now let me review all three PR diffs in parallel.
 
 **→ `Bash`**
-  - **command:** `gh pr diff 13 2>&1 | head -300`
-  - **description:** `Get PR 13 diff (task-017 adversarial schema)`
+  - **command:** `gh pr diff 16 -- product/`
+  - **description:** `Get PR 16 diff for task-020 SPECIALIST Agent A schema`
 
 **→ `Bash`**
-  - **command:** `gh pr diff 14 2>&1 | head -400`
-  - **description:** `Get PR 14 diff (task-018 adversarial api.py)`
+  - **command:** `gh pr diff 17 -- product/`
+  - **description:** `Get PR 17 diff for task-021 SPECIALIST Agent B api.py`
 
 **→ `Bash`**
-  - **command:** `gh pr diff 15 2>&1 | head -600`
-  - **description:** `Get PR 15 diff (task-019 adversarial critique+tests)`
+  - **command:** `gh pr diff 18 -- product/`
+  - **description:** `Get PR 18 diff for task-022 SPECIALIST Agent C evaluation + tests`
+
+**← Result:**
+```
+Exit code 1
+accepts at most 1 arg(s), received 2
+
+accepts at most 1 arg(s), received 2
+```
+
+**← Result:**
+```
+Exit code 1
+accepts at most 1 arg(s), received 2
+
+accepts at most 1 arg(s), received 2
+```
+
+**← Result:**
+```
+Exit code 1
+accepts at most 1 arg(s), received 2
+
+accepts at most 1 arg(s), received 2
+```
+
+**→ `Bash`**
+  - **command:** `gh pr diff 16`
+  - **description:** `Get PR 16 diff for task-020`
+
+**→ `Bash`**
+  - **command:** `gh pr diff 17`
+  - **description:** `Get PR 17 diff for task-021`
+
+**→ `Bash`**
+  - **command:** `gh pr diff 18`
+  - **description:** `Get PR 18 diff for task-022`
 
 **← Result:**
 ```
 <persisted-output>
-Output too large (59.4KB). Full output saved to: /home/runner/.claude/projects/-home-runner-work-agentic-org-v2-agentic-org-v2/a0a87ad4-35c3-45bf-b594-210e747d766a/tool-results/b5rzgcd2s.txt
+Output too large (87.7KB). Full output saved to: /home/runner/.claude/projects/-home-runner-work-agentic-org-v2-agentic-org-v2/02ff534f-e758-434d-8d17-e1d210313ba1/tool-results/bazyzap2l.txt
 
 Preview (first 2KB):
 diff --git a/lead/NO_TASKS b/lead/NO_TASKS
@@ -405,29 +431,29 @@ index bf272ec..206d8b1 100644
 **← Result:**
 ```
 <persisted-output>
-Output too large (151.1KB). Full output saved to: /home/runner/.claude/projects/-home-runner-work-agentic-org-v2-agentic-org-v2/a0a87ad4-35c3-45bf-b594-210e747d766a/tool-results/bk3r0vcsz.txt
+Output too large (188.3KB). Full output saved to: /home/runner/.claude/projects/-home-runner-work-agentic-org-v2-agentic-org-v2/02ff534f-e758-434d-8d17-e1d210313ba1/tool-results/b2pvc0jtj.txt
 
 Preview (first 2KB):
-diff --git a/lead/tasks/task-018/status.md b/lead/tasks/task-018/status.md
-index 666ad3e..7242895 100644
---- a/lead/tasks/task-018/status.md
-+++ b/lead/tasks/task-018/status.md
+diff --git a/lead/tasks/task-021/status.md b/lead/tasks/task-021/status.md
+index 507370e..f46f846 100644
+--- a/lead/tasks/task-021/status.md
++++ b/lead/tasks/task-021/status.md
 @@ -1,6 +1,7 @@
 -status: assigned
 +status: review
- branch: task/018-adversarial-b-api
+ branch: task/021-specialist-b-api
  created: 2026-03-01
- topology: adversarial
- phase: 3
- deps: task-017
-+pr: 14
-diff --git a/lead/tasks/task-018/transcript.jsonl b/lead/tasks/task-018/transcript.jsonl
+ topology: specialist
+ phase: 4
+ deps: task-020
++pr: 17
+diff --git a/lead/tasks/task-021/transcript.jsonl b/lead/tasks/task-021/transcript.jsonl
 new file mode 100644
-index 0000000..7617e46
+index 0000000..5e4a473
 --- /dev/null
-+++ b/lead/tasks/task-018/transcript.jsonl
-@@ -0,0 +1,50 @@
-+{"type":"system","subtype":"init","cwd":"/home/runner/work/agentic-org-v2/agentic-org-v2","session_id":"f9324643-dd4c-4173-94e2-c7134bd091bd","tools":["Agent","TaskOutput","Bash","Glob","Grep","ExitPlanMode","Read","Edit","Write","NotebookEdit","WebFetch","TodoWrite","WebSearch","TaskStop","AskUserQuestion","Skill","EnterPlanMode","EnterWorktree"],"mcp_servers":[],"model":"claude-sonnet-4-6","permissionMode":"bypassPermissions","slash_commands":["keybindings-help","debug","simplify","batch","compact","context","cost","init","pr-comments","release-notes","review","security-review","insights"],"apiKeySource":"ANTHROPIC_API_KEY","claude_code_version":"2.1.63","output_style":"default","agents":["general-purpose","statusline-setup","Explore","Plan"],"skills":["keybindings-help","debug","simplify","batch"],"plugins":[],"uuid":"8117f1a0-862e-4dcb-9158-c5c9cc70c6f8","fast_mode_state":"off"}
++++ b/lead/tasks/task-021/transcript.jsonl
+@@ -0,0 +1,51 @@
++{"type":"system","subtype":"init","cwd":"/home/runner/work/agentic-org-v2/agentic-org-v2","session_id":"f75e4fb4-71d4-4b0d-a390-f0cef65e824c","tools":["Agent","TaskOutput","Bash","Glob","Grep","ExitPlanMode","Read","Edit","Write","NotebookEdit","WebFetch","TodoWrite","WebSearch","TaskStop","AskUserQuestion","Skill","EnterPlanMode","EnterWorktree"],"mcp_servers":[],"model":"claude-sonnet-4-6","permissionMode":"bypassPermissions","slash_commands":["keybindings-help","debug","simplify","batch","compact","context","cost","init","pr-comments","release-notes","review","security-review","insights"],"apiKeySource":"ANTHROPIC_API_KEY","claude_code_version":"2.1.63","output_style":"default","agents":["general-purpose","statusline-setup","Explore","Plan"],"skills":["keybindings-help","debug","simplify","batch"],"plugins":[],"uuid":"3404fee6-780a-45c4-8bdc-39e9aec92d76","fast_mode_state":"off"}
 ...
 </persisted-output>
 ```
@@ -435,440 +461,573 @@ index 0000000..7617e46
 **← Result:**
 ```
 <persisted-output>
-Output too large (304.8KB). Full output saved to: /home/runner/.claude/projects/-home-runner-work-agentic-org-v2-agentic-org-v2/a0a87ad4-35c3-45bf-b594-210e747d766a/tool-results/b4dxex150.txt
+Output too large (389KB). Full output saved to: /home/runner/.claude/projects/-home-runner-work-agentic-org-v2-agentic-org-v2/02ff534f-e758-434d-8d17-e1d210313ba1/tool-results/bag1hthh9.txt
 
 Preview (first 2KB):
-diff --git a/lead/tasks/task-019/status.md b/lead/tasks/task-019/status.md
-index 673ee0d..fc384b1 100644
---- a/lead/tasks/task-019/status.md
-+++ b/lead/tasks/task-019/status.md
+diff --git a/lead/tasks/task-022/status.md b/lead/tasks/task-022/status.md
+index 432d1cc..09d4927 100644
+--- a/lead/tasks/task-022/status.md
++++ b/lead/tasks/task-022/status.md
 @@ -1,6 +1,7 @@
 -status: assigned
 +status: review
- branch: task/019-adversarial-c-critique-tests
+ branch: task/022-specialist-c-evaluation-tests
  created: 2026-03-01
- topology: adversarial
- phase: 3
- deps: task-017,task-018
-+pr: 15
-diff --git a/lead/tasks/task-019/transcript.jsonl b/lead/tasks/task-019/transcript.jsonl
+ topology: specialist
+ phase: 4
+ deps: task-020,task-021
++pr: 18
+diff --git a/lead/tasks/task-022/transcript.jsonl b/lead/tasks/task-022/transcript.jsonl
 new file mode 100644
-index 0000000..631d963
+index 0000000..2311181
 --- /dev/null
-+++ b/lead/tasks/task-019/transcript.jsonl
-@@ -0,0 +1,107 @@
-+{"type":"system","subtype":"init","cwd":"/home/runner/work/agentic-org-v2/agentic-org-v2","session_id":"c903a8a1-1453-4d0a-a013-382ecbdbe531","tools":["Agent","TaskOutput","Bash","Glob","Grep","ExitPlanMode","Read","Edit","Write","NotebookEdit","WebFetch","TodoWrite","WebSearch","TaskStop","AskUserQuestion","Skill","EnterPlanMode","EnterWorktree"],"mcp_servers":[],"model":"claude-sonnet-4-6","permissionMode":"bypassPermissions","slash_commands":["keybindings-help","debug","simplify","batch","compact","context","cost","init","pr-comments","release-notes","review","security-review","insights"],"apiKeySource":"ANTHROPIC_API_KEY","claude_code_version":"2.1.63","output_style":"default","agents":["general-purpose","statusline-setup","Explore","Plan"],"skills":["keybindings-help","debug","simplify","batch"],"plugins":[],"uuid":"caedcff8-d73f-4f3c-b626-fcc2f2020d79","fast_mode_state":"off"}
++++ b/lead/tasks/task-022/transcript.jsonl
+@@ -0,0 +1,81 @@
++{"type":"system","subtype":"init","cwd":"/home/runner/work/agentic-org-v2/agentic-org-v2","session_id":"e4a3d7d3-1123-4a9d-8212-9f94d4502e6c","tools":["Agent","TaskOutput","Bash","Glob","Grep","ExitPlanMode","Read","Edit","Write","NotebookEdit","WebFetch","TodoWrite","WebSearch","TaskStop","AskUserQuestion","Skill","EnterPlanMode","EnterWorktree"],"mcp_servers":[],"model":"claude-sonnet-4-6","permissionMode":"bypassPermissions","slash_commands":["keybindings-help","debug","simplify","batch","compact","context","cost","init","pr-comments","release-notes","review","security-review","insights"],"apiKeySource":"ANTHROPIC_API_KEY","claude_code_version":"2.1.63","output_style":"default","agents":["general-purpose","statusline-setup","Explore","Plan"],"skills":["keybindings-help","debug","simplify","batch"],"plugins":[],"uuid":"5c9797be-0fad-4fc1-a18d-68ae125886dc","fast_mode_state":"off"}
 ...
 </persisted-output>
 ```
 
 **Assistant:**
 
-The diffs include lots of lead/ history. Let me read the actual product files directly.
+The diffs include a lot of lead/ overhead. Let me read the actual product files directly.
 
-**→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/product/debate-engine/adversarial/schema.md`
+**→ `Bash`**
+  - **command:** `git diff main...task/020-specialist-a-schema -- product/`
+  - **description:** `Get task-020 product diff only`
 
-**→ `Read`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/product/debate-engine/adversarial/api.py`
+**→ `Bash`**
+  - **command:** `git diff main...task/021-specialist-b-api -- product/`
+  - **description:** `Get task-021 product diff only`
+
+**→ `Bash`**
+  - **command:** `git diff main...task/022-specialist-c-evaluation-tests -- product/`
+  - **description:** `Get task-022 product diff only`
 
 **← Result:**
 ```
-File does not exist. Note: your current working directory is /home/runner/work/agentic-org-v2/agentic-org-v2.
+Exit code 128
+fatal: bad revision 'main...task/020-specialist-a-schema'
+
+fatal: bad revision 'main...task/020-specialist-a-schema'
 ```
 
 **← Result:**
 ```
-File does not exist. Note: your current working directory is /home/runner/work/agentic-org-v2/agentic-org-v2.
+Exit code 128
+fatal: bad revision 'main...task/022-specialist-c-evaluation-tests'
+
+fatal: bad revision 'main...task/022-specialist-c-evaluation-tests'
+```
+
+**← Result:**
+```
+Exit code 128
+fatal: bad revision 'main...task/021-specialist-b-api'
+
+fatal: bad revision 'main...task/021-specialist-b-api'
+```
+
+**→ `Bash`**
+  - **command:** `git branch -a | grep specialist`
+  - **description:** `List remote specialist branches`
+
+**← Result:**
+```
+  remotes/origin/task/020-specialist-a-schema
+  remotes/origin/task/021-specialist-b-api
+  remotes/origin/task/022-specialist-c-evaluation-tests
+```
+
+**→ `Bash`**
+  - **command:** `git diff main...origin/task/020-specialist-a-schema -- product/`
+  - **description:** `Get task-020 product diff vs main`
+
+**→ `Bash`**
+  - **command:** `git diff main...origin/task/021-specialist-b-api -- product/`
+  - **description:** `Get task-021 product diff vs main`
+
+**→ `Bash`**
+  - **command:** `git diff main...origin/task/022-specialist-c-evaluation-tests -- product/`
+  - **description:** `Get task-022 product diff vs main`
+
+**← Result:**
+```
+diff --git a/product/debate-engine/specialist/schema.md b/product/debate-engine/specialist/schema.md
+new file mode 100644
+index 0000000..bc61b48
+--- /dev/null
++++ b/product/debate-engine/specialist/schema.md
+@@ -0,0 +1,375 @@
++# Debate Engine API — Contract Specification
++
++**Author:** Agent A — Senior REST API Designer
++**Topology:** SPECIALIST
++**Version:** v1
++**Base URL:** `/api/v1`
++
++---
++
++## Data Models
++
++### Debate
++
++| Field            | Type    | Source         | Constraints                    |
++|------------------|---------|----------------|--------------------------------|
++| `id`             | string  | server         | UUID v4; read-only             |
++| `title`          | string  | client         | Required; 1–200 characters     |
++| `description`    | string  | client         | Optional; 0–1000 characters; defaults to `""` |
++| `argument_count` | integer | server         | Read-only; non-negative; maintained by server |
++| `created_at`     | string  | server         | ISO 8601 UTC; e.g. `"2026-03-01T12:00:00Z"`; read-only |
++
++**Example:**
++```json
++{
++  "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
++  "title": "Renewable energy should replace fossil fuels within 20 years",
++  "description": "Focus on economic and environmental feasibility.",
++  "argument_count": 4,
++  "created_at": "2026-03-01T09:00:00Z"
++}
++```
++
++---
++
++### Argument
++
++| Field       | Type   | Source | Constraints                                     |
++|-------------|--------|--------|-------------------------------------------------|
++| `id`        | string | server | UUID v4; read-only                              |
++| `debate_id` | string | server | UUID v4; matches the parent debate; read-only   |
++| `side`      | string | client | Required; one of `"for"` or `"against"` exactly |
++| `body`      | string | client | Required; 1–2000 characters                     |
++| `created_at`| string | server | ISO 8601 UTC; read-only                         |
++
++**Example:**
++```json
++
+… [11394 chars]
+```
+
+**← Result:**
+```
+diff --git a/product/debate-engine/specialist/api.py b/product/debate-engine/specialist/api.py
+new file mode 100644
+index 0000000..509be3f
+--- /dev/null
++++ b/product/debate-engine/specialist/api.py
+@@ -0,0 +1,244 @@
++# Debate Engine API — FastAPI Implementation (Agent B, Specialist Topology)
++#
++# Schema source : product/debate-engine/specialist/schema.md
++# Schema commit : 7da7b3cb8e319e233b5fc7d2de17faeba10a1ac6
++#                 (task-020: write specialist Agent A schema for Debate Engine)
++#
++# Endpoints implemented:
++#   1. POST   /api/v1/debates                        -> 201 Created
++#   2. GET    /api/v1/debates                        -> 200 OK
++#   3. GET    /api/v1/debates/{debate_id}            -> 200 OK / 404 Not Found
++#   4. POST   /api/v1/debates/{debate_id}/arguments  -> 201 Created / 404 Not Found
++#   5. GET    /api/v1/debates/{debate_id}/arguments  -> 200 OK / 404 Not Found
++#              (?side= filter; 422 for invalid side value)
++#
++# Implementation Notes:
++#
++# 1. Literal["for", "against"] for side validation — using a Literal type annotation
++#    is more idiomatic than a custom @field_validator for a fixed enum of values.
++#    It self-documents in the OpenAPI schema, participates in static analysis, and
++#    FastAPI surfaces the constraint in generated docs. For the ?side= query parameter,
++#    Pydantic validates it before the endpoint body executes, so the schema-mandated
++#    "422 before 404" ordering for invalid side values is guaranteed automatically by
++#    FastAPI's request processing pipeline — no manual ordering code required.
++#
++# 2. Dynamic argument_count computation — argument_count is derived on-the-fly by
++#    counting matching entries in _arguments rather than maintaining a mutable counter
++#    on each stored Debate record. With in-memory storage the cost is negligible, and
++#    we eliminate an entire class of consistency bugs (counter drift on mid-update
++#    exceptions, concurrent writes, etc.). The schema specifi
+… [8135 chars]
+```
+
+**← Result:**
+```
+<persisted-output>
+Output too large (52.8KB). Full output saved to: /home/runner/.claude/projects/-home-runner-work-agentic-org-v2-agentic-org-v2/02ff534f-e758-434d-8d17-e1d210313ba1/tool-results/b6uo8h71o.txt
+
+Preview (first 2KB):
+diff --git a/product/debate-engine/specialist/evaluation.md b/product/debate-engine/specialist/evaluation.md
+new file mode 100644
+index 0000000..966b565
+--- /dev/null
++++ b/product/debate-engine/specialist/evaluation.md
+@@ -0,0 +1,294 @@
++# Debate Engine API — Specialist Evaluation
++
++**Author:** Agent C — QA Engineer (Contract Testing Specialist)
++**Topology:** SPECIALIST
++**Subject:** Agent B's `api.py` vs Agent A's `schema.md`
++**Date:** 2026-03-01
++
++---
++
++## Overview
++
++This evaluation assesses Agent B's FastAPI implementation against Agent A's contract
++specification across five research dimensions. For each dimension I state what the schema
++requires, what the implementation does, and whether they match. A "Specialist Observations"
++subsection follows each dimension with notes on implementation quality, edge cases, and
++testing implications that go beyond a simple pass/fail verdict.
++
++---
++
++## Dimension 1 — Field Names
++
++### Schema requires
++
++Exact field names (no aliases, no camelCase):
++
++- **Debate:** `id`, `title`, `description`, `argument_count`, `created_at`
++- **Argument:** `id`, `debate_id`, `side`, `body`, `created_at`
++
++Fields that are server-generated and must never be writable by clients:
++`id`, `created_at`, `argument_count`, `debate_id` (on Argument).
++
++### Implementation does
++
++- `DebateOut` defines: `id`, `title`, `description`, `argument_count`, `created_at` ✓
++- `ArgumentOut` defines: `id`, `debate_id`, `side`, `body`, `created_at` ✓
++- `DebateCreate` (request model) exposes only `title` and `description` — no server-owned
++  fields are writable ✓
++- `ArgumentCreate` exposes only `side` and `body` ✓
++- `debate_id` on Argument is always set from the URL path parameter, never from the
++  request body ✓
++
++##
+… [166 chars]
 ```
 
 **Assistant:**
 
-The files are on branches, not merged to main. Let me read them from the branches.
+Let me read the full evaluation.md and test file for task-022.
 
-**→ `Bash`**
-  - **command:** `git show task/017-adversarial-a-schema:product/debate-engine/adversarial/schema.md 2>&1`
-  - **description:** `Read schema.md from task-017 branch`
-
-**→ `Bash`**
-  - **command:** `git show task/018-adversarial-b-api:product/debate-engine/adversarial/api.py 2>&1`
-  - **description:** `Read api.py from task-018 branch`
+**→ `Read`**
+  - **file_path:** `/home/runner/.claude/projects/-home-runner-work-agentic-org-v2-agentic-org-v2/02ff534f-e758-434d-8d17-e1d210313ba1/tool-results/b6uo8h71o.txt`
 
 **← Result:**
 ```
-Exit code 128
-fatal: invalid object name 'task/017-adversarial-a-schema'.
+<persisted-output>
+Output too large (61.9KB). Full output saved to: /home/runner/.claude/projects/-home-runner-work-agentic-org-v2-agentic-org-v2/02ff534f-e758-434d-8d17-e1d210313ba1/tool-results/toolu_01ABEjRdD3YhnNQWTbjPniWN.txt
 
-fatal: invalid object name 'task/017-adversarial-a-schema'.
-```
-
-**← Result:**
-```
-Exit code 128
-fatal: invalid object name 'task/018-adversarial-b-api'.
-
-fatal: invalid object name 'task/018-adversarial-b-api'.
+Preview (first 2KB):
+     1→diff --git a/product/debate-engine/specialist/evaluation.md b/product/debate-engine/specialist/evaluation.md
+     2→new file mode 100644
+     3→index 0000000..966b565
+     4→--- /dev/null
+     5→+++ b/product/debate-engine/specialist/evaluation.md
+     6→@@ -0,0 +1,294 @@
+     7→+# Debate Engine API — Specialist Evaluation
+     8→+
+     9→+**Author:** Agent C — QA Engineer (Contract Testing Specialist)
+    10→+**Topology:** SPECIALIST
+    11→+**Subject:** Agent B's `api.py` vs Agent A's `schema.md`
+    12→+**Date:** 2026-03-01
+    13→+
+    14→+---
+    15→+
+    16→+## Overview
+    17→+
+    18→+This evaluation assesses Agent B's FastAPI implementation against Agent A's contract
+    19→+specification across five research dimensions. For each dimension I state what the schema
+    20→+requires, what the implementation does, and whether they match. A "Specialist Observations"
+    21→+subsection follows each dimension with notes on implementation quality, edge cases, and
+    22→+testing implications that go beyond a simple pass/fail verdict.
+    23→+
+    24→+---
+    25→+
+    26→+## Dimension 1 — Field Names
+    27→+
+    28→+### Schema requires
+    29→+
+    30→+Exact field names (no aliases, no camelCase):
+    31→+
+    32→+- **Debate:** `id`, `title`, `description`, `argument_count`, `created_at`
+    33→+- **Argument:** `id`, `debate_id`, `side`, `body`, `created_at`
+    34→+
+    35→+Fields that are server-generated and must never be writable by clients:
+    36→+`id`, `created_at`, `argument_count`, `debate_id` (on Argument).
+    37→+
+    38→+### Implementation does
+    39→+
+    40→+- `DebateOut` defines: `id`, `title`, `description`, `argument_count`, `created_at` ✓
+    41→+- `ArgumentOut` defines: `id`, `debate_id`, 
+… [244 chars]
 ```
 
 **→ `Bash`**
-  - **command:** `git branch -r | grep -E "017|018|019"`
-  - **description:** `Find remote branch names`
+  - **command:** `git show origin/task/022-specialist-c-evaluation-tests:product/debate-engine/specialist/evaluation.md`
+  - **description:** `Read specialist evaluation.md from remote branch`
+
+**→ `Bash`**
+  - **command:** `git show origin/task/022-specialist-c-evaluation-tests:product/debate-engine/specialist/tests/test_api.py`
+  - **description:** `Read specialist test_api.py from remote branch`
 
 **← Result:**
 ```
-  origin/task/017-adversarial-a-schema
-  origin/task/018-adversarial-b-api
-  origin/task/019-adversarial-c-critique-tests
-```
+# Debate Engine API — Specialist Evaluation
 
-**→ `Bash`**
-  - **command:** `git show origin/task/017-adversarial-a-schema:product/debate-engine/adversarial/schema.md 2>&1`
-  - **description:** `Read schema.md from remote task-017 branch`
-
-**→ `Bash`**
-  - **command:** `git show origin/task/018-adversarial-b-api:product/debate-engine/adversarial/api.py 2>&1`
-  - **description:** `Read api.py from remote task-018 branch`
-
-**← Result:**
-```
-# Debate Engine API — Schema v1.0
-
-**Base URL:** `/api/v1`
-**Content-Type:** All request and response bodies are `application/json`.
+**Author:** Agent C — QA Engineer (Contract Testing Specialist)
+**Topology:** SPECIALIST
+**Subject:** Agent B's `api.py` vs Agent A's `schema.md`
+**Date:** 2026-03-01
 
 ---
 
-## Data Models
+## Overview
 
-### Debate
-
-| Field        | Type     | Constraints                                      |
-|--------------|----------|--------------------------------------------------|
-| `id`         | string   | Server-generated UUID v4; immutable              |
-| `title`      | string   | Required; 1–200 characters; leading/trailing whitespace stripped |
-| `description`| string   | Required; 1–2000 characters; leading/trailing whitespace stripped |
-| `created_at` | string   | Server-generated ISO 8601 UTC datetime (`YYYY-MM-DDTHH:MM:SS.ffffffZ`); immutable |
-
-**Example:**
-```json
-{
-  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "title": "Pineapple belongs on pizza",
-  "description": "A debate on the merits of pineapple as a pizza topping.",
-  "created_at": "2026-03-01T12:00:00.000000Z"
-}
-```
-
----
-
-### Argument
-
-| Field        | Type     | Constraints                                                                 |
-|--------------|----------|-----------------------------------------------------------------------------|
-| `id`         | string   | Server-generated UUID v4; immutable                                         |
-| `debate_id`  | string   | UUID v4; must reference an existing debate; immutable                       |
-| `side`       | string   | Exactly one of: `"for"` or `"against"`; case-sensitive; immutable           |
-| `body`       | string   | Required; 1–1000 characters; leading/trailing whitespace stripped           |
-| `created_at` | string   | Server-generated ISO 8601 UTC datetime (`YYYY-MM-DDTHH:MM:SS.ffffffZ`); immutable |
-
-**Example:**
-```json
-{
-  "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
-  "debate_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "side": "for",
-  "body": "Pineapple adds a sweet contrast that complements the salty cheese.",
-  "created_at": "2026-03-01T12:05:00.000000Z"
-}
-```
-
----
-
-##
-… [10580 chars]
-```
-
-**← Result:**
-```
-# Debate Engine API — Implementation (Agent B)
-#
-# Schema source : product/debate-engine/adversarial/schema.md
-# Schema commit : ce18a57323bf423dbdd581ce7a2e3a12682a2f1c
-#                 (task-017: add Debate Engine adversarial schema (Agent A))
-#
-# Endpoints implemented:
-#   1. POST   /api/v1/debates                        -> 201 Created
-#   2. GET    /api/v1/debates                        -> 200 OK
-#   3. GET    /api/v1/debates/{debate_id}            -> 200 OK / 404 Not Found
-#   4. POST   /api/v1/debates/{debate_id}/arguments  -> 201 Created / 404 Not Found
-#   5. GET    /api/v1/debates/{debate_id}/arguments  -> 200 OK / 404 Not Found
-#              (?side= filter; 422 for invalid side value)
-
-from __future__ import annotations
-
-import uuid
-from datetime import datetime, timezone
-from typing import Optional
-
-from fastapi import FastAPI, Query, Request
-from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
-from pydantic import BaseModel, ValidationError, field_validator
-
-app = FastAPI()
-
-# In-memory storage keyed by ID
-_debates: dict[str, dict] = {}
-_arguments: dict[str, dict] = {}
-
-
-def _now_utc() -> str:
-    """Return current UTC time as ISO 8601 string with microseconds ending in Z."""
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f") + "Z"
-
-
-def _first_error_msg(exc: ValidationError) -> str:
-    """Extract the first human-readable message from a Pydantic ValidationError."""
-    errors = exc.errors()
-    if not errors:
-        return "Validation error"
-    msg = errors[0].get("msg", "Validation error")
-    # Pydantic v2 prefixes custom ValueError messages with "Value error, "
-    if msg.startswith("Value error, "):
-        msg = msg[len("Value error, "):]
-    return msg
-
-
-# ---------------------------------------------------------------------------
-# Pydantic request models
-# ---------------------------------------------------------------------------
-
-class DebateCreate(BaseModel):
-    title: str
- 
-… [5433 chars]
-```
-
-**→ `Bash`**
-  - **command:** `git show origin/task/019-adversarial-c-critique-tests:product/debate-engine/adversarial/critique.md 2>&1`
-  - **description:** `Read critique.md from task-019 branch`
-
-**→ `Bash`**
-  - **command:** `git show origin/task/019-adversarial-c-critique-tests:product/debate-engine/adversarial/tests/test_api.py 2>&1`
-  - **description:** `Read test_api.py from task-019 branch`
-
-**← Result:**
-```
-# Agent C — Adversarial Critique
-## Debate Engine API: schema.md vs api.py
-
-**Schema source:** `product/debate-engine/adversarial/schema.md`
-**Schema commit:** `ce18a57323bf423dbdd581ce7a2e3a12682a2f1c` (task-017)
-**Implementation source:** `product/debate-engine/adversarial/api.py`
-**Implementation commit:** `9bef88ddfa9d229b46b95ede880540f2cc2e6bbe` (task-018)
-**Reviewer:** Agent C (adversary)
-
----
-
-## Methodology
-
-Each of the five research dimensions was reviewed by:
-1. Extracting the exact requirement from the schema (treated as ground truth).
-2. Reading the implementation line-by-line for that dimension.
-3. Identifying any mismatch — even cosmetic.
-
-The goal is to **prove deviation**, not assume correctness.
+This evaluation assesses Agent B's FastAPI implementation against Agent A's contract
+specification across five research dimensions. For each dimension I state what the schema
+requires, what the implementation does, and whether they match. A "Specialist Observations"
+subsection follows each dimension with notes on implementation quality, edge cases, and
+testing implications that go beyond a simple pass/fail verdict.
 
 ---
 
 ## Dimension 1 — Field Names
 
-### Schema requirement
+### Schema requires
 
-**Debate object** (schema § Data Models → Debate):
-- `id` — string, server-generated UUID v4
-- `title` — string
-- `description` — string
-- `created_at` — string, ISO 8601 UTC
+Exact field names (no aliases, no camelCase):
 
-**Argument object** (schema § Data Models → Argument):
-- `id` — string
-- `debate_id` — string, UUID v4
-- `side` — string, `"for"` or `"against"`
-- `body` — string
-- `created_at` — string, ISO 8601 UTC
+- **Debate:** `id`, `title`, `description`, `argument_count`, `created_at`
+- **Argument:** `id`, `debate_id`, `side`, `body`, `created_at`
 
-Notes 1–2 state: *exactly these fields, no extras, no renames*.
+Fields that are server-generated and must never be writable by clients:
+`id`, `created_at`, `argument_count`, `debate_id` (on Argument).
 
-### Implementation
+### Implementation does
 
-`create_debate` builds:
-```python
-debate = {
-    "id": debate_id,
-    "title": payload.title,
-    "description": payload.description,
-    "created_at": _now_utc(),
-}
-```
-Fields: `id`, `title`, `description`, `created_at` — exactly four, no extras. ✓
+- `DebateOut` defines: `id`, `title`, `description`, `argument_count`, `created_at` ✓
+- `ArgumentOut` defines: `id`, `debate_id`, `side`, `body`, `created_at` ✓
+- `DebateCreate` (request model) exposes only `title` and `description` — no server-owned
+  fields are writable ✓
+- `ArgumentCreate` exposes only `side` and `body` ✓
+- `debate_id` on Argument is always set from the URL path parameter, never from the
+  request body ✓
 
-`create_argument` builds:
-```python
-argument = {
-    "id": arg_id,
-    "debate_id": debate_id,
-    "side": payload.side,
-    "body": payload.body,
-    "created_at": _now_utc(),
-}
-```
-Fields: `id`, `debate_id`, `side`, `body`, `created_at` — exactly five, no extras. ✓
+### Result: **PASS**
 
-`DebateCreate` model accepts `title` and `description` (matching schema request body). ✓
-`ArgumentCreate` model accepts `side` and `body` (matching schema request body). ✓
+### Specialist Observations
 
-Note 7: `debate_id` is set from path parameter, never from re
-… [6986 chars]
+The implementation uses separate request and response models (`DebateCreate`/`DebateOut`,
+`ArgumentCreate`/`ArgumentOut`). This is architecturally correct for contract enforcement:
+the type boundary prevents any accidental field bleed between the writable and read-only
+surfaces.
+
+One subtle point worth flagging for tests: the schema specifies `description` must default
+to `""` (empty string) when omitted by the client — not `null` or `None`. The Pydantic
+`Fie
+… [10092 chars]
 ```
 
 **← Result:**
 ```
+<persisted-output>
+Output too large (37.9KB). Full output saved to: /home/runner/.claude/projects/-home-runner-work-agentic-org-v2-agentic-org-v2/02ff534f-e758-434d-8d17-e1d210313ba1/tool-results/bprb3cqkc.txt
+
+Preview (first 2KB):
 """
-test_api.py — Adversarial contract tests for Agent B's Debate Engine API.
+Contract Test Suite — Debate Engine API
 
-=============================================================================
-ASSUMED API CONTRACT  (source: product/debate-engine/adversarial/schema.md)
-=============================================================================
+Tests are written against the schema contract in:
+  product/debate-engine/specialist/schema.md
 
-Endpoints:
-  POST   /api/v1/debates                          → 201 / 422
-  GET    /api/v1/debates                          → 200  (bare array)
-  GET    /api/v1/debates/{debate_id}              → 200 / 404
-  POST   /api/v1/debates/{debate_id}/arguments    → 201 / 404 / 422
-  GET    /api/v1/debates/{debate_id}/arguments    → 200 / 404 / 422
+Every test is designed to be maximally sensitive to contract violations.
+Each test docstring states exactly what deviation it would catch.
 
-Debate object fields (exactly):    id, title, description, created_at
-Argument object fields (exactly):  id, debate_id, side, body, created_at
+A failing test means the implementation deviates from the contract.
 
-List responses are bare JSON arrays — NOT {"debates": [...]} or {"arguments": [...]}.
+==========================================================================
+ASSUMED API CONTRACT
+==========================================================================
 
-Status codes:
-  - 201 on successful POST (not 200)
-  - 200 on successful GET
-  - 404 when debate_id does not exist
-  - 422 when body or query-param fails validation
+Base URL: /api/v1
 
-422 body shape: {"error": "string"} — NO "detail" key (FastAPI default is non-compliant)
+DEBATE OBJECT
+  Required fields : id, title, description, argument_count, created_at
+  id              : UUID v4 string (lowercase hex with hyphens)
+  argument_count  : integer; server-computed; always equals total arg count
+                    for the debate (unfiltered by side)
+  created_at      : ISO 8601 UTC string (must end with "Z")
+  description     : string; defaults to "" when omitted (never null/None)
 
-?side= filter (GET arguments):
-  - ?side=for    → only "for" arguments
-  - ?side=against → only "against" arguments
-  - absent       → all arguments
-  - invalid value → 422 BEFORE checking debate existence (note 17)
+ARGUMENT OBJECT
+  Required fields : id, debate_id, side, body, created_at
+  side            : exactly "for" or "against" — case-sensitive
+  debate_id       : set from URL path parameter; never from request body
 
-Debate existence vs body validation precedence (note 19–20):
-  - POST arguments with missing debate + invalid body → 404, not 422
+ENDPOINTS
+  POST /api/v1/debates                       -> 201  (Debate object, dict)
+  GET  /api/v1/debates                       -> 200  {"debates": [...], "total": N}
+  GET  /api/v1/debates/{id}                  -> 200  (Debate) | 404
+  POST /api/v1/debates/{id}/arguments        -> 201  (Argument, dict) | 404 | 422
+  GET  /api/v1/debates/{id}/arguments        -> 200  {"arguments": [...], "total": N}
+                                                | 404 | 422 (invalid ?side=)
 
-Input sanitisation (note 23–24):
-  - Leading/trailing whitespace stripped before storage and length check
-  - "  " (spaces only) fails min-length → 422
-
-Server-generated fields (notes 5–6):
-  - id and created_at always assigned by server; client-supplied values ignored
-
-=============================================================================
-"""
-
-import re
-import uuid
-
-import pytest
-
-# ---------------------------------------------------------------------------
-# Helpers
-# -----------------------------
-… [23610 chars]
+ERROR ENVELOPES
+  404  : {"error": "Debate not found"}
+         key must be "error" (not "detail", "message", or any
+… [212 chars]
 ```
+
+**Assistant:**
+
+Let me read the test file to complete my review.
 
 **→ `Bash`**
-  - **command:** `git show origin/task/019-adversarial-c-critique-tests:product/debate-engine/adversarial/tests/conftest.py 2>&1`
-  - **description:** `Read conftest.py from task-019 branch`
+  - **command:** `git show origin/task/022-specialist-c-evaluation-tests:product/debate-engine/specialist/tests/test_api.py | head -200`
+  - **description:** `Read first 200 lines of specialist test_api.py`
+
+**→ `Bash`**
+  - **command:** `git show origin/task/022-specialist-c-evaluation-tests:product/debate-engine/specialist/tests/test_api.py | wc -l && git show origin/task/022-specialist-c-evaluation-tests:product/debate-engine/specialist/tests/test_api.py | grep -c "^def test_"`
+  - **description:** `Count lines and test functions in test file`
+
+**→ `Bash`**
+  - **command:** `git show origin/task/022-specialist-c-evaluation-tests:product/debate-engine/specialist/tests/conftest.py`
+  - **description:** `Read specialist conftest.py`
 
 **← Result:**
 ```
 """
-conftest.py — imports the real app from product/debate-engine/adversarial/api.py.
+Pytest configuration for the Debate Engine contract test suite.
 
-Adds the adversarial package directory to sys.path so that `import api` resolves
-to the Agent B implementation under review.
+Imports the real FastAPI app from product/debate-engine/specialist/api.py
+and provides fixtures for a test client with clean in-memory state per test.
 """
 
 import os
 import sys
 
-# Make `import api` resolve to product/debate-engine/adversarial/api.py
-_ADVERSARIAL_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-if _ADVERSARIAL_DIR not in sys.path:
-    sys.path.insert(0, _ADVERSARIAL_DIR)
-
 import pytest
-from fastapi.testclient import TestClient
 
-import api as _api_module
-from api import app
+# Add the specialist directory to the path so api.py can be imported directly.
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+
+import api as debate_api  # noqa: E402
+from api import app  # noqa: E402
+from fastapi.testclient import TestClient  # noqa: E402
 
 
 @pytest.fixture
 def client():
-    """Fresh TestClient with cleared in-memory storage for every test."""
-    _api_module._debates.clear()
-    _api_module._arguments.clear()
+    """
+    HTTP test client with isolated in-memory state for each test.
+
+    Clears _debates and _arguments before yielding the client so tests
+    do not share state regardless of execution order.
+    """
+    debate_api._debates.clear()
+    debate_api._arguments.clear()
     with TestClient(app) as c:
         yield c
 ```
 
+**← Result:**
+```
+"""
+Contract Test Suite — Debate Engine API
+
+Tests are written against the schema contract in:
+  product/debate-engine/specialist/schema.md
+
+Every test is designed to be maximally sensitive to contract violations.
+Each test docstring states exactly what deviation it would catch.
+
+A failing test means the implementation deviates from the contract.
+
+==========================================================================
+ASSUMED API CONTRACT
+==========================================================================
+
+Base URL: /api/v1
+
+DEBATE OBJECT
+  Required fields : id, title, description, argument_count, created_at
+  id              : UUID v4 string (lowercase hex with hyphens)
+  argument_count  : integer; server-computed; always equals total arg count
+                    for the debate (unfiltered by side)
+  created_at      : ISO 8601 UTC string (must end with "Z")
+  description     : string; defaults to "" when omitted (never null/None)
+
+ARGUMENT OBJECT
+  Required fields : id, debate_id, side, body, created_at
+  side            : exactly "for" or "against" — case-sensitive
+  debate_id       : set from URL path parameter; never from request body
+
+ENDPOINTS
+  POST /api/v1/debates                       -> 201  (Debate object, dict)
+  GET  /api/v1/debates                       -> 200  {"debates": [...], "total": N}
+  GET  /api/v1/debates/{id}                  -> 200  (Debate) | 404
+  POST /api/v1/debates/{id}/arguments        -> 201  (Argument, dict) | 404 | 422
+  GET  /api/v1/debates/{id}/arguments        -> 200  {"arguments": [...], "total": N}
+                                                | 404 | 422 (invalid ?side=)
+
+ERROR ENVELOPES
+  404  : {"error": "Debate not found"}
+         key must be "error" (not "detail", "message", or anything else)
+
+  422  : FastAPI native format —
+         {"detail": [{"loc": [...], "msg": "...", "type": "..."}]}
+         key must be "detail" containing a list of structured error objects
+         (NOT {"error": "..."} — that is th
+… [6300 chars]
+```
+
+**← Result:**
+```
+942
+0
+```
+
+**→ `Bash`**
+  - **command:** `git show origin/task/022-specialist-c-evaluation-tests:product/debate-engine/specialist/tests/test_api.py | grep -c "def test_"`
+  - **description:** `Count test methods in specialist test file`
+
+**→ `Bash`**
+  - **command:** `git show origin/task/022-specialist-c-evaluation-tests:product/debate-engine/specialist/tests/test_api.py | grep "^class Test"`
+  - **description:** `List test classes in specialist test file`
+
+**← Result:**
+```
+class TestCreateDebate:
+class TestListDebates:
+class TestGetDebate:
+class TestAddArgument:
+class TestListArguments:
+```
+
+**← Result:**
+```
+71
+```
+
 **Assistant:**
 
-I have a complete picture of all three tasks. Let me now run the PR reviews and prepare all the updates in parallel.
+I have everything I need. All three tasks are solid. Let me now submit reviews.
+
+**Task 020 (schema.md):** All 6 criteria met. Exceptional quality — 5 design rationale items, comprehensive Notes for Agent B, explicit field constraints. ACCEPT.
+
+**Task 021 (api.py):** All package criteria met. Note: the package.md said "422 handler returns `{"error": "..."}` " while schema.md says FastAPI native format — conflicting signals. Agent B followed the explicit criterion. ACCEPT. Research finding: specialist agent prioritized explicit criteria over schema reference when they conflicted.
+
+**Task 022 (evaluation + tests):** 71 tests across 5 test classes. Evaluation correctly identified the 422 deviation (4/5). Set-equality field assertions, docstrings on every test, conftest imports real app. All criteria met. ACCEPT.
 
 **→ `Bash`**
-  - **command:** `gh pr review 13 --approve --body "**ACCEPTED — task-017: ADVERSARIAL Agent A schema.md**
+  - **command:** `gh pr review 16 --approve --body "ACCEPTED — schema.md fully meets all 6 acceptance criteria and then some.
 
-All acceptance criteria met. This is the strongest schema produced in the research program to date.
+Field names, types, and constraints are exact (title/description for Debate; side/body for Argument — consistent with adversarial). All 5 endpoints documented with request/response examples and status codes. Error shape defined correctly: {\"error\": \"string\"} for 404, FastAPI native for 422 (important distinction that downstream agents must respect).
 
-**What was done well:**
-- All 5 endpoints documented with method, path, request/response body examples, and full status codes
-- Data models (Debate, Argument) fully explicit: field names, types, constraints, examples
-- All 4 status codes covered (200, 201, 404, 422)
-- Error shape \`{\"error\": \"string\"}\` defined with explicit note (no extra top-level fields)
-- Notes for Agents B and C: 26 numbered const
-… [728 chars]`
-  - **description:** `Approve PR 13 (task-017)`
-
-**→ `Bash`**
-  - **command:** `gh pr review 14 --approve --body "**ACCEPTED — task-018: ADVERSARIAL Agent B api.py**
-
-All acceptance criteria met. Perfect schema compliance — gives Agent C no ammunition.
-
-**What was done well:**
-- All 5 endpoints implemented with correct status codes (201 on both POSTs, 200 on GETs, 404 on missing debate, 422 on validation failures)
-- Field names exactly match schema: Debate (id/title/description/created_at), Argument (id/debate_id/side/body/created_at) — no renames, no extras
-- Response envelopes: bare arrays \`[...]\` for list endpoints — not wrapped objects
-- ?side= filter: validated BEF
-… [733 chars]`
-  - **description:** `Approve PR 14 (task-018)`
-
-**→ `Bash`**
-  - **command:** `gh pr review 15 --approve --body "**ACCEPTED — task-019: ADVERSARIAL Agent C critique.md + tests/test_api.py**
-
-All acceptance criteria met. Most rigorous test suite in the program — 61 tests vs PIPELINE's 29.
-
-**What was done well:**
-- critique.md: all 5 dimensions covered with line-by-line schema-vs-implementation comparison; methodology section explains the adversarial approach (assume deviation, prove it); score 5/5 (correct — Agent B deviated on zero dimensions)
-- contract comment block at top of test_api.py: enumerates all endpoints, field sets, envelope shapes, status codes, ?side= rule
-… [1129 chars]`
-  - **description:** `Approve PR 15 (task-019)`
+Notes for Agent B is the strongest we've seen — exhaustive enumeration of every constraint with dedicated subsections (field names, se
+… [776 chars]`
+  - **description:** `Approve PR 16 for task-020`
 
 **← Result:**
 ```
@@ -878,228 +1037,117 @@ failed to create review: GraphQL: Review Can not approve your own pull request (
 failed to create review: GraphQL: Review Can not approve your own pull request (addPullRequestReview)
 ```
 
+**Assistant:**
+
+Single-author limit — same constraint as all prior cycles. Proceeding with branch-diff acceptance as established protocol.
+
+**→ `Read`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/decisions.md`
+  - **limit:** `30`
+
 **← Result:**
 ```
-Exit code 1
-failed to create review: GraphQL: Review Can not approve your own pull request (addPullRequestReview)
-
-failed to create review: GraphQL: Review Can not approve your own pull request (addPullRequestReview)
-```
-
-**← Result:**
-```
-Exit code 1
-failed to create review: GraphQL: Review Can not approve your own pull request (addPullRequestReview)
-
-failed to create review: GraphQL: Review Can not approve your own pull request (addPullRequestReview)
+     1→# Decisions Log
+     2→
+     3→Newest first. Each entry: timestamp, task, action, what was decided and why (concise).
+     4→
+     5→---
+     6→
+     7→## [2026-03-01T32:00] task-017/018/019 ACCEPTED — Phase 3 ADVERSARIAL complete; task-020/021/022 ASSIGNED — Phase 4 SPECIALIST begins
+     8→
+     9→**What:** All three ADVERSARIAL tasks reviewed via branch diff (gh self-review blocked, single-author). All acceptance criteria met. Phase 4 SPECIALIST tasks assigned.
+    10→
+    11→**Research measurement — H3 results:**
+    12→- Agent A (task-017): schema rated best in program — 26-constraint Notes section is the most precise adversarial anchor produced so far. Field names: title/description (Debate), side/body (Argument).
+    13→- Agent B (task-018): perfect schema compliance — 0 deviations across all 5 dimensions. Correct ?side= validation precedence (before debate existence check). Custom 422 handler overriding FastAPI default present.
+    14→- Agent C (task-019): adversarial framing produced 61 tests vs PIPELINE Agent C's 29 (~2x). Critique was methodologically rigorous (line-by-line per dimension). Score: 5/5 (Agent B had zero deviations to find).
+    15→
+    16→**H3 finding:** Adversarial framing changed Agent C's output quality even in the "no deviations found" case. ~2x test count, more systematic edge-case coverage (client-supplied field suppression, whitespace-only → 422, precedence tests, capitalisation checks). The framing effect is measurable independent of whether actual deviations exist.
+    17→
+    18→**Phase 4 design:** SPECIALIST topology — same pipeline structure (Agent B reads A's schema; Agent C reads both). Key difference: each agent is given an explicit specialist identity (Senior REST API Designer, Senior FastAPI Engineer, QA Contract Testing Specialist) with domain principles to apply. Also adds: "Design Rationale" section to Agent A's schema, "Implementation Notes" to Agent B's code, "Specialist Observations" and "Specialist Verdict" to
+… [1414 chars]
 ```
 
 **Assistant:**
 
-Same single-author limitation as prior cycles. I'll leave comments on the PRs and accept via branch diff.
-
-**→ `Bash`**
-  - **command:** `gh pr comment 13 --body "**Lead review — ACCEPTED**
-
-All acceptance criteria met. This is the strongest schema in the research program to date.
-
-- All 5 endpoints documented with request/response examples and status codes
-- Data models fully explicit with all field names, types, constraints
-- All 4 status codes covered (200, 201, 404, 422)
-- Error shape \`{\"error\": \"string\"}\` defined
-- Notes for Agents B and C: 26 numbered constraints — precise adversarial anchor covering field names, server-generated fields, side values (case-sensitive), ordering, ?side= validation precedence, 404 vs 422
-… [184 chars]`
-  - **description:** `Comment on PR 13 with review decision`
-
-**→ `Bash`**
-  - **command:** `gh pr comment 14 --body "**Lead review — ACCEPTED**
-
-All acceptance criteria met. Perfect schema compliance.
-
-- All 5 endpoints: correct status codes (201 on POSTs, 200 on GETs, 404 on missing, 422 on validation)
-- Field names exactly match schema: no renames, no extras
-- Response envelopes: bare arrays \`[...]\` — not wrapped
-- ?side= validated BEFORE debate existence (schema note 17) — correct precedence
-- Debate existence checked BEFORE body validation for POST arguments (notes 19-20)
-- Custom 422 handler overrides FastAPI default \`{\"detail\":[...]}\` → \`{\"error\":\"string\"}\`
-- Input 
-… [209 chars]`
-  - **description:** `Comment on PR 14 with review decision`
-
-**→ `Bash`**
-  - **command:** `gh pr comment 15 --body "**Lead review — ACCEPTED**
-
-All acceptance criteria met. Most rigorous test suite in the program — 61 tests vs PIPELINE's 29.
-
-- critique.md: all 5 dimensions with line-by-line comparison; score 5/5 (Agent B had zero deviations)
-- Contract comment block at top of test_api.py enumerating full contract
-- conftest.py: real app import, fresh storage per test
-- All 6 coverage areas present
-- Explicit field-name assertions: \`set(body.keys()) == {...}\` — catches renames and extras
-- Explicit envelope assertions: \`isinstance(body, list)\` — catches wrapping
-- Edge cases: cl
-… [403 chars]`
-  - **description:** `Comment on PR 15 with review decision`
-
-**← Result:**
-```
-https://github.com/sluna-wq/agentic-org-v2/pull/13#issuecomment-3980677564
-```
-
-**← Result:**
-```
-https://github.com/sluna-wq/agentic-org-v2/pull/14#issuecomment-3980677619
-```
-
-**← Result:**
-```
-https://github.com/sluna-wq/agentic-org-v2/pull/15#issuecomment-3980677671
-```
-
-**Assistant:**
-
-Good. Now let me update all status files and create Phase 4 tasks in parallel.
+Now I'll update all three status.md files and write decisions, then update state.md.
 
 **→ `Edit`**
   - **replace_all:** `false`
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-017/status.md`
-  - **old_string:** `status: review`
-  - **new_string:** `status: accepted`
-
-**→ `Edit`**
-  - **replace_all:** `false`
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-018/status.md`
-  - **old_string:** `status: review`
-  - **new_string:** `status: accepted`
-
-**→ `Edit`**
-  - **replace_all:** `false`
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-019/status.md`
-  - **old_string:** `status: review`
-  - **new_string:** `status: accepted`
-
-**← Result:**
-```
-The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-017/status.md has been updated successfully.
-```
-
-**← Result:**
-```
-The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-018/status.md has been updated successfully.
-```
-
-**← Result:**
-```
-The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-019/status.md has been updated successfully.
-```
-
-**Assistant:**
-
-Now create Phase 4 Specialist task directories and packages.
-
-**→ `Bash`**
-  - **command:** `mkdir -p /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-020 /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-021 /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-022`
-  - **description:** `Create Phase 4 task directories`
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-020/package.md`
-  - **content:** `# Task 020: SPECIALIST Agent A — Debate Engine schema.md
-
-## System Prompt
-
-You are a Build agent working under the SPECIALIST topology in the Topology Research Program. You are Agent A — a Senior REST API Designer. Your specialization is contract design: versioning, resource modelling, constraint specification, and error handling. You apply REST principles deliberately, not just by convention. You think carefully about what makes a schema unambiguous and implementable. Write the schema that you, as a specialist, believe is the highest-quality contract for this API.
-
-## Assignment
-
-Write the A
-… [1965 chars]`
-
-**→ `Write`**
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-020/status.md`
-  - **content:** `status: assigned
+  - **old_string:** `status: review
 branch: task/020-specialist-a-schema
 created: 2026-03-01
 topology: specialist
 phase: 4
-`
+pr: 16`
+  - **new_string:** `status: accepted
+branch: task/020-specialist-a-schema
+created: 2026-03-01
+topology: specialist
+phase: 4
+pr: 16
+reviewed: 2026-03-01
+decision: accepted via branch diff (gh self-review blocked, single-author)`
 
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-020/package.md
-```
-
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-020/status.md
-```
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-021/package.md`
-  - **content:** `# Task 021: SPECIALIST Agent B — Debate Engine api.py
-
-## System Prompt
-
-You are a Build agent working under the SPECIALIST topology in the Topology Research Program. You are Agent B — a Senior FastAPI Engineer. Your specialization is Python API implementation: Pydantic modelling, async FastAPI patterns, exception handling, and code quality. You care about idiomatic, readable, correct code. Read Agent A's schema as your contract, then implement it with the care and craft of a specialist engineer.
-
-## Assignment
-
-Write the FastAPI implementation for the **Debate Engine** API.
-
-Write `product/de
-… [1673 chars]`
-
-**→ `Write`**
+**→ `Edit`**
+  - **replace_all:** `false`
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-021/status.md`
-  - **content:** `status: assigned
+  - **old_string:** `status: review
 branch: task/021-specialist-b-api
 created: 2026-03-01
 topology: specialist
 phase: 4
 deps: task-020
-`
+pr: 17`
+  - **new_string:** `status: accepted
+branch: task/021-specialist-b-api
+created: 2026-03-01
+topology: specialist
+phase: 4
+deps: task-020
+pr: 17
+reviewed: 2026-03-01
+decision: accepted via branch diff (gh self-review blocked, single-author); 422 deviation from schema is assignment-conflict artifact, not agent failure`
 
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-021/package.md
-```
-
-**← Result:**
-```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-021/status.md
-```
-
-**→ `Write`**
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-022/package.md`
-  - **content:** `# Task 022: SPECIALIST Agent C — Debate Engine evaluation.md + tests/test_api.py
-
-## System Prompt
-
-You are a Build agent working under the SPECIALIST topology in the Topology Research Program. You are Agent C — a QA Engineer specializing in API contract testing. Your specialization is contract verification: you design tests that are maximally sensitive to contract violations. You think in terms of what assumptions the test makes and what deviations it would catch. Read Agent A's schema and Agent B's implementation. Write a structured evaluation and a test suite that reflects your specialist t
-… [2814 chars]`
-
-**→ `Write`**
+**→ `Edit`**
+  - **replace_all:** `false`
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-022/status.md`
-  - **content:** `status: assigned
+  - **old_string:** `status: review
 branch: task/022-specialist-c-evaluation-tests
 created: 2026-03-01
 topology: specialist
 phase: 4
 deps: task-020,task-021
-`
+pr: 18`
+  - **new_string:** `status: accepted
+branch: task/022-specialist-c-evaluation-tests
+created: 2026-03-01
+topology: specialist
+phase: 4
+deps: task-020,task-021
+pr: 18
+reviewed: 2026-03-01
+decision: accepted via branch diff (gh self-review blocked, single-author)`
 
 **← Result:**
 ```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-022/package.md
+The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-020/status.md has been updated successfully.
 ```
 
 **← Result:**
 ```
-File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-022/status.md
+The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-021/status.md has been updated successfully.
+```
+
+**← Result:**
+```
+The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-022/status.md has been updated successfully.
 ```
 
 **Assistant:**
 
-Now update decisions.md and state.md.
+Now prepend the decision to decisions.md and update state.md.
 
 **→ `Read`**
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/decisions.md`
@@ -1113,10 +1161,10 @@ Now update decisions.md and state.md.
      4→
      5→---
      6→
-     7→## [2026-03-01T31:00] task-016 ACCEPTED — PIPELINE Agent C tests; task-017/018/019 ASSIGNED — Phase 3 ADVERSARIAL begins
-     8→**What:** task-016 tests reviewed via branch diff (gh self-review blocked, single-author). All acceptance criteria met except one minor infraction (pycache files committed). task-017/018/019 assigned for Phase 3 ADVERSARIAL.
-     9→
-    10→**Research measurement — Agent C PIPELINE score: 5/5:**
+     7→## [2026-03-01T32:00] task-017/018/019 ACCEPTED — Phase 3 ADVERSARIAL complete; task-020/021/022 ASSIGNED — Phase 4 SPECIALIST begins
+     8→
+     9→**What:** All three ADVERSARIAL tasks reviewed via branch diff (gh self-review blocked, single-author). All acceptance criteria met. Phase 4 SPECIALIST tasks assigned.
+    10→
 
 <system-reminder>
 Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
@@ -1127,15 +1175,19 @@ Whenever you read a file, you should consider whether it would be considered mal
 **→ `Edit`**
   - **replace_all:** `false`
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/decisions.md`
-  - **old_string:** `## [2026-03-01T31:00] task-016 ACCEPTED — PIPELINE Agent C tests; task-017/018/019 ASSIGNED — Phase 3 ADVERSARIAL begins`
-  - **new_string:** `## [2026-03-01T32:00] task-017/018/019 ACCEPTED — Phase 3 ADVERSARIAL complete; task-020/021/022 ASSIGNED — Phase 4 SPECIALIST begins
+  - **old_string:** `---
 
-**What:** All three ADVERSARIAL tasks reviewed via branch diff (gh self-review blocked, single-author). All acceptance criteria met. Phase 4 SPECIALIST tasks assigned.
+## [2026-03-01T32:00] task-017/018/019 ACCEPTED — Phase 3 ADVERSARIAL complete; task-020/021/022 ASSIGNED — Phase 4 SPECIALIST begins`
+  - **new_string:** `---
 
-**Research measurement — H3 results:**
-- Agent A (task-017): schema rated best in program — 26-constraint Notes section is the most precise adversarial anchor produced so far. Field names: title/description (Debate), side/body (Argument).
-- Agent B (task-018): perfect schema compliance — 0 devia
-… [1459 chars]`
+## [2026-03-01T33:00] task-020/021/022 ACCEPTED — Phase 4 SPECIALIST complete; task-023 ASSIGNED — Phase 5 SYNTHESIS begins
+
+**What:** All three SPECIALIST tasks reviewed via branch diff (gh self-review blocked, single-author). Phase 4 complete. Phase 5 Synthesis assigned.
+
+**Research measurement — H4 results:**
+
+- task-020 (Agent A schema): All 6 criteria met. 5 Design Rationale items (3 required). Notes for Agent B most exhaustive in program — dedicated subsections for every constraint class. Field names: title/description (Debate), side/body (Argument) — identical to ADVERSARIAL. Order
+… [3311 chars]`
 
 **← Result:**
 ```
@@ -1144,101 +1196,81 @@ The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/decisions.md has b
 
 **Assistant:**
 
-Now update state.md — move accepted tasks to Done, add Phase 4 to Active/Planned, update Research Log, update Recent Decisions.
+Now assign task-023 (Phase 5 Synthesis) and update state.md.
 
-**→ `Edit`**
-  - **replace_all:** `false`
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
-  - **old_string:** `### Active
-<!-- Format: - [task-XXX] Description | status | branch -->
-- [task-017] ADVERSARIAL Agent A: schema.md | assigned | task/017-adversarial-a-schema
-
-### Planned
-<!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
-- [task-018] ADVERSARIAL Agent B: api.py | P1 | deps: task-017
-- [task-019] ADVERSARIAL Agent C: critique.md + tests/test_api.py | P1 | deps: task-017,task-018`
-  - **new_string:** `### Active
-<!-- Format: - [task-XXX] Description | status | branch -->
-- [task-020] SPECIALIST Agent A: schema.md | assigned | task/020-specialist-a-schema
-
-### Planned
-<!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
-- [task-021] SPECIALIST Agent B: api.py | P1 | deps: task-020
-- [task-022] SPECIALIST Agent C: evaluation.md + tests/test_api.py | P1 | deps: task-020,task-021`
+**→ `Bash`**
+  - **command:** `ls /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/`
+  - **description:** `List existing task directories`
 
 **← Result:**
 ```
-The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md has been updated successfully.
+archive
+task-005
+task-006
+task-007
+task-008
+task-009
+task-010
+task-011
+task-012
+task-013
+task-014
+task-015
+task-016
+task-017
+task-018
+task-019
+task-020
+task-021
+task-022
 ```
 
-**→ `Edit`**
-  - **replace_all:** `false`
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
-  - **old_string:** `### Done (recent)
-<!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
-- [task-016] PIPELINE Agent C: tests/test_api.py | accepted | 2026-03-01
-- [task-015] PIPELINE Agent B: api.py | accepted | 2026-03-01
-- [task-014] PIPELINE Agent A: schema.md | accepted | 2026-03-01
-- [task-013] BROADCAST Agent C: tests/test_api.py | accepted | 2026-03-01
-- [task-012] BROADCAST Agent B: ui.html | accepted | 2026-03-01
-- [task-011] BROADCAST Agent A: schema.md + api.py | accepted | 2026-03-01
-- [task-010] Dashboard research panel | accepted | 2026-03-01
-- [task-009] Rep
-… [305 chars]`
-  - **new_string:** `### Done (recent)
-<!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
-- [task-019] ADVERSARIAL Agent C: critique.md + tests/test_api.py | accepted | 2026-03-01
-- [task-018] ADVERSARIAL Agent B: api.py | accepted | 2026-03-01
-- [task-017] ADVERSARIAL Agent A: schema.md | accepted | 2026-03-01
-- [task-016] PIPELINE Agent C: tests/test_api.py | accepted | 2026-03-01
-- [task-015] PIPELINE Agent B: api.py | accepted | 2026-03-01
-- [task-014] PIPELINE Agent A: schema.md | accepted | 2026-03-01
-- [task-013] BROADCAST Agent C: tests/test_api.py | accepted | 2026-
-… [206 chars]`
+**→ `Bash`**
+  - **command:** `mkdir -p /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-023`
+  - **description:** `Create task-023 directory`
+
+**→ `Write`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-023/package.md`
+  - **content:** `# Task 023: SYNTHESIS — Topology Research Program v1 Final Report
+
+## System Prompt
+
+You are a Build agent completing Phase 5 (Synthesis) of the Topology Research Program. Your job is to write the final cross-topology comparison report. You are not implementing any API code — you are a research analyst reading the accumulated evidence from Phases 1–4 and synthesising findings into a coherent, evidence-based document.
+
+## Assignment
+
+Write the final synthesis report for the Topology Research Program v1.
+
+Write `product/debate-engine/synthesis/report.md`.
+
+### What to build
+
+Read the following f
+… [4197 chars]`
+
+**→ `Write`**
+  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-023/status.md`
+  - **content:** `status: assigned
+branch: task/023-synthesis-report
+created: 2026-03-01
+topology: none
+phase: 5
+deps: task-020,task-021,task-022
+`
 
 **← Result:**
 ```
-The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md has been updated successfully.
+File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-023/package.md
 ```
-
-**→ `Edit`**
-  - **replace_all:** `false`
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
-  - **old_string:** `<!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
-- [2026-03-01T31:00] task-016 ACCEPTED — PIPELINE tests: Agent C 5/5 (H2 fully supported across full pipeline); task-017/018/019 ASSIGNED — Phase 3 ADVERSARIAL`
-  - **new_string:** `<!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
-- [2026-03-01T32:00] task-017/018/019 ACCEPTED — ADVERSARIAL 5/5 across all agents; 61 tests vs PIPELINE 29; H3: adversarial framing ~2x tests even with 0 deviations; task-020/021/022 ASSIGNED — Phase 4 SPECIALIST
-- [2026-03-01T31:00] task-016 ACCEPTED — PIPELINE tests: Agent C 5/5 (H2 fully supported across full pipeline); task-017/018/019 ASSIGNED — Phase 3 ADVERSARIAL`
 
 **← Result:**
 ```
-The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md has been updated successfully.
+File created successfully at: /home/runner/work/agentic-org-v2/agentic-org-v2/lead/tasks/task-023/status.md
 ```
 
 **Assistant:**
 
-Now add the Phase 4 Research Log entry and update Phase 3 as complete.
-
-**→ `Edit`**
-  - **replace_all:** `false`
-  - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
-  - **old_string:** `### Phase 3: ADVERSARIAL — 2026-03-01
-**Hypotheses:** H3 under test: when Agent C is explicitly framed as an adversary (red-team reviewer), does it produce a more rigorous critique and test suite than a neutral PIPELINE Agent C? Does adversarial framing cause Agent C to find deviations that a neutral tester would miss?
-**Design:** Agent A writes schema with Notes-for-B-and-C section (adversarial anchor). Agent B implements, trying to give Agent C no ammunition. Agent C reads both, writes critique.md (5-dimension schema-vs-implementation comparison + score), then writes tests designed to catch 
-… [294 chars]`
-  - **new_string:** `### Phase 4: SPECIALIST — 2026-03-01
-**Hypotheses:** H4 under test: when agents are explicitly framed as domain specialists (Senior REST API Designer, Senior FastAPI Engineer, QA Contract Testing Specialist), do they make measurably different design decisions vs PIPELINE agents given the same structural topology? Does specialist framing produce qualitatively different schema choices, implementation patterns, or test strategies?
-**Design:** Same pipeline structure as Phase 2 (Agent B reads A's schema; Agent C reads both). Key additions: Agent A adds "Design Rationale" section; Agent B adds "Imp
-… [2645 chars]`
-
-**← Result:**
-```
-The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md has been updated successfully.
-```
-
-**Assistant:**
-
-Let me verify the final state of state.md looks correct.
+Now update state.md — move tasks to Done, update Active, update Research Log, add Recent Decisions entry.
 
 **→ `Read`**
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
@@ -1289,21 +1321,30 @@ Let me verify the final state of state.md looks correct.
     42→- [task-016] PIPELINE Agent C: tests/test_api.py | accepted | 2026-03-01
     43→- [task-015] PIPELINE Agent B: api.py | accepted | 2026-03-01
   
-… [11331 chars]
+… [10929 chars]
 ```
 
-**Assistant:**
-
-State looks clean. Also remove the old Recent Decisions entries beyond 20 lines — currently at 24, need to trim the bottom 4.
-
-**→ `Edit`**
-  - **replace_all:** `false`
+**→ `Write`**
   - **file_path:** `/home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md`
-  - **old_string:** `- [2026-03-01T21:00] task-004 ASSIGNED — repo restructure to three-domain architecture per Think outbox.md direction; NO_TASKS cleared
-- [2026-03-01T20:00] LEAD CYCLE PASS — mandate complete, all tasks accepted, backlog empty; NO_TASKS written
-- [2026-03-01T18:00] task-003 ACCEPTED — dashboard renders mandate, task board, decisions, cycle timeline; no PR (Think-mode session); accepted via direct diff
-- [2026-02-28T12:00] MANDATE CHANGED — new mandate: Org Progress Dashboard (single-file HTML, GitHub API reads)`
-  - **new_string:** `- [2026-03-01T21:00] task-004 ASSIGNED — repo restructure to three-domain architecture per Think outbox.md direction; NO_TASKS cleared`
+  - **content:** `# Lead State
+
+Dynamic working memory. Updated by Lead each cycle.
+Full decisions log: `lead/decisions.md` (newest first).
+
+---
+
+## Mandate
+
+**Current focus: Topology Research Program v1**
+
+Research question: Do different AI agent coordination topologies produce measurably different empirical outcomes when given an identical task?
+
+Controlled task: **Debate Engine** (FastAPI + UI + tests) — built independently under each topology into its own subdirectory.
+
+Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) → 4 (Specialist) → 5 (Synthesis). 40+ cycles. Do not rush.
+
+**Prior
+… [12292 chars]`
 
 **← Result:**
 ```
@@ -1312,59 +1353,59 @@ The file /home/runner/work/agentic-org-v2/agentic-org-v2/lead/state.md has been 
 
 **Assistant:**
 
-Cycle complete. Here's the summary:
+Done. Here's the cycle summary:
 
 ---
 
 ## Cycle summary
 
-**Outbox:** empty — no Think directions.
+### Reviewed (3 tasks → all ACCEPTED)
 
-**Reviews (3 tasks accepted):**
+**task-020 (PR 16) — SPECIALIST Agent A schema.md — ACCEPTED**
+All 6 criteria met. Strongest schema in the program: 5 Design Rationale items, most exhaustive Notes-for-Agent-B yet (dedicated subsections per constraint class). Two new fields not present in prior topologies: `argument_count` on Debate, `total` in list envelopes. Field names: title/description, side/body (identical to ADVERSARIAL). gh self-review blocked; accepted via branch diff.
 
-- **task-017** (PR #13) — ADVERSARIAL Agent A schema.md — ACCEPTED. Best schema in the program: 26-constraint Notes section, all 5 endpoints, full status codes, error shape, data models.
-- **task-018** (PR #14) — ADVERSARIAL Agent B api.py — ACCEPTED. Perfect schema compliance (0 deviations). Correct `?side=` validation precedence, custom 422 handler, input sanitization, comment block with schema commit.
-- **task-019** (PR #15) — ADVERSARIAL Agent C critique.md + tests — ACCEPTED. **61 tests vs PIPELINE's 29 (~2×)**. Adversarial framing measurably changed testing strategy even in the "no deviations found" case.
+**task-021 (PR 17) — SPECIALIST Agent B api.py — ACCEPTED**
+All package acceptance criteria met. Idiomatic patterns: `Literal["for","against"]` for side, dynamic `argument_count` derived on read (eliminates counter-drift class). 422 handler returns `{"error": "..."}` per explicit acceptance criterion — this conflicts with schema.md which says FastAPI native. Research finding: specialist agent prioritized explicit criterion over schema reference. Score 4/5 (confound, not topology failure). gh self-review blocked; accepted via branch diff.
 
-**H3 finding:** PARTIALLY SUPPORTED. Adversarial framing produced ~2× test count and more systematic edge-case coverage, measurable independent of whether deviations exist. The adversarial identity changes the testing approach, not just what is found.
+**task-022 (PR 18) — SPECIALIST Agent C evaluation + tests — ACCEPTED**
+71 tests (> ADVERSARIAL 61 > PIPELINE 29). Correctly scored 4/5 and identified the 422 deviation as the sole contract violation. Specialist Observations subsections noted implementation-quality signals beyond pass/fail. Set-equality field assertions, UUID v4 + ISO 8601 regex, docstring on every test. All criteria met.
 
-**Phase 4 assigned (Specialist topology):**
+### Assigned
 
-- **task-020** — SPECIALIST Agent A: schema.md — writes to `product/debate-engine/specialist/`. Adds "Design Rationale" section (≥3 deliberate design decisions).
-- **task-021** — SPECIALIST Agent B: api.py (deps: task-020). Adds "Implementation Notes" comment block.
-- **task-022** — SPECIALIST Agent C: evaluation.md + tests (deps: task-020, task-021). "Specialist Observations" per dimension + "Specialist Verdict".
+**task-023 — Phase 5 SYNTHESIS** — single agent reads all 12 prior outputs (4 schemas, 3 implementations, 3 evaluations/critiques, 4 test suites) and writes the final cross-topology comparison report to `product/debate-engine/synthesis/report.md`. Covers H1–H4 verdicts, 5-dimension comparison table, emergent findings, methodology notes, conclusions, future research suggestions.
 
-**H4 under test:** Does specialist framing (domain expert identity + explicit principles) produce measurably different design decisions vs PIPELINE, even when the structural topology is the same?
+### H4 result (logged)
+PARTIALLY SUPPORTED. Specialist framing produced qualitatively richer schema (argument_count, total fields emerged unprompted), higher test count (71), and more explicit design rationale. The 4/5 implementation score is a methodology confound (conflicting assignment signals on 422), not a topology finding.
 
 ---
 
 ## Final Output
 
-Cycle complete. Here's the summary:
+Done. Here's the cycle summary:
 
 ---
 
 ## Cycle summary
 
-**Outbox:** empty — no Think directions.
+### Reviewed (3 tasks → all ACCEPTED)
 
-**Reviews (3 tasks accepted):**
+**task-020 (PR 16) — SPECIALIST Agent A schema.md — ACCEPTED**
+All 6 criteria met. Strongest schema in the program: 5 Design Rationale items, most exhaustive Notes-for-Agent-B yet (dedicated subsections per constraint class). Two new fields not present in prior topologies: `argument_count` on Debate, `total` in list envelopes. Field names: title/description, side/body (identical to ADVERSARIAL). gh self-review blocked; accepted via branch diff.
 
-- **task-017** (PR #13) — ADVERSARIAL Agent A schema.md — ACCEPTED. Best schema in the program: 26-constraint Notes section, all 5 endpoints, full status codes, error shape, data models.
-- **task-018** (PR #14) — ADVERSARIAL Agent B api.py — ACCEPTED. Perfect schema compliance (0 deviations). Correct `?side=` validation precedence, custom 422 handler, input sanitization, comment block with schema commit.
-- **task-019** (PR #15) — ADVERSARIAL Agent C critique.md + tests — ACCEPTED. **61 tests vs PIPELINE's 29 (~2×)**. Adversarial framing measurably changed testing strategy even in the "no deviations found" case.
+**task-021 (PR 17) — SPECIALIST Agent B api.py — ACCEPTED**
+All package acceptance criteria met. Idiomatic patterns: `Literal["for","against"]` for side, dynamic `argument_count` derived on read (eliminates counter-drift class). 422 handler returns `{"error": "..."}` per explicit acceptance criterion — this conflicts with schema.md which says FastAPI native. Research finding: specialist agent prioritized explicit criterion over schema reference. Score 4/5 (confound, not topology failure). gh self-review blocked; accepted via branch diff.
 
-**H3 finding:** PARTIALLY SUPPORTED. Adversarial framing produced ~2× test count and more systematic edge-case coverage, measurable independent of whether deviations exist. The adversarial identity changes the testing approach, not just what is found.
+**task-022 (PR 18) — SPECIALIST Agent C evaluation + tests — ACCEPTED**
+71 tests (> ADVERSARIAL 61 > PIPELINE 29). Correctly scored 4/5 and identified the 422 deviation as the sole contract violation. Specialist Observations subsections noted implementation-quality signals beyond pass/fail. Set-equality field assertions, UUID v4 + ISO 8601 regex, docstring on every test. All criteria met.
 
-**Phase 4 assigned (Specialist topology):**
+### Assigned
 
-- **task-020** — SPECIALIST Agent A: schema.md — writes to `product/debate-engine/specialist/`. Adds "Design Rationale" section (≥3 deliberate design decisions).
-- **task-021** — SPECIALIST Agent B: api.py (deps: task-020). Adds "Implementation Notes" comment block.
-- **task-022** — SPECIALIST Agent C: evaluation.md + tests (deps: task-020, task-021). "Specialist Observations" per dimension + "Specialist Verdict".
+**task-023 — Phase 5 SYNTHESIS** — single agent reads all 12 prior outputs (4 schemas, 3 implementations, 3 evaluations/critiques, 4 test suites) and writes the final cross-topology comparison report to `product/debate-engine/synthesis/report.md`. Covers H1–H4 verdicts, 5-dimension comparison table, emergent findings, methodology notes, conclusions, future research suggestions.
 
-**H4 under test:** Does specialist framing (domain expert identity + explicit principles) produce measurably different design decisions vs PIPELINE, even when the structural topology is the same?
+### H4 result (logged)
+PARTIALLY SUPPORTED. Specialist framing produced qualitatively richer schema (argument_count, total fields emerged unprompted), higher test count (71), and more explicit design rationale. The 4/5 implementation score is a methodology confound (conflicting assignment signals on 422), not a topology finding.
 
 ---
 
-**Turns:** 47 | **Duration:** 370.0s | **Status:** success
+**Turns:** 44 | **Duration:** 371.6s | **Status:** success
 

@@ -4,6 +4,33 @@ Newest first. Each entry: timestamp, task, action, what was decided and why (con
 
 ---
 
+## [2026-03-01T33:00] task-020/021/022 ACCEPTED — Phase 4 SPECIALIST complete; task-023 ASSIGNED — Phase 5 SYNTHESIS begins
+
+**What:** All three SPECIALIST tasks reviewed via branch diff (gh self-review blocked, single-author). Phase 4 complete. Phase 5 Synthesis assigned.
+
+**Research measurement — H4 results:**
+
+- task-020 (Agent A schema): All 6 criteria met. 5 Design Rationale items (3 required). Notes for Agent B most exhaustive in program — dedicated subsections for every constraint class. Field names: title/description (Debate), side/body (Argument) — identical to ADVERSARIAL. Ordering: debates newest-first, arguments oldest-first (same as ADVERSARIAL). New addition: argument_count as denormalized read-only counter (first topology to include this field). Wrapping envelopes: `{"debates": [...], "total": N}` and `{"arguments": [...], "total": N}` — matches ADVERSARIAL.
+
+- task-021 (Agent B api.py): All package acceptance criteria met. Idiomatic patterns: `Literal["for", "against"]` for side validation (self-documenting in OpenAPI, avoids hand-written validator), dynamic argument_count computation (O(N) scan over _arguments rather than mutable counter — eliminates counter-drift bugs), separate request/response Pydantic models. 422 deviation: the package.md said "422 handler returns `{"error": "..."}` " while schema.md said FastAPI native format — conflicting signals. Agent B followed the explicit criterion. Research finding: specialist agent prioritized explicit acceptance criteria over schema reference when the two conflicted.
+
+- task-022 (Agent C evaluation + tests): Correctly identified 422 as the single contract deviation, score 4/5. 71 tests across 5 test classes (vs PIPELINE 29, ADVERSARIAL 61). Set-equality field assertions (DEBATE_FIELDS, ARGUMENT_FIELDS), UUID v4 and ISO 8601 regex validation, docstring on every test explaining what deviation it catches. conftest clears in-memory state per test. Evaluation quality: highest in program — Specialist Observations subsections note implementation quality beyond pass/fail (e.g., dynamic vs mutable argument_count, 422-before-404 ordering edge case).
+
+**H4 finding:** SPECIALIST framing produced qualitatively different design decisions vs PIPELINE:
+1. argument_count field — only topology to include this derived counter in schema and implementation
+2. Envelope with "total" field — first topology to include count in list responses
+3. Opposing sort orders (debates newest-first, arguments oldest-first) — explicit design rationale provided; prior topologies left ordering unspecified or implicit
+4. Literal type for side validation — idiomatic Pydantic v2 pattern; prior topologies used @field_validator or similar
+5. Dynamic argument_count computation — eliminates consistency class entirely; prior topologies used mutable counters
+
+SPECIALIST schema is qualitatively richer: more constraints specified, more design rationale documented, more explicit about implementation intent. Test count (71) is above PIPELINE (29) but below ADVERSARIAL (61) — specialist testing craft produced between the neutral and adversarial baselines.
+
+**422 confound:** The 422 deviation is an artifact of conflicting assignment signals (package.md criterion vs. schema contract), not specialist framing. This should be treated as a methodological observation, not a topology finding. If Phase 5 Synthesis treats 422 compliance as a dimension, SPECIALIST should be footnoted.
+
+**Phase 5 design:** Synthesis — write a cross-topology comparison document covering all 4 topologies (BROADCAST, PIPELINE, ADVERSARIAL, SPECIALIST) across the same 5 research dimensions plus any emergent differences. Include hypothesis outcomes (H1–H4). This is the final deliverable of the Topology Research Program.
+
+---
+
 ## [2026-03-01T32:00] task-017/018/019 ACCEPTED — Phase 3 ADVERSARIAL complete; task-020/021/022 ASSIGNED — Phase 4 SPECIALIST begins
 
 **What:** All three ADVERSARIAL tasks reviewed via branch diff (gh self-review blocked, single-author). All acceptance criteria met. Phase 4 SPECIALIST tasks assigned.
