@@ -7,3 +7,4 @@ deps: task-020,task-021
 pr: 18
 reviewed: 2026-03-01
 decision: accepted via branch diff (gh self-review blocked, single-author)
+merged: true

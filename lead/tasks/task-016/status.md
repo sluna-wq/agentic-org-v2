@@ -5,3 +5,4 @@ topology: pipeline
 phase: 2
 deps: task-014,task-015
 pr: 12
+merged: true
