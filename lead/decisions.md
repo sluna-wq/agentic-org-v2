@@ -4,6 +4,25 @@ Newest first. Each entry: timestamp, task, action, what was decided and why (con
 
 ---
 
+## [2026-03-01T30:00] task-015 ACCEPTED — PIPELINE Agent B api.py; task-016 ASSIGNED — Agent C tests
+**What:** task-015 api.py reviewed via branch diff (gh self-review blocked, single-author). All 7 acceptance criteria met. task-016 promoted from planned to assigned.
+
+**Implementation quality:**
+- All 5 endpoints implemented exactly per schema — POST /debates (201), GET /debates (200, desc sort), GET /debates/{id} (200/404), POST /debates/{id}/arguments (201/404), GET /debates/{id}/arguments (200/404, ?side= filter)
+- Pydantic models: DebateCreate, Debate, DebateList, ArgumentCreate, Argument, ArgumentList
+- Custom RequestValidationError handler → 422 with `{"error": "Unprocessable Entity"}`
+- All Notes constraints honored: server-generated UUIDs, ISO 8601 UTC timestamps, Literal["for","against"], ?side= filter, independent UUID namespaces
+- Comment block at top lists all 5 endpoints and schema commit (research artifact)
+
+**Research measurement — H2 test result:**
+- Agent B score: 5/5 dimensions (field names ✓, response shapes ✓, status codes ✓, ?side= filter ✓, 422 envelope ✓)
+- BROADCAST B score: 2/5 | BROADCAST C score: 2/5
+- H2 (upstream visibility → tighter coupling) strongly supported. PIPELINE Agent B, reading Agent A's explicit schema, produced a perfect contract match. BROADCAST agents with no upstream anchor diverged on 3/5 dimensions each.
+
+**Why accepted:** All criteria met. Implementation is a faithful, clean execution of the schema with zero deviations.
+
+---
+
 ## [2026-03-01T29:00] task-014 ACCEPTED — PIPELINE Agent A schema; task-015 ASSIGNED — Agent B api.py
 **What:** task-014 schema.md reviewed via branch diff (gh self-review blocked, single-author). All 4 acceptance criteria met. task-015 promoted from planned to assigned; task-016 remains planned pending task-015 completion.
 

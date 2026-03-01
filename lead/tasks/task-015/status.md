@@ -1,4 +1,4 @@
-status: review
+status: accepted
 branch: task/015-pipeline-b-api
 created: 2026-03-01
 topology: pipeline

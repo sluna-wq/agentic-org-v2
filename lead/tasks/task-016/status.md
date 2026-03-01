@@ -1,4 +1,4 @@
-status: planned
+status: assigned
 branch: task/016-pipeline-c-tests
 created: 2026-03-01
 topology: pipeline

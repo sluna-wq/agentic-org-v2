@@ -27,14 +27,15 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 
 ### Planned
 <!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
-- [task-016] PIPELINE Agent C: tests/test_api.py (reads schema + api from task-014/015) | P1 | deps: task-014, task-015
+*(none)*
 
 ### Active
 <!-- Format: - [task-XXX] Description | status | branch -->
-- [task-015] PIPELINE Agent B: api.py (reads schema from task-014) | assigned | task/015-pipeline-b-api
+- [task-016] PIPELINE Agent C: tests/test_api.py (reads schema + api from task-014/015) | assigned | task/016-pipeline-c-tests
 
 ### Done (recent)
 <!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
+- [task-015] PIPELINE Agent B: api.py | accepted | 2026-03-01
 - [task-014] PIPELINE Agent A: schema.md | accepted | 2026-03-01
 - [task-013] BROADCAST Agent C: tests/test_api.py | accepted | 2026-03-01
 - [task-012] BROADCAST Agent B: ui.html | accepted | 2026-03-01
@@ -52,6 +53,7 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in lead/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T30:00] task-015 ACCEPTED — PIPELINE api.py: 5/5 score vs BROADCAST B 2/5 (H2 strongly supported); task-016 ASSIGNED
 - [2026-03-01T29:00] task-014 ACCEPTED — PIPELINE schema: all criteria met, field names explicit, Notes section for B+C; task-015 ASSIGNED
 - [2026-03-01T28:00] task-014/015/016 ASSIGNED — Phase 2 PIPELINE; task-014 active, 015/016 planned (sequential deps)
 - [2026-03-01T28:00] task-011/012/013 ACCEPTED — Phase 1 BROADCAST complete; H1 PARTIALLY REFUTED: B+C each diverged 2/5 dimensions but in different dimensions
@@ -80,9 +82,12 @@ Phases: 0 (Instrument) → 1 (Broadcast) → 2 (Pipeline) → 3 (Adversarial) �
 
 ### Phase 2: PIPELINE — 2026-03-01
 **Hypotheses:** H2 under test: when agents read upstream output, they produce tighter contract coupling (higher alignment with the authoritative schema). Comparison baseline: BROADCAST alignment scores (B=2/5, C=2/5).
-**Observations:** task-014 accepted. Agent A schema is highly explicit — includes dedicated Data Models section, 5-constraint Notes for B+C, 422 validation code, optional ?side= filter, ordering spec. Ground truth field names: topic, description, side ("for"|"against"), content. Response envelopes: {"debates":[...]}, {"arguments":[...]}. task-015 assigned (Agent B reads schema, writes api.py). task-016 planned (Agent C reads schema+api, writes tests).
-**Surprises:** PIPELINE Agent A's schema is noticeably more structured than BROADCAST Agent A's. Both were given identical concept descriptions; the PIPELINE agent added implementation guidance explicitly targeting downstream agents. This may be an effect of the system prompt framing ("Agents B and C will read it") — Agent A may self-regulate toward greater explicitness when it knows downstream agents depend on it.
-**Next phase adaptation:** After task-015 accepted, score Agent B's api.py against the 5 BROADCAST dimensions plus check: (1) does it use the Notes section constraints? (2) does it handle 422 correctly? (3) does it implement the ?side= filter? Compare score to BROADCAST B (2/5). Expect higher alignment.
+**Observations:**
+- task-014 (Agent A schema): highly explicit — dedicated Data Models section, 5-constraint Notes for B+C, 422 validation, ?side= filter, ordering spec. Ground truth: topic, description, side ("for"|"against"), content. Envelopes: {"debates":[...]}, {"arguments":[...]}.
+- task-015 (Agent B api.py): **score 5/5**. Perfect contract match — all field names, response shapes, status codes, ?side= filter, 422 envelope correct. Notes constraints fully honored. vs BROADCAST B: 2/5.
+- task-016 assigned (Agent C reads schema+api, writes tests).
+**Surprises:** PIPELINE Agent B score (5/5) vs BROADCAST B (2/5) is a stark difference. H2 strongly supported by the data so far. The Notes section in Agent A's schema appears to be the key mechanism — explicit enumeration of constraints leaves no room for Agent B to anchor on the wrong dimension.
+**Next phase adaptation:** After task-016 accepted, score Agent C's tests against the same 5 dimensions: (1) do tests use correct field names (topic, side not title/position)? (2) do tests check correct response envelopes? (3) do tests assert status codes 201/404/422? (4) do tests cover ?side= filter? (5) do tests use conftest importing the real app? Compare to BROADCAST C (2/5). If Agent C also scores 5/5, H2 is fully supported across the pipeline.
 
 ### Phase 1: BROADCAST — 2026-03-01
 **Hypotheses:** H1 under test: independent agents given identical context will converge on similar API contracts. RESULT: PARTIALLY REFUTED.
