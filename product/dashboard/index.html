@@ -297,6 +297,42 @@
     .scroll-body { max-height: 420px; overflow-y: auto; padding-right: 4px; }
     .scroll-body::-webkit-scrollbar { width: 6px; }
     .scroll-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* ── Research Log ── */
+    .research-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+    .research-card:last-child { margin-bottom: 0; }
+
+    .research-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--bg);
+      cursor: pointer;
+      user-select: none;
+      gap: 8px;
+    }
+    .research-card-header:hover { background: #1c2128; }
+
+    .research-card-title { font-size: 13px; font-weight: 600; }
+    .research-card-toggle { font-size: 11px; color: var(--muted); flex-shrink: 0; }
+
+    .research-card-body {
+      display: none;
+      padding: 14px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .research-card-body.open { display: block; }
+    .research-card-body p { margin: 4px 0 8px; }
+    .research-card-body p:last-child { margin-bottom: 0; }
+    .research-card-body strong { font-weight: 600; color: var(--text); }
   </style>
 </head>
 <body>
@@ -377,6 +413,17 @@
         </div>
         <div class="section-body">
           <div id="cycle-timeline"></div>
+        </div>
+      </div>
+
+      <!-- Research Log -->
+      <div class="section full-width">
+        <div class="section-header">
+          <h2>Research Log</h2>
+          <span class="count" id="research-count">0</span>
+        </div>
+        <div class="section-body">
+          <div id="research-log-body"></div>
         </div>
       </div>
 
@@ -558,6 +605,35 @@ function parseDecisions(raw) {
   });
 }
 
+function parseResearchLog(stateMd) {
+  if (!stateMd) return [];
+  const lines = stateMd.split('\n');
+  let inside = false;
+  const sectionLines = [];
+  for (const line of lines) {
+    if (!inside && /^## Research Log/.test(line)) { inside = true; continue; }
+    if (inside) {
+      if (/^## /.test(line)) break;
+      sectionLines.push(line);
+    }
+  }
+  if (!sectionLines.length) return [];
+
+  const entries = [];
+  let current = null;
+  for (const line of sectionLines) {
+    if (/^### /.test(line)) {
+      if (current) entries.push(current);
+      current = { title: line.replace(/^### /, '').trim(), bodyLines: [] };
+    } else if (current) {
+      current.bodyLines.push(line);
+    }
+  }
+  if (current) entries.push(current);
+
+  return entries.map(e => ({ title: e.title, body: e.bodyLines.join('\n').trim() }));
+}
+
 // ── Rendering ─────────────────────────────────────────────────────────────
 
 const COLUMNS = ['planned', 'active', 'review', 'done'];
@@ -708,6 +784,42 @@ function renderMandate(stateRaw) {
   $('mandate-body').innerHTML = marked.parse(md);
 }
 
+function renderResearchLog(entries) {
+  $('research-count').textContent = entries.length;
+  const container = $('research-log-body');
+  container.innerHTML = '';
+
+  if (!entries.length) {
+    container.innerHTML = '<span style="color:var(--muted);font-size:12px">No research log entries yet.</span>';
+    return;
+  }
+
+  entries.forEach(entry => {
+    const card = document.createElement('div');
+    card.className = 'research-card';
+
+    const header = document.createElement('div');
+    header.className = 'research-card-header';
+    header.innerHTML = `
+      <span class="research-card-title">${escHtml(entry.title)}</span>
+      <span class="research-card-toggle">▶</span>
+    `;
+
+    const body = document.createElement('div');
+    body.className = 'research-card-body';
+    body.innerHTML = marked.parse(entry.body);
+
+    header.addEventListener('click', () => {
+      const open = body.classList.toggle('open');
+      header.querySelector('.research-card-toggle').textContent = open ? '▼' : '▶';
+    });
+
+    card.appendChild(header);
+    card.appendChild(body);
+    container.appendChild(card);
+  });
+}
+
 // ── Utilities ─────────────────────────────────────────────────────────────
 
 function escHtml(str) {
@@ -758,6 +870,7 @@ async function loadDashboard() {
     renderTaskBoard(data.taskData);
     renderDecisions(parseDecisions(data.decisionsRaw));
     renderCycles(data.runs);
+    renderResearchLog(parseResearchLog(data.stateRaw));
 
     $('header-repo').textContent = repo;
     $('site-header').style.display   = 'flex';
