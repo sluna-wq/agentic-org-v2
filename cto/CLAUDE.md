@@ -85,11 +85,11 @@ We are building a simple REST API in Node.js (Express).
 
 ### Planned
 <!-- Priority order. Format: - [task-XXX] Description | P1/P2/P3 | deps: none -->
-*(none — CTO populates)*
+*(none)*
 
 ### Active
 <!-- Format: - [task-XXX] Description | status | branch -->
-*(none)*
+- [task-001] Bootstrap product/CLAUDE.md + implement REST API | assigned | task/001-rest-api
 
 ### Done (recent)
 <!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
@@ -100,4 +100,4 @@ We are building a simple REST API in Node.js (Express).
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in cto/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
-*(none)*
+- [2026-03-01T00:00] task-001 ASSIGNED — first task: bootstrap product context + implement full REST API (Express, in-memory)
