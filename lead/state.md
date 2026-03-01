@@ -46,10 +46,11 @@ We are building an **Org Progress Dashboard** — a browser-based UI that lets t
 
 ### Active
 <!-- Format: - [task-XXX] Description | status | branch -->
-- [task-003] Org Progress Dashboard (single-file HTML, GitHub API) | assigned | task/003-dashboard
+*(none)*
 
 ### Done (recent)
 <!-- Keep last ~10. Format: - [task-XXX] Description | accepted/discarded | YYYY-MM-DD -->
+- [task-003] Org Progress Dashboard (single-file HTML, GitHub API) | accepted | 2026-03-01
 - [task-002] Bookmark Manager REST API (Python/FastAPI) | accepted | 2026-03-01
 - [task-001] Node.js REST API (items CRUD) | accepted | 2026-03-01
 
@@ -58,6 +59,7 @@ We are building an **Org Progress Dashboard** — a browser-based UI that lets t
 ## Recent Decisions
 <!-- Top 20 only — one line each. Full log in lead/decisions.md -->
 <!-- Format: [YYYY-MM-DDTHH:MM] task-XXX ACTION — reason -->
+- [2026-03-01T18:00] task-003 ACCEPTED — dashboard renders mandate, task board, decisions, cycle timeline; no PR (Think-mode session); accepted via direct diff
 - [2026-02-28T12:00] MANDATE CHANGED — new mandate: Org Progress Dashboard (single-file HTML, GitHub API reads)
 - [2026-02-28T12:00] task-003 ASSIGNED — build dashboard: mandate panel, task board, decisions feed, cycle timeline
 - [2026-03-01T15:00] task-002 ACCEPTED — all 5 endpoints correct, AnyHttpUrl validation, tag filtering, pinned requirements.txt, README with curl examples; mandate complete

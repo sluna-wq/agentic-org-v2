@@ -36,4 +36,19 @@ Reasoning: source of truth is already in this repo; external services require du
 
 ## Phase 3: Lead Review
 
-Pending — PR opened, awaiting Lead approval.
+**Decision: ACCEPTED**
+
+Reviewed `product/dashboard/index.html` directly (no PR — task ran in Think-mode session, not orchestrator).
+
+Acceptance rationale:
+- All 4 sections render from live GitHub API data
+- Git Trees API approach minimises round-trips (1 tree call + blob fetches in parallel)
+- Config + PAT persisted to localStorage; works unauthenticated on public repos
+- Error surfaces clearly for rate-limit (403/429), not found (404), network errors
+- Refresh button re-fetches without reload
+- `product/dashboard/README.md` present with setup and PAT instructions
+- Dark UI, status badge colours, responsive layout
+
+**Known process deviation:** Task was executed in Think-mode interactive session rather than via the orchestrator. No PR was opened. Future cycles must go through `./orchestrator.sh` to get proper branch isolation, PR review, and transcript logs.
+
+task-003 status → **accepted**
